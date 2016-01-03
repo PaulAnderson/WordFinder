@@ -25358,6 +25358,7 @@ fleshpot
 fleshy
 fletch
 fletched
+fletchette
 fletcher
 fletches
 fleury
@@ -67568,6 +67569,10 @@ superman
 supermen
 supermom
 supernal
+superport
+superpose
+superpower
+superpowers
 superpro
 supers
 supersex

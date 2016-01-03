@@ -27,7 +27,9 @@ class ScoredWordComparer : IComparer<Word>
     //6 Letters: +6
     //7 Letters: +10
     //8 Letters: +15
-    //9 Letters?
+    //9 Letters: +20 (ie SUPERPORT)
+    //9+Letters: +25 (ie SUPERPOWER,SUPERPOWERS)
+
     // 2 points letters: L N
     // 3 points letters: H M C Y
     // 4 points letters: B F V W P
@@ -125,6 +127,18 @@ class ScoredWordComparer : IComparer<Word>
                 break;
             case 8:
                 letterTotal += 15;
+                break;
+            case 9:
+                letterTotal += 20;
+                break;
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+                letterTotal += 25;
                 break;
 
         }

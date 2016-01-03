@@ -16,7 +16,7 @@ namespace WordFinder
     public partial class Form1 : Form
     {
         const int minWordLength = 5;
-        const int maxWordLength = 8;
+        const int maxWordLength = 11;
         const int gridSize = 4;
         const string dictionaryFile = "ospd.txt";
         private char[,] letters;
