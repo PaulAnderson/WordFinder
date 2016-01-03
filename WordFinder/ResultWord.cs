@@ -66,15 +66,16 @@ class ScoredWordComparer : IComparer<Word>
             {
                 case 'L':
                 case 'N':
+                case 'D':
                     letterValue = 2;
                     break;
                 case 'H':
                 case 'M':
-                case 'C':
                 case 'Y':
                     letterValue = 3;
                     break;
                 case 'B':
+                case 'C':
                 case 'F':
                 case 'V':
                 case 'W':
