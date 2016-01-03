@@ -35,6 +35,7 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.lblResults = new System.Windows.Forms.Label();
             this.lstResults = new System.Windows.Forms.ListBox();
+            this.cbkSortbyScore = new System.Windows.Forms.CheckBox();
             this.pnlLetters.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,7 +79,7 @@
             // 
             // btnFind
             // 
-            this.btnFind.Location = new System.Drawing.Point(128, 213);
+            this.btnFind.Location = new System.Drawing.Point(128, 210);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(75, 23);
             this.btnFind.TabIndex = 3;
@@ -108,18 +109,39 @@
             // 
             // lstResults
             // 
+            this.lstResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstResults.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstResults.FormattingEnabled = true;
+            this.lstResults.ItemHeight = 22;
             this.lstResults.Location = new System.Drawing.Point(209, 24);
             this.lstResults.Name = "lstResults";
-            this.lstResults.Size = new System.Drawing.Size(477, 212);
+            this.lstResults.ScrollAlwaysVisible = true;
+            this.lstResults.Size = new System.Drawing.Size(477, 796);
             this.lstResults.TabIndex = 5;
             this.lstResults.SelectedIndexChanged += new System.EventHandler(this.lstResults_SelectedIndexChanged);
+            // 
+            // cbkSortbyScore
+            // 
+            this.cbkSortbyScore.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbkSortbyScore.AutoSize = true;
+            this.cbkSortbyScore.Checked = true;
+            this.cbkSortbyScore.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbkSortbyScore.Location = new System.Drawing.Point(606, 4);
+            this.cbkSortbyScore.Name = "cbkSortbyScore";
+            this.cbkSortbyScore.Size = new System.Drawing.Size(88, 17);
+            this.cbkSortbyScore.TabIndex = 6;
+            this.cbkSortbyScore.Text = "Sort by score";
+            this.cbkSortbyScore.UseVisualStyleBackColor = true;
+            this.cbkSortbyScore.CheckedChanged += new System.EventHandler(this.cbkSortbyScore_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(698, 242);
+            this.ClientSize = new System.Drawing.Size(698, 836);
+            this.Controls.Add(this.cbkSortbyScore);
             this.Controls.Add(this.lstResults);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnFind);
@@ -143,6 +165,7 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label lblResults;
         private System.Windows.Forms.ListBox lstResults;
+        private System.Windows.Forms.CheckBox cbkSortbyScore;
     }
 }
 

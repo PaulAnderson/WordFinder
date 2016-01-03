@@ -20,10 +20,12 @@ namespace WordFinder
         const int gridSize = 4;
         const string dictionaryFile = "ospd.txt";
         private char[,] letters;
-        private TextBox[,] letterControls;
+        private int[,] letterMultipliers;
+        private int[,] wordMultipliers;
+        private CustomTextBox[,] letterControls;
         private Words dictWords;
         private List<Word> FoundWords;
-        private Dictionary<String,bool> FoundWordsDict; //use for fast lookups to avoid duplicates
+        private Dictionary<String, bool> FoundWordsDict; //use for fast lookups to avoid duplicates
         private List<Direction> Directions;
 
         public Form1()
@@ -31,7 +33,9 @@ namespace WordFinder
             InitializeComponent();
 
             letters = new char[gridSize, gridSize];
-            letterControls = new TextBox[gridSize, gridSize];
+            letterMultipliers = new int[gridSize, gridSize];
+            wordMultipliers = new int[gridSize, gridSize];
+            letterControls = new CustomTextBox[gridSize, gridSize];
 
             //todo - if increase grid size beyond 4, add rows and columns to gridLayoutPanel
 
@@ -40,7 +44,7 @@ namespace WordFinder
             {
                 for (int c = 0; c < gridSize; c++)
                 {
-                    TextBox newTextBox = new TextBox();
+                    CustomTextBox newTextBox = new CustomTextBox();
                     letterControls[r, c] = newTextBox;
                     letters[r, c] = ' ';
                     lettersGrid.Controls.Add(newTextBox, c, r);
@@ -49,7 +53,8 @@ namespace WordFinder
                     newTextBox.TextAlign = HorizontalAlignment.Center;
                     newTextBox.TextChanged += NewTextBox_TextChanged;
                     newTextBox.Enter += NewTextBox_Enter;
-
+                    newTextBox.PreviewKeyDown += NewTextBox_PreviewKeyDown;
+                    newTextBox.Changed += NewTextBox_Changed;
                 }
             }
 
@@ -61,11 +66,39 @@ namespace WordFinder
             Directions.Add(new Direction(1, 1));   //SE
             Directions.Add(new Direction(0, 1));   //S
             Directions.Add(new Direction(-1, 1));  //SW
-            Directions.Add(new Direction(-1,0));   //W
+            Directions.Add(new Direction(-1, 0));   //W
             Directions.Add(new Direction(-1, -1)); //NW
 
             dictWords = new Words();
 
+        }
+
+        private void NewTextBox_Changed(object sender)
+        {
+            readLetters();
+            if (checkBoard())
+            {
+                Application.DoEvents();
+                doFind(); //no point waiting, we have all the letters
+            }
+        }
+
+        private void NewTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            TextBox thisTextBox = (TextBox)sender;
+            switch (e.KeyCode)
+            {
+                case Keys.Back:
+                case Keys.Left:
+                    if (thisTextBox.Text.Length == 0)
+                    {
+                        lettersGrid.SelectNextControl(thisTextBox, false, true, false, true);
+                    }
+                    break;
+                case Keys.Right:
+                    lettersGrid.SelectNextControl(thisTextBox, true, true, false, true);
+                    break;
+            }
         }
 
         private void NewTextBox_Enter(object sender, EventArgs e)
@@ -124,6 +157,29 @@ namespace WordFinder
                     } else {
                         letters[r, c] = ' ';
                     }
+                    switch (letterControls[c,r].Modifier)
+                    {
+                        case CustomTextBox.ScoreModifier.DL:
+                            letterMultipliers[r, c] = 2;
+                            wordMultipliers[r, c] = 1;
+                            break;
+                        case CustomTextBox.ScoreModifier.TL:
+                            letterMultipliers[r, c] = 3;
+                            wordMultipliers[r, c] = 1;
+                            break;
+                        case CustomTextBox.ScoreModifier.DW:
+                            letterMultipliers[r, c] = 1;
+                            wordMultipliers[r, c] = 2;
+                            break;
+                        case CustomTextBox.ScoreModifier.TW:
+                            letterMultipliers[r, c] = 1;
+                            wordMultipliers[r, c] = 3;
+                            break;
+                        case CustomTextBox.ScoreModifier.None:
+                            letterMultipliers[r, c] = 1;
+                            wordMultipliers[r, c] = 1;
+                            break;
+                    }
                 }
             }
         }
@@ -154,7 +210,7 @@ namespace WordFinder
             }
 
         }
-      
+
         private void btnFind_Click(object sender, EventArgs e)
         {
 
@@ -173,19 +229,38 @@ namespace WordFinder
             ClearLinePath();
 
             FoundWords = new List<Word>();
-            FoundWordsDict = new Dictionary<String, bool>(); 
+            FoundWordsDict = new Dictionary<String, bool>();
             findWords();
 
+            populateResultsList();
+        }
+        private void populateResultsList()
+        {
             lstResults.Items.Clear();
 
             //Sort words longest to shortest. Todo: Take into account letter values and allow setting of board bonuses.
-            FoundWords.Sort();
-            FoundWords.Reverse();
 
-            foreach (Word word in FoundWords)
+            if (cbkSortbyScore.Checked)
             {
-                lstResults.Items.Add(word.Text);
+                FoundWords.Sort(new ScoredWordComparer(letters,letterMultipliers,wordMultipliers));
+                FoundWords.Reverse();
+                lstResults.FormattingEnabled = true;
+                foreach (Word word in FoundWords)
+                {
+                    lstResults.Items.Add(word.Text + "  (" + word.Score.ToString()+")");
+                }
+
+            } 
+            else {
+                FoundWords.Sort(new WordLengthComparer());
+                FoundWords.Reverse();
+
+                foreach (Word word in FoundWords)
+                {
+                    lstResults.Items.Add(word.Text);
+                }
             }
+            
         }
         private bool checkBoard()
         {
@@ -256,19 +331,23 @@ namespace WordFinder
             {
                 int newRow = r + dir.RowOffset;
                 int newCol = c + dir.ColOffset;
-                if (newRow>=0 && newCol>=0 && newRow < gridSize && newCol < gridSize && !hist.Contains(newRow,newCol))
+                if (newRow >= 0 && newCol >= 0 && newRow < gridSize && newCol < gridSize && !hist.Contains(newRow, newCol))
                 {
                     findWords(newRow, newCol, hist, prefix);
                 }
             }
             hist.Pop();
         }
- 
+
         private void lstResults_SelectedIndexChanged(object sender, EventArgs e)
         {
             ClearLetterColours();
             string word = (string)lstResults.SelectedItem;
-            foreach (Word foundWord  in FoundWords)
+            if (!string.IsNullOrEmpty(word))
+            {
+                word = word.Split(' ')[0];
+            }
+            foreach (Word foundWord in FoundWords)
             {
                 if (word.Equals(foundWord.Text))
                 {
@@ -302,7 +381,7 @@ namespace WordFinder
                 Point centre = new Point(topLeft.X + letterControl.Width / 2, topLeft.Y + letterControl.Height / 2);
                 linePath.Add(centre);
             }
-            
+
             letterControls[path.GetList()[0].col, path.GetList()[0].row].BackColor = Color.Red;
 
             lettersGrid.Refresh(); //cause repaint
@@ -315,6 +394,7 @@ namespace WordFinder
                 for (int c = 0; c < gridSize; c++)
                 {
                     letterControls[r, c].Text = "";
+                    letterControls[r, c].Modifier = CustomTextBox.ScoreModifier.None; 
                 }
             }
             lstResults.Items.Clear();
@@ -328,103 +408,20 @@ namespace WordFinder
         }
         private void lettersGrid_Paint(object sender, PaintEventArgs e)
         {
-            if (linePath!=null && linePath.Count>1)
+            if (linePath != null && linePath.Count > 1)
             {
-                for(int i=0;i<linePath.Count-1;i++)
+                for (int i = 0; i < linePath.Count - 1; i++)
                 {
-                    e.Graphics.DrawLine(new Pen(Color.Black,3), linePath[i],linePath[i+1]);
+                    e.Graphics.DrawLine(new Pen(Color.Black, 3), linePath[i], linePath[i + 1]);
                 }
             }
         }
-    }
-
-    class HistoryItem
-    {
-        public int row { get; set; }
-        public int col { get; set; }
-        public HistoryItem(int row, int col)
+        
+        private void cbkSortbyScore_CheckedChanged(object sender, EventArgs e)
         {
-            this.row = row;
-            this.col = col;
-        }
-    }
-    class History
-    {
-        private List<HistoryItem> histList;
-        public History()
-        {
-            histList = new List<HistoryItem>();
-        }
-        public void Push(int row, int col)
-        {
-            histList.Add(new HistoryItem(row, col));
-        }
-        public HistoryItem Pop()
-        {
-            if (histList != null && histList.Count>0)
-            {
-                int lastIndex = histList.Count - 1;
-                HistoryItem item = histList[lastIndex];
-                histList.RemoveAt(lastIndex);
-           
-            return item;
-            }
-            return null;
-        }
-        public bool Contains(int row, int col)
-        {
-            foreach (HistoryItem item in histList)
-            {
-                if (item.row == row && item.col == col)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        public int Count {
-            get
-            {
-                return histList.Count();
-            }
-        }
-        public List<HistoryItem> GetList()
-        {
-            return histList;
-        }
-        public History Copy()
-        {
-            History newHist = new History();
-            foreach (HistoryItem item in GetList())
-            {
-                newHist.Push(item.row, item.col);
-            }
-            return newHist;
+            populateResultsList();
         }
     }
 
-    class Direction {
-        public int RowOffset { get; set; }
-        public int ColOffset { get; set; }
-        public Direction(int rowOffset, int colOffset)
-        {
-            this.RowOffset = rowOffset;
-            this.ColOffset = colOffset;
-        }
-    }
-    class Word : IComparable 
-    {
-        public string Text { get; set; }
-        public History Path { get; set; }
-        public Word(string Text,History Path)
-        {
-            this.Text = Text;
-            this.Path = Path;
-        }
 
-        public int CompareTo(object obj)
-        {
-            return Text.Length.CompareTo(((Word)obj).Text.Length);
-        }
-    }
 }
