@@ -93,13 +93,14 @@
             this.btnFind.TabIndex = 3;
             this.btnFind.Text = "Find ->";
             this.btnFind.UseVisualStyleBackColor = true;
+            this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
             // 
             // btnClear
             // 
             this.btnClear.Location = new System.Drawing.Point(13, 257);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
-            this.btnClear.TabIndex = 3;
+            this.btnClear.TabIndex = 4;
             this.btnClear.Text = "Clear X";
             this.btnClear.UseVisualStyleBackColor = true;
             // 
@@ -118,7 +119,7 @@
             this.lstResults.Location = new System.Drawing.Point(291, 71);
             this.lstResults.Name = "lstResults";
             this.lstResults.Size = new System.Drawing.Size(401, 212);
-            this.lstResults.TabIndex = 4;
+            this.lstResults.TabIndex = 5;
             // 
             // Form1
             // 
