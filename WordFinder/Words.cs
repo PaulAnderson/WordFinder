@@ -1,49 +1,51 @@
 using System;
 using System.Collections.Generic;
 
-public class Words
+namespace WordFinder
 {
-    private  List<String> wordList { get; set; }
-    private Dictionary<String,bool> wordsDict { get; set; }
-    //todo: change to use a search trie if too slow
-
-    public Words()
+    public class Words
     {
-        wordList = new List<String>();
-        wordsDict = new Dictionary<String, bool> ();
-    }
+        private List<String> wordList { get; set; }
+        private Dictionary<String, bool> wordsDict { get; set; }
+        private SearchTree STree;
+        //todo: change to use a search trie if too slow
 
-    public void AddWord(String word)
-    {
-        word = word.ToUpper();
-        wordList.Add(word);
-        if (!wordsDict.ContainsKey(word))
-        { 
-            wordsDict.Add(word, true);
+        public Words()
+        {
+            wordList = new List<String>();
+            wordsDict = new Dictionary<String, bool>();
+            STree = new SearchTree(); //todo we can use the key to hold the value of the word
         }
-    }
 
-    public bool isWordPrefixInList(string prefix)
-    {
-       foreach ( string w in wordList) {
-            if (w.StartsWith(prefix,StringComparison.InvariantCultureIgnoreCase))
+        public void AddWord(String word)
+        {
+            word = word.ToUpper();
+            wordList.Add(word);
+            if (!wordsDict.ContainsKey(word))
             {
-                return true; 
+                wordsDict.Add(word, true);
             }
+            STree.addString(1, word);
         }
-        return false;
-    }
 
-    public bool isWordInList(string word)
-    {
-        return wordsDict.ContainsKey(word);
-        //foreach (string w in wordList)
-        //{
-        //    if (w.Equals(word,StringComparison.InvariantCultureIgnoreCase))
-        //    {
-        //        return true;
-        //    }
-        //}
-        //return false;
+        public bool isWordPrefixInList(string prefix)
+        {
+            return STree.findPrefix(prefix);
+        }
+
+        public bool isWordInList(string word)
+        {
+            return (STree.findString(word)>-1);
+
+            //return wordsDict.ContainsKey(word);
+            //foreach (string w in wordList)
+            //{
+            //    if (w.Equals(word,StringComparison.InvariantCultureIgnoreCase))
+            //    {
+            //        return true;
+            //    }
+            //}
+            //return false;
+        }
     }
 }

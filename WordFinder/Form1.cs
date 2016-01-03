@@ -15,14 +15,15 @@ namespace WordFinder
 
     public partial class Form1 : Form
     {
-        const int minWordLength = 8;
+        const int minWordLength = 5;
         const int maxWordLength = 8;
         const int gridSize = 4;
         const string dictionaryFile = "ospd.txt";
         private char[,] letters;
         private TextBox[,] letterControls;
         private Words dictWords;
-        private List<string> FoundWords;
+        private List<Word> FoundWords;
+        private Dictionary<String,bool> FoundWordsDict; //use for fast lookups to avoid duplicates
         private List<Direction> Directions;
 
         public Form1()
@@ -45,8 +46,10 @@ namespace WordFinder
                     lettersGrid.Controls.Add(newTextBox, c, r);
                     newTextBox.Dock = DockStyle.Fill;
                     newTextBox.MaxLength = 1;
+                    newTextBox.TextAlign = HorizontalAlignment.Center;
                     newTextBox.TextChanged += NewTextBox_TextChanged;
                     newTextBox.Enter += NewTextBox_Enter;
+
                 }
             }
 
@@ -102,6 +105,11 @@ namespace WordFinder
             {
                 inChangeEvent = false;
             }
+            readLetters();
+            if (checkBoard()) {
+                Application.DoEvents();
+                doFind(); //no point waiting, we have all the letters
+            }
         }
 
         private void readLetters()
@@ -149,7 +157,6 @@ namespace WordFinder
       
         private void btnFind_Click(object sender, EventArgs e)
         {
-            FoundWords = new List<string>();
 
             readLetters();
 
@@ -158,16 +165,27 @@ namespace WordFinder
                 MessageBox.Show("Board not complete. You must enter a letter in every square to proceed.");
                 return;
             }
+            doFind();
+        }
 
+        private void doFind()
+        {
+            ClearLinePath();
+
+            FoundWords = new List<Word>();
+            FoundWordsDict = new Dictionary<String, bool>(); 
             findWords();
 
             lstResults.Items.Clear();
 
-            foreach (string word in FoundWords)
-            {
-                lstResults.Items.Add(word);
-            }
+            //Sort words longest to shortest. Todo: Take into account letter values and allow setting of board bonuses.
+            FoundWords.Sort();
+            FoundWords.Reverse();
 
+            foreach (Word word in FoundWords)
+            {
+                lstResults.Items.Add(word.Text);
+            }
         }
         private bool checkBoard()
         {
@@ -198,14 +216,32 @@ namespace WordFinder
             //Add to history trail and word
 
             hist.Push(r, c);
-            prefix += letters[r, c];
+            if (letters[r, c] == 'Q')
+            {
+                prefix += "QU";
+            }
+            else
+            {
+                prefix += letters[r, c];
+            }
 
             //Debug.Print(prefix);
+
+            if (!dictWords.isWordPrefixInList(prefix))
+            {
+                //prefix not in dictionary, no point continuing this way
+                hist.Pop();
+                return;
+            }
 
             //check if the current path is a valid word
             if (prefix.Length >= minWordLength && dictWords.isWordInList(prefix))
             {
-                FoundWords.Add(prefix);
+                if (!FoundWordsDict.ContainsKey(prefix))
+                {
+                    FoundWords.Add(new Word(prefix, hist.Copy()));
+                    FoundWordsDict.Add(prefix, true);
+                }
             }
 
             //stop recursion if we are at max length
@@ -227,7 +263,79 @@ namespace WordFinder
             }
             hist.Pop();
         }
+ 
+        private void lstResults_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ClearLetterColours();
+            string word = (string)lstResults.SelectedItem;
+            foreach (Word foundWord  in FoundWords)
+            {
+                if (word.Equals(foundWord.Text))
+                {
+                    ShowPath(foundWord.Path);
+                }
+            }
+        }
+        private void ClearLetterColours()
+        {
+            for (int r = 0; r < gridSize; r++)
+            {
+                for (int c = 0; c < gridSize; c++)
+                {
+                    letterControls[r, c].BackColor = Color.White;
+                }
+            }
+        }
+        private List<Point> linePath;
+        private void ShowPath(History path)
+        {
+            ClearLinePath();
+            foreach (HistoryItem pathStop in path.GetList())
+            {
+                Control letterControl = letterControls[pathStop.col, pathStop.row];
 
+                //Highlight control
+                letterControl.BackColor = Color.Orange;
+
+                //Add control location to a list of points to be painted as a line.
+                Point topLeft = letterControl.Location;
+                Point centre = new Point(topLeft.X + letterControl.Width / 2, topLeft.Y + letterControl.Height / 2);
+                linePath.Add(centre);
+            }
+            
+            letterControls[path.GetList()[0].col, path.GetList()[0].row].BackColor = Color.Red;
+
+            lettersGrid.Refresh(); //cause repaint
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            for (int r = 0; r < gridSize; r++)
+            {
+                for (int c = 0; c < gridSize; c++)
+                {
+                    letterControls[r, c].Text = "";
+                }
+            }
+            lstResults.Items.Clear();
+            ClearLinePath();
+            letterControls[0, 0].Focus();
+        }
+        private void ClearLinePath()
+        {
+            linePath = new List<Point>();
+            lettersGrid.Refresh();
+        }
+        private void lettersGrid_Paint(object sender, PaintEventArgs e)
+        {
+            if (linePath!=null && linePath.Count>1)
+            {
+                for(int i=0;i<linePath.Count-1;i++)
+                {
+                    e.Graphics.DrawLine(new Pen(Color.Black,3), linePath[i],linePath[i+1]);
+                }
+            }
+        }
     }
 
     class HistoryItem
@@ -280,7 +388,19 @@ namespace WordFinder
                 return histList.Count();
             }
         }
-
+        public List<HistoryItem> GetList()
+        {
+            return histList;
+        }
+        public History Copy()
+        {
+            History newHist = new History();
+            foreach (HistoryItem item in GetList())
+            {
+                newHist.Push(item.row, item.col);
+            }
+            return newHist;
+        }
     }
 
     class Direction {
@@ -290,6 +410,21 @@ namespace WordFinder
         {
             this.RowOffset = rowOffset;
             this.ColOffset = colOffset;
+        }
+    }
+    class Word : IComparable 
+    {
+        public string Text { get; set; }
+        public History Path { get; set; }
+        public Word(string Text,History Path)
+        {
+            this.Text = Text;
+            this.Path = Path;
+        }
+
+        public int CompareTo(object obj)
+        {
+            return Text.Length.CompareTo(((Word)obj).Text.Length);
         }
     }
 }
