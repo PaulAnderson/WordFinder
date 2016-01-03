@@ -67,31 +67,33 @@ class ScoredWordComparer : IComparer<Word>
                 case 'L':
                 case 'N':
                 case 'D':
+                case 'U':
                     letterValue = 2;
                     break;
                 case 'H':
-                case 'M':
                 case 'Y':
+                case 'G':
                     letterValue = 3;
                     break;
                 case 'B':
                 case 'C':
                 case 'F':
-                case 'V':
+                case 'M':
                 case 'W':
                 case 'P': //'B F V W P'
                     letterValue = 4;
                     break;
                 case 'K':
+                case 'V':
                     letterValue = 5;
                     break;
-                case 'J':
                 case 'X':
                     letterValue = 8;
                     break;
+                case 'J':
                 case 'Q':
                 case 'Z':
-                    letterValue = 8;
+                    letterValue = 10;
                     break;
                 default:
                     letterValue = 1;
