@@ -13,14 +13,7 @@ class Word
     }
 
 }
-class WordLengthComparer : IComparer<Word>
-{
-    public int Compare(Word x, Word y)
-    {
-        return x.Text.Length.CompareTo(y.Text.Length);
-    }
-}
-class ScoredWordComparer : IComparer<Word>
+class WordScorer
 {
     //Scoring:
     //5 Letters: +3
@@ -41,13 +34,13 @@ class ScoredWordComparer : IComparer<Word>
     private int[,] letterMultipliers;
     private int[,] wordMultipliers;
 
-    public ScoredWordComparer(char[,] letters, int[,] letterMultipliers, int[,] wordMultipliers)
+    public WordScorer(char[,] letters, int[,] letterMultipliers, int[,] wordMultipliers)
     {
         this.letters = letters;
         this.letterMultipliers = letterMultipliers;
         this.wordMultipliers = wordMultipliers;
     }
-    private int getWordScore(Word word)
+    public int getWordScore(Word word)
     {
         int letterTotal = 0;
         int wordMultiplier = 1;
@@ -81,7 +74,7 @@ class ScoredWordComparer : IComparer<Word>
             }
             letterTotal += (letterValue * letterMultiplier);
         }
-               
+
         return letterTotal * wordMultiplier + getLengthBonus(word.Text.Length); //Word Length bonus applied after multipliers
     }
     private int getLetterValue(char letter)
@@ -126,7 +119,7 @@ class ScoredWordComparer : IComparer<Word>
         }
         return letterValue;
     }
-    private  int getLengthBonus(int WordLength)
+    private int getLengthBonus(int WordLength)
     {
         switch (WordLength)
         {
@@ -151,11 +144,38 @@ class ScoredWordComparer : IComparer<Word>
         }
         return 0;
     }
+    public void SetWordScores(List<Word> words)
+    {
+        foreach (Word word in words)
+        {
+            word.Score = getWordScore(word);
+        }
+    }
+}
+class WordLengthComparer : IComparer<Word>
+{
     public int Compare(Word x, Word y)
     {
-        x.Score = getWordScore(x);
-        y.Score = getWordScore(y);
+        return x.Text.Length.CompareTo(y.Text.Length);
+    }
+}
+/// <summary>
+/// Compares word based  on word score. Must use wordscored on words first.
+/// </summary>
+class ScoredWordComparer : IComparer<Word>
+{
+    public int Compare(Word x, Word y)
+    {
         return x.Score.CompareTo(y.Score);
     }
 }
-
+/// <summary>
+/// Compares words based on path taken (compares path historyItems), so words starting on the same tile are grouped together
+/// </summary>
+class WordPathComparer : IComparer<Word>
+{
+    public int Compare(Word x, Word y)
+    {
+        return x.Path.CompareTo(y.Path);
+    }
+}

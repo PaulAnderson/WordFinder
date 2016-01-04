@@ -15,8 +15,8 @@ namespace WordFinder
 
     public partial class Form1 : Form
     {
-        const int minWordLength = 4;
-        const int maxWordLength = 11;
+        const int minWordLength = 3;
+        const int maxWordLength = 15;
         const int gridSize = 4;
         const string dictionaryFile = "ospd.txt";
         private char[,] letters;
@@ -77,12 +77,7 @@ namespace WordFinder
 
         private void NewTextBox_Changed(object sender)
         {
-            readLetters();
-            if (checkBoard())
-            {
-                Application.DoEvents();
-                doFind(); //no point waiting, we have all the letters
-            }
+            doFindIfReady();
         }
 
         private void NewTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -140,13 +135,17 @@ namespace WordFinder
             {
                 inChangeEvent = false;
             }
+            doFindIfReady();
+        }
+        private void doFindIfReady()
+        {
             readLetters();
-            if (checkBoard()) {
+            if (checkBoard())
+            {
                 Application.DoEvents();
                 doFind(); //no point waiting, we have all the letters
             }
         }
-
         private void readLetters()
         {
             usingMandatoryTiles = false;
@@ -248,10 +247,12 @@ namespace WordFinder
             lstResults.Items.Clear();
 
             //Sort words longest to shortest. Todo: Take into account letter values and allow setting of board bonuses.
-
+            WordScorer scorer = new WordScorer(letters, letterMultipliers, wordMultipliers);
+            scorer.SetWordScores(FoundWords);
+           
             if (cbkSortbyScore.Checked)
             {
-                FoundWords.Sort(new ScoredWordComparer(letters,letterMultipliers,wordMultipliers));
+                FoundWords.Sort(new ScoredWordComparer());
                 FoundWords.Reverse();
                 lstResults.FormattingEnabled = true;
                 foreach (Word word in FoundWords)
@@ -259,8 +260,32 @@ namespace WordFinder
                     lstResults.Items.Add(word.Text + "  (" + word.Score.ToString()+")");
                 }
 
-            } 
-            else {
+            }
+            if (cbkSortbyPath.Checked)
+            {
+                //For path sort, we remove low-scoring words
+                int minScore=0;
+                if (Int32.TryParse(txtMinScore.Text, out minScore))
+                {
+                    //Got the min. score, now remove too-low words
+                    for(int i = FoundWords.Count - 1; i >= 0; i--)
+                    {
+                        if (FoundWords[i].Score< minScore)
+                        {
+                            FoundWords.RemoveAt(i);
+                        }
+                    }
+                }
+
+                FoundWords.Sort(new WordPathComparer());
+                lstResults.FormattingEnabled = true;
+                foreach (Word word in FoundWords)
+                {
+                    lstResults.Items.Add(word.Text + "  (" + word.Score.ToString() + ")");
+                }
+            }
+            if (cbkSortbyLength.Checked)
+            {
                 FoundWords.Sort(new WordLengthComparer());
                 FoundWords.Reverse();
 
@@ -367,6 +392,8 @@ namespace WordFinder
                     ShowPath(foundWord.Path);
                 }
             }
+            //Set timer length based on word length
+            timerAutoAdvance.Interval = 500 + (word.Length * 150); //300ms to find the word, then 100ms for each letter
         }
         private void ClearLetterColours()
         {
@@ -474,6 +501,47 @@ namespace WordFinder
         private void lblNoSpecial_Click(object sender, EventArgs e)
         {
             SetLetterModifiers(CustomTextBox.ScoreModifier.None);
+        }
+
+        private void timerAutoAdvance_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                lstResults.SelectedIndex += 1;
+            } catch (Exception)
+            {
+                //do nothing
+            }
+        }
+
+        private void btnAutoRunGo_Click(object sender, EventArgs e)
+        {
+            timerAutoAdvance.Enabled = true;
+        }
+
+        private void btnAutoRunStop_Click(object sender, EventArgs e)
+        {
+            timerAutoAdvance.Enabled = false;
+        }
+
+        private void cbkSortbyScore_CheckedChanged_1(object sender, EventArgs e)
+        {
+            doFindIfReady();
+        }
+
+        private void cbkSortbyPath_CheckedChanged(object sender, EventArgs e)
+        {
+            doFindIfReady();
+        }
+
+        private void cbkSortbyLength_CheckedChanged(object sender, EventArgs e)
+        {
+            doFindIfReady();
+        }
+
+        private void txtMinScore_TextChanged(object sender, EventArgs e)
+        {
+            doFindIfReady();
         }
     }
 

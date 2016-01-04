@@ -17828,6 +17828,7 @@ denary
 denature
 denazify
 dendrite
+dendrites
 dendroid
 dendron
 dendrons
@@ -39716,7 +39717,7 @@ lounge
 lounged
 lounger
 loungers
-lounges
+loungesxdd
 lounging
 loungy
 loup
@@ -44793,6 +44794,7 @@ nerdy
 nereid
 nereides
 nereids
+nerdiest
 nereis
 neritic
 nerol
@@ -46970,6 +46972,7 @@ ormers
 ormolu
 ormolus
 ornament
+ornaments
 ornate
 ornately
 ornerier
@@ -52085,6 +52088,7 @@ postural
 posture
 postured
 posturer
+posturers
 postures
 postwar
 posy
@@ -52420,6 +52424,8 @@ predator
 predawn
 predawns
 predial
+predicate
+predicates
 predict
 predicts
 predive
@@ -56616,6 +56622,8 @@ repasses
 repast
 repasted
 repasts
+repatch
+repatched
 repave
 repaved
 repaves
@@ -57339,6 +57347,7 @@ revelers
 reveling
 revelled
 reveller
+revellers
 revelry
 revels
 revenant
@@ -63730,6 +63739,7 @@ smoothy
 smote
 smother
 smothers
+smothered
 smothery
 smoulder
 smudge
@@ -71604,6 +71614,7 @@ trend
 trended
 trendier
 trendies
+trendiest
 trendily
 trending
 trends
@@ -73905,6 +73916,7 @@ unseeing
 unseemly
 unseen
 unseized
+unsell
 unsent
 unserved
 unset

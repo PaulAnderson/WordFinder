@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-class HistoryItem
+class HistoryItem : IComparable 
 {
     public int row { get; set; }
     public int col { get; set; }
@@ -10,8 +10,20 @@ class HistoryItem
         this.row = row;
         this.col = col;
     }
+    protected int compareVal
+    {
+        get
+        {
+            return row + col * 4;
+        }
+    }
+    public int CompareTo(object obj)
+    {
+        HistoryItem other = (HistoryItem)obj;
+        return compareVal.CompareTo(other.compareVal);
+    }
 }
-class History
+class History : IComparable
 {
     private List<HistoryItem> histList;
     public History()
@@ -78,6 +90,32 @@ class History
             }
         }
         return false;
+    }
+
+    public int CompareTo(object obj)
+    {
+        History other = (History)obj;
+        int itemCompareResult = 0;
+        for (int i=0;i<Math.Min(histList.Count,other.GetList().Count);i++)
+        {
+            itemCompareResult = histList[i].CompareTo(other.GetList()[i]);
+            if (itemCompareResult != 0) return itemCompareResult;
+        }
+
+        //Equal up to common point, now return difference based on length
+        if (histList.Count == other.GetList().Count)
+        {
+            return 0;//shouldnt really get here?
+        }
+        if (histList.Count > other.GetList().Count)
+        {
+            return -1; //longer words first
+        }
+        if (histList.Count < other.GetList().Count)
+        {
+            return 1;
+        }
+        return 0;
     }
 }
 
