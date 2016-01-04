@@ -65,5 +65,19 @@ class History
         }
         return newHist;
     }
+    public bool Overlaps(List<HistoryItem> otherHistory)
+    {
+        for (int i=0;i<histList.Count;i++)
+        {
+            for (int j = 0; j < otherHistory.Count; j++)
+            {
+                if (histList[i].row==otherHistory[j].row && histList[i].col == otherHistory[j].col)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
 

@@ -23,7 +23,8 @@ class CustomTextBox : TextBox {
 		DL,
 		TL,
 		DW,
-		TW
+		TW,
+        MI //Must include
 
     }
 	public CustomTextBox()
@@ -72,6 +73,9 @@ class CustomTextBox : TextBox {
                 Modifier = ScoreModifier.TW;
                 break;
             case ScoreModifier.TW:
+                Modifier = ScoreModifier.MI;
+                break;
+            case ScoreModifier.MI:
                 Modifier = ScoreModifier.None;
                 break;
         }
@@ -91,7 +95,7 @@ class CustomTextBox : TextBox {
                 break;
             case ScoreModifier.TL:
                 subCtrl.Text = "TL";
-                subCtrl.BackColor = Color.Blue;
+                subCtrl.BackColor = Color.LightGreen;
                 subCtrl.Visible = true;
                 break;
             case ScoreModifier.DW:
@@ -101,7 +105,12 @@ class CustomTextBox : TextBox {
                 break;
             case ScoreModifier.TW:
                 subCtrl.Text = "TW";
-                subCtrl.BackColor = Color.Red;
+                subCtrl.BackColor = Color.Orange ;
+                subCtrl.Visible = true;
+                break;
+            case ScoreModifier.MI:
+                subCtrl.Text = "**";
+                subCtrl.BackColor = Color.DarkRed ;
                 subCtrl.Visible = true;
                 break;
             case ScoreModifier.None:

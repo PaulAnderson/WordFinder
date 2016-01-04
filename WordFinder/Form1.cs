@@ -27,6 +27,8 @@ namespace WordFinder
         private List<Word> FoundWords;
         private Dictionary<String, bool> FoundWordsDict; //use for fast lookups to avoid duplicates
         private List<Direction> Directions;
+        private bool usingMandatoryTiles = false;
+        private List<HistoryItem> mandatoryLocations;
 
         public Form1()
         {
@@ -147,6 +149,9 @@ namespace WordFinder
 
         private void readLetters()
         {
+            usingMandatoryTiles = false;
+            mandatoryLocations = new List<HistoryItem>();
+
             for (int r = 0; r < gridSize; r++)
             {
                 for (int c = 0; c < gridSize; c++)
@@ -174,6 +179,10 @@ namespace WordFinder
                         case CustomTextBox.ScoreModifier.TW:
                             letterMultipliers[r, c] = 1;
                             wordMultipliers[r, c] = 3;
+                            break;
+                        case CustomTextBox.ScoreModifier.MI:
+                            usingMandatoryTiles = true;
+                            mandatoryLocations.Add(new HistoryItem(r, c));
                             break;
                         case CustomTextBox.ScoreModifier.None:
                             letterMultipliers[r, c] = 1;
@@ -309,13 +318,17 @@ namespace WordFinder
                 return;
             }
 
-            //check if the current path is a valid word
-            if (prefix.Length >= minWordLength && dictWords.isWordInList(prefix))
-            {
-                if (!FoundWordsDict.ContainsKey(prefix))
+            //only return words passing through one of the mandatory tiles, if enabled.
+            if (!usingMandatoryTiles || hist.Overlaps(mandatoryLocations)) { 
+
+                //check if the current path is a valid word
+                if (prefix.Length >= minWordLength && dictWords.isWordInList(prefix))
                 {
-                    FoundWords.Add(new Word(prefix, hist.Copy()));
-                    FoundWordsDict.Add(prefix, true);
+                    if (!FoundWordsDict.ContainsKey(prefix))
+                    {
+                        FoundWords.Add(new Word(prefix, hist.Copy()));
+                        FoundWordsDict.Add(prefix, true);
+                    }
                 }
             }
 
@@ -420,6 +433,47 @@ namespace WordFinder
         private void cbkSortbyScore_CheckedChanged(object sender, EventArgs e)
         {
             populateResultsList();
+        }
+
+
+        private void SetLetterModifiers(CustomTextBox.ScoreModifier modifier)
+        {
+            for (int r = 0; r < gridSize; r++)
+            {
+                for (int c = 0; c < gridSize; c++)
+                {
+                    letterControls[r, c].Modifier = modifier;
+                }
+            }
+        }
+        private void lblDL_Click(object sender, EventArgs e)
+        {
+            SetLetterModifiers(CustomTextBox.ScoreModifier.DL);
+        }
+
+        private void lblTL_Click(object sender, EventArgs e)
+        {
+            SetLetterModifiers(CustomTextBox.ScoreModifier.TL);
+        }
+
+        private void lblDW_Click(object sender, EventArgs e)
+        {
+            SetLetterModifiers(CustomTextBox.ScoreModifier.DW);
+        }
+
+        private void lblTW_Click(object sender, EventArgs e)
+        {
+            SetLetterModifiers(CustomTextBox.ScoreModifier.TW);
+        }
+
+        private void lblMI_Click(object sender, EventArgs e)
+        {
+            SetLetterModifiers(CustomTextBox.ScoreModifier.MI);
+        }
+
+        private void lblNoSpecial_Click(object sender, EventArgs e)
+        {
+            SetLetterModifiers(CustomTextBox.ScoreModifier.None);
         }
     }
 

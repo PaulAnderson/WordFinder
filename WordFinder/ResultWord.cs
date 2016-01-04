@@ -62,43 +62,7 @@ class ScoredWordComparer : IComparer<Word>
             letter = letters[item.row, item.col];
 
             //get letter value
-            switch (letter)
-            {
-                case 'L':
-                case 'N':
-                case 'D':
-                case 'U':
-                    letterValue = 2;
-                    break;
-                case 'H':
-                case 'Y':
-                case 'G':
-                    letterValue = 3;
-                    break;
-                case 'B':
-                case 'C':
-                case 'F':
-                case 'M':
-                case 'W':
-                case 'P': //'B F V W P'
-                    letterValue = 4;
-                    break;
-                case 'K':
-                case 'V':
-                    letterValue = 5;
-                    break;
-                case 'X':
-                    letterValue = 8;
-                    break;
-                case 'J':
-                case 'Q':
-                case 'Z':
-                    letterValue = 10;
-                    break;
-                default:
-                    letterValue = 1;
-                    break;
-            }
+            letterValue = getLetterValue(letter);
 
             //Get letter multiplier if any
             if (letterMultipliers[item.row, item.col] > 1)
@@ -117,23 +81,65 @@ class ScoredWordComparer : IComparer<Word>
             }
             letterTotal += (letterValue * letterMultiplier);
         }
-        switch (word.Text.Length)
+               
+        return letterTotal * wordMultiplier + getLengthBonus(word.Text.Length); //Word Length bonus applied after multipliers
+    }
+    private int getLetterValue(char letter)
+    {
+        int letterValue = 1;
+        switch (letter)
+        {
+            case 'L':
+            case 'N':
+            case 'D':
+            case 'U':
+                letterValue = 2;
+                break;
+            case 'H':
+            case 'Y':
+            case 'G':
+                letterValue = 3;
+                break;
+            case 'B':
+            case 'C':
+            case 'F':
+            case 'M':
+            case 'W':
+            case 'P': //'B F V W P'
+                letterValue = 4;
+                break;
+            case 'K':
+            case 'V':
+                letterValue = 5;
+                break;
+            case 'X':
+                letterValue = 8;
+                break;
+            case 'J':
+            case 'Q':
+            case 'Z':
+                letterValue = 10;
+                break;
+            default:
+                letterValue = 1;
+                break;
+        }
+        return letterValue;
+    }
+    private  int getLengthBonus(int WordLength)
+    {
+        switch (WordLength)
         {
             case 5:
-                letterTotal += 3;
-                break;
+                return 3;
             case 6:
-                letterTotal += 6;
-                break;
+                return 6;
             case 7:
-                letterTotal += 10;
-                break;
+                return 10;
             case 8:
-                letterTotal += 15;
-                break;
+                return 15;
             case 9:
-                letterTotal += 20;
-                break;
+                return 20;
             case 10:
             case 11:
             case 12:
@@ -141,11 +147,9 @@ class ScoredWordComparer : IComparer<Word>
             case 14:
             case 15:
             case 16:
-                letterTotal += 25;
-                break;
-
+                return 25;
         }
-        return letterTotal * wordMultiplier;
+        return 0;
     }
     public int Compare(Word x, Word y)
     {

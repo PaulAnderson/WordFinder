@@ -36,6 +36,13 @@
             this.lblResults = new System.Windows.Forms.Label();
             this.lstResults = new System.Windows.Forms.ListBox();
             this.cbkSortbyScore = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblDL = new System.Windows.Forms.Label();
+            this.lblTL = new System.Windows.Forms.Label();
+            this.lblDW = new System.Windows.Forms.Label();
+            this.lblTW = new System.Windows.Forms.Label();
+            this.lblMI = new System.Windows.Forms.Label();
+            this.lblNoSpecial = new System.Windows.Forms.Label();
             this.pnlLetters.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -136,11 +143,114 @@
             this.cbkSortbyScore.UseVisualStyleBackColor = true;
             this.cbkSortbyScore.CheckedChanged += new System.EventHandler(this.cbkSortbyScore_CheckedChanged);
             // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.label2.Location = new System.Drawing.Point(4, 236);
+            this.label2.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.label2.Name = "label2";
+            this.label2.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.label2.Size = new System.Drawing.Size(199, 16);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "ALL";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblDL
+            // 
+            this.lblDL.BackColor = System.Drawing.Color.Blue;
+            this.lblDL.ForeColor = System.Drawing.Color.White;
+            this.lblDL.Location = new System.Drawing.Point(4, 253);
+            this.lblDL.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.lblDL.Name = "lblDL";
+            this.lblDL.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.lblDL.Size = new System.Drawing.Size(27, 16);
+            this.lblDL.TabIndex = 7;
+            this.lblDL.Text = "DL";
+            this.lblDL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDL.Click += new System.EventHandler(this.lblDL_Click);
+            // 
+            // lblTL
+            // 
+            this.lblTL.BackColor = System.Drawing.Color.LightGreen;
+            this.lblTL.ForeColor = System.Drawing.Color.White;
+            this.lblTL.Location = new System.Drawing.Point(37, 253);
+            this.lblTL.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.lblTL.Name = "lblTL";
+            this.lblTL.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.lblTL.Size = new System.Drawing.Size(27, 16);
+            this.lblTL.TabIndex = 7;
+            this.lblTL.Text = "TL";
+            this.lblTL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTL.Click += new System.EventHandler(this.lblTL_Click);
+            // 
+            // lblDW
+            // 
+            this.lblDW.BackColor = System.Drawing.Color.Red;
+            this.lblDW.ForeColor = System.Drawing.Color.White;
+            this.lblDW.Location = new System.Drawing.Point(70, 253);
+            this.lblDW.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.lblDW.Name = "lblDW";
+            this.lblDW.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.lblDW.Size = new System.Drawing.Size(27, 16);
+            this.lblDW.TabIndex = 7;
+            this.lblDW.Text = "DW";
+            this.lblDW.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblDW.Click += new System.EventHandler(this.lblDW_Click);
+            // 
+            // lblTW
+            // 
+            this.lblTW.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.lblTW.ForeColor = System.Drawing.Color.White;
+            this.lblTW.Location = new System.Drawing.Point(103, 253);
+            this.lblTW.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.lblTW.Name = "lblTW";
+            this.lblTW.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.lblTW.Size = new System.Drawing.Size(27, 16);
+            this.lblTW.TabIndex = 7;
+            this.lblTW.Text = "TW";
+            this.lblTW.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTW.Click += new System.EventHandler(this.lblTW_Click);
+            // 
+            // lblMI
+            // 
+            this.lblMI.BackColor = System.Drawing.Color.DarkRed;
+            this.lblMI.ForeColor = System.Drawing.Color.White;
+            this.lblMI.Location = new System.Drawing.Point(136, 253);
+            this.lblMI.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.lblMI.Name = "lblMI";
+            this.lblMI.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.lblMI.Size = new System.Drawing.Size(27, 16);
+            this.lblMI.TabIndex = 7;
+            this.lblMI.Text = "**";
+            this.lblMI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMI.Click += new System.EventHandler(this.lblMI_Click);
+            // 
+            // lblNoSpecial
+            // 
+            this.lblNoSpecial.BackColor = System.Drawing.Color.Black;
+            this.lblNoSpecial.ForeColor = System.Drawing.Color.White;
+            this.lblNoSpecial.Location = new System.Drawing.Point(169, 253);
+            this.lblNoSpecial.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.lblNoSpecial.Name = "lblNoSpecial";
+            this.lblNoSpecial.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.lblNoSpecial.Size = new System.Drawing.Size(27, 16);
+            this.lblNoSpecial.TabIndex = 7;
+            this.lblNoSpecial.Text = "--";
+            this.lblNoSpecial.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblNoSpecial.Click += new System.EventHandler(this.lblNoSpecial_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(698, 836);
+            this.Controls.Add(this.lblNoSpecial);
+            this.Controls.Add(this.lblMI);
+            this.Controls.Add(this.lblTW);
+            this.Controls.Add(this.lblDW);
+            this.Controls.Add(this.lblTL);
+            this.Controls.Add(this.lblDL);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.cbkSortbyScore);
             this.Controls.Add(this.lstResults);
             this.Controls.Add(this.btnClear);
@@ -166,6 +276,13 @@
         private System.Windows.Forms.Label lblResults;
         private System.Windows.Forms.ListBox lstResults;
         private System.Windows.Forms.CheckBox cbkSortbyScore;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblDL;
+        private System.Windows.Forms.Label lblTL;
+        private System.Windows.Forms.Label lblDW;
+        private System.Windows.Forms.Label lblTW;
+        private System.Windows.Forms.Label lblMI;
+        private System.Windows.Forms.Label lblNoSpecial;
     }
 }
 
