@@ -176,7 +176,7 @@ class ScoredWordComparer : IComparer<Word>
         if (result == 0)
         {
             //if words are the same score, sort by length
-            result = x.Text.Length.CompareTo(y.Text.Length);
+            result = y.Text.Length.CompareTo(x.Text.Length);
             if (result == 0)
             {
                 //words have same score and are the same length, sort alphabetically
