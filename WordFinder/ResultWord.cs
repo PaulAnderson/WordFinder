@@ -156,7 +156,13 @@ class WordLengthComparer : IComparer<Word>
 {
     public int Compare(Word x, Word y)
     {
-        return x.Text.Length.CompareTo(y.Text.Length);
+        int result = x.Text.Length.CompareTo(y.Text.Length);
+        if (result==0)
+        {
+            //if words are the same length, sort alphabetically
+            result = string.Compare(y.Text, x.Text, StringComparison.InvariantCultureIgnoreCase);
+        }
+        return result;
     }
 }
 /// <summary>
@@ -166,7 +172,18 @@ class ScoredWordComparer : IComparer<Word>
 {
     public int Compare(Word x, Word y)
     {
-        return x.Score.CompareTo(y.Score);
+        int result =  x.Score.CompareTo(y.Score);
+        if (result == 0)
+        {
+            //if words are the same score, sort by length
+            result = x.Text.Length.CompareTo(y.Text.Length);
+            if (result == 0)
+            {
+                //words have same score and are the same length, sort alphabetically
+                result = string.Compare(y.Text, x.Text, StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
+            return result;
     }
 }
 /// <summary>

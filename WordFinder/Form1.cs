@@ -15,15 +15,22 @@ namespace WordFinder
 
     public partial class Form1 : Form
     {
+        const string DICTFILE_OSPD = "\\..\\..\\ospd.txt";
+        const string DICTFILE_ENABLE = "\\..\\..\\enable1.txt";
+        const string DICTFILE_UKACD = "\\..\\..\\UK%20Advanced%20Cryptics%20Dictionary.txt";
+
         const int minWordLength = 2;
         const int maxWordLength = 15;
         const int gridSize = 4;
-        const string dictionaryFile = "ospd.txt";
+
         private char[,] letters;
         private int[,] letterMultipliers;
         private int[,] wordMultipliers;
         private CustomTextBox[,] letterControls;
+
+        private Dictionary<string, Words> dictionaries;
         private Words dictWords;
+
         private List<Word> FoundWords;
         private Dictionary<String, bool> FoundWordsDict; //use for fast lookups to avoid duplicates
         private List<Direction> Directions;
@@ -71,9 +78,7 @@ namespace WordFinder
             Directions.Add(new Direction(-1, 0));   //W
             Directions.Add(new Direction(-1, -1)); //NW
 
-            dictWords = new Words();
-
-        }
+           }
 
         private void NewTextBox_Changed(object sender)
         {
@@ -195,28 +200,47 @@ namespace WordFinder
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadDictionary();
+            LoadDictionary(DICTFILE_OSPD);
         }
 
-        private void LoadDictionary()
+        private void LoadDictionary(string fileName)
         {
-            FileStream fs = File.Open(Application.StartupPath + "\\..\\..\\ospd.txt", FileMode.Open);
-            try
+            if (dictionaries== null)
             {
-                StreamReader sr = new StreamReader(fs);
+                dictionaries=new Dictionary<string, Words> ();
+            }
+            if (dictionaries.ContainsKey(fileName))
+            {
+                //swap out the dictionary for the pre-loaded one if available
+                dictWords = dictionaries[fileName];
+            } else
+            {
+                //not already loaded, load it now and store for later.
+                dictWords = new Words();
+                dictionaries.Add(fileName,dictWords);
 
-                while (!sr.EndOfStream)
+                //Read words from file
+                FileStream fs = File.Open(Application.StartupPath + fileName, FileMode.Open);
+                try
                 {
-                    var line = sr.ReadLine();
-                    if (line.Length >= minWordLength && line.Length <= maxWordLength)
+                    StreamReader sr = new StreamReader(fs);
+                    bool inWordSection = false;
+                    while (!sr.EndOfStream)
                     {
-                        dictWords.AddWord(line);
+                        var line = sr.ReadLine();
+                        if (line.Equals("aa", StringComparison.InvariantCultureIgnoreCase)) inWordSection = true; //look for first word, ignore headers etc
+                        if (inWordSection) { 
+                            if (line.Length >= minWordLength && line.Length <= maxWordLength)
+                            {
+                                dictWords.AddWord(line);
+                            }
+                        }
                     }
                 }
-            }
-            finally
-            {
-                fs.Close();
+                finally
+                {
+                    fs.Close();
+                }
             }
 
         }
@@ -472,7 +496,7 @@ namespace WordFinder
         
         private void cbkSortbyScore_CheckedChanged(object sender, EventArgs e)
         {
-            populateResultsList();
+            doFindIfReady();
         }
 
 
@@ -485,7 +509,7 @@ namespace WordFinder
                     letterControls[r, c].Modifier = modifier;
                 }
             }
-            populateResultsList();
+            doFindIfReady();
         }
         private void lblDL_Click(object sender, EventArgs e)
         {
@@ -555,6 +579,25 @@ namespace WordFinder
 
         private void txtMinScore_TextChanged(object sender, EventArgs e)
         {
+            doFindIfReady();
+        }
+
+        private void chkDictOSPD_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadDictionary(DICTFILE_OSPD);
+            doFindIfReady();
+
+        }
+
+        private void chkDictEnable_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadDictionary(DICTFILE_ENABLE);
+            doFindIfReady();
+        }
+
+        private void chkDictUKACD_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadDictionary(DICTFILE_UKACD);
             doFindIfReady();
         }
     }

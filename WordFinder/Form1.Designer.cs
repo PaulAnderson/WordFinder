@@ -32,7 +32,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pnlLetters = new System.Windows.Forms.Panel();
             this.lettersGrid = new System.Windows.Forms.TableLayoutPanel();
-            this.btnFind = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblResults = new System.Windows.Forms.Label();
             this.lstResults = new System.Windows.Forms.ListBox();
@@ -60,7 +59,15 @@
             this.label10 = new System.Windows.Forms.Label();
             this.lblWords = new System.Windows.Forms.Label();
             this.lblMaxPossibleScore = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.chkDictOSPD = new System.Windows.Forms.RadioButton();
+            this.chkDictEnable = new System.Windows.Forms.RadioButton();
+            this.chkDictUKACD = new System.Windows.Forms.RadioButton();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.pnlLetters.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -101,24 +108,13 @@
             this.lettersGrid.TabIndex = 3;
             this.lettersGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.lettersGrid_Paint);
             // 
-            // btnFind
-            // 
-            this.btnFind.Location = new System.Drawing.Point(128, 210);
-            this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(75, 23);
-            this.btnFind.TabIndex = 3;
-            this.btnFind.Text = "Find ->";
-            this.btnFind.UseVisualStyleBackColor = true;
-            this.btnFind.Visible = false;
-            this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
-            // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(7, 210);
+            this.btnClear.Location = new System.Drawing.Point(7, 261);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.Size = new System.Drawing.Size(139, 23);
             this.btnClear.TabIndex = 4;
-            this.btnClear.Text = "Clear X";
+            this.btnClear.Text = "Clear Letters and Bonuses";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
@@ -149,7 +145,7 @@
             // label2
             // 
             this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.label2.Location = new System.Drawing.Point(4, 269);
+            this.label2.Location = new System.Drawing.Point(4, 208);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.label2.Name = "label2";
             this.label2.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -162,7 +158,7 @@
             // 
             this.lblDL.BackColor = System.Drawing.Color.Blue;
             this.lblDL.ForeColor = System.Drawing.Color.White;
-            this.lblDL.Location = new System.Drawing.Point(4, 286);
+            this.lblDL.Location = new System.Drawing.Point(4, 225);
             this.lblDL.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.lblDL.Name = "lblDL";
             this.lblDL.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -176,7 +172,7 @@
             // 
             this.lblTL.BackColor = System.Drawing.Color.LightGreen;
             this.lblTL.ForeColor = System.Drawing.Color.White;
-            this.lblTL.Location = new System.Drawing.Point(37, 286);
+            this.lblTL.Location = new System.Drawing.Point(37, 225);
             this.lblTL.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.lblTL.Name = "lblTL";
             this.lblTL.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -190,7 +186,7 @@
             // 
             this.lblDW.BackColor = System.Drawing.Color.Red;
             this.lblDW.ForeColor = System.Drawing.Color.White;
-            this.lblDW.Location = new System.Drawing.Point(70, 286);
+            this.lblDW.Location = new System.Drawing.Point(70, 225);
             this.lblDW.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.lblDW.Name = "lblDW";
             this.lblDW.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -204,7 +200,7 @@
             // 
             this.lblTW.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.lblTW.ForeColor = System.Drawing.Color.White;
-            this.lblTW.Location = new System.Drawing.Point(103, 286);
+            this.lblTW.Location = new System.Drawing.Point(103, 225);
             this.lblTW.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.lblTW.Name = "lblTW";
             this.lblTW.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -218,7 +214,7 @@
             // 
             this.lblMI.BackColor = System.Drawing.Color.DarkRed;
             this.lblMI.ForeColor = System.Drawing.Color.White;
-            this.lblMI.Location = new System.Drawing.Point(136, 286);
+            this.lblMI.Location = new System.Drawing.Point(136, 225);
             this.lblMI.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.lblMI.Name = "lblMI";
             this.lblMI.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -232,7 +228,7 @@
             // 
             this.lblNoSpecial.BackColor = System.Drawing.Color.Black;
             this.lblNoSpecial.ForeColor = System.Drawing.Color.White;
-            this.lblNoSpecial.Location = new System.Drawing.Point(169, 286);
+            this.lblNoSpecial.Location = new System.Drawing.Point(169, 225);
             this.lblNoSpecial.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.lblNoSpecial.Name = "lblNoSpecial";
             this.lblNoSpecial.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -245,7 +241,7 @@
             // label3
             // 
             this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.label3.Location = new System.Drawing.Point(4, 303);
+            this.label3.Location = new System.Drawing.Point(4, 242);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.label3.Name = "label3";
             this.label3.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -262,7 +258,7 @@
             // label4
             // 
             this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.label4.Location = new System.Drawing.Point(4, 332);
+            this.label4.Location = new System.Drawing.Point(4, 288);
             this.label4.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.label4.Name = "label4";
             this.label4.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -274,7 +270,7 @@
             // label5
             // 
             this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.label5.Location = new System.Drawing.Point(4, 349);
+            this.label5.Location = new System.Drawing.Point(4, 305);
             this.label5.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.label5.Name = "label5";
             this.label5.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -286,7 +282,7 @@
             // label6
             // 
             this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.label6.Location = new System.Drawing.Point(4, 366);
+            this.label6.Location = new System.Drawing.Point(4, 322);
             this.label6.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.label6.Name = "label6";
             this.label6.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -298,7 +294,7 @@
             // label7
             // 
             this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.label7.Location = new System.Drawing.Point(4, 400);
+            this.label7.Location = new System.Drawing.Point(4, 339);
             this.label7.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
             this.label7.Name = "label7";
             this.label7.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
@@ -310,7 +306,7 @@
             // btnAutoRunGo
             // 
             this.btnAutoRunGo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnAutoRunGo.Location = new System.Drawing.Point(7, 419);
+            this.btnAutoRunGo.Location = new System.Drawing.Point(7, 358);
             this.btnAutoRunGo.Name = "btnAutoRunGo";
             this.btnAutoRunGo.Size = new System.Drawing.Size(75, 23);
             this.btnAutoRunGo.TabIndex = 8;
@@ -321,7 +317,7 @@
             // btnAutoRunStop
             // 
             this.btnAutoRunStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnAutoRunStop.Location = new System.Drawing.Point(88, 419);
+            this.btnAutoRunStop.Location = new System.Drawing.Point(88, 358);
             this.btnAutoRunStop.Name = "btnAutoRunStop";
             this.btnAutoRunStop.Size = new System.Drawing.Size(75, 23);
             this.btnAutoRunStop.TabIndex = 8;
@@ -333,7 +329,7 @@
             // 
             this.cbkSortbyScore.AutoSize = true;
             this.cbkSortbyScore.Checked = true;
-            this.cbkSortbyScore.Location = new System.Drawing.Point(7, 457);
+            this.cbkSortbyScore.Location = new System.Drawing.Point(7, 404);
             this.cbkSortbyScore.Name = "cbkSortbyScore";
             this.cbkSortbyScore.Size = new System.Drawing.Size(53, 17);
             this.cbkSortbyScore.TabIndex = 9;
@@ -345,7 +341,7 @@
             // cbkSortbyPath
             // 
             this.cbkSortbyPath.AutoSize = true;
-            this.cbkSortbyPath.Location = new System.Drawing.Point(7, 480);
+            this.cbkSortbyPath.Location = new System.Drawing.Point(66, 404);
             this.cbkSortbyPath.Name = "cbkSortbyPath";
             this.cbkSortbyPath.Size = new System.Drawing.Size(47, 17);
             this.cbkSortbyPath.TabIndex = 9;
@@ -356,7 +352,7 @@
             // cbkSortbyLength
             // 
             this.cbkSortbyLength.AutoSize = true;
-            this.cbkSortbyLength.Location = new System.Drawing.Point(7, 503);
+            this.cbkSortbyLength.Location = new System.Drawing.Point(119, 404);
             this.cbkSortbyLength.Name = "cbkSortbyLength";
             this.cbkSortbyLength.Size = new System.Drawing.Size(58, 17);
             this.cbkSortbyLength.TabIndex = 9;
@@ -367,7 +363,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(85, 482);
+            this.label8.Location = new System.Drawing.Point(6, 430);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(61, 13);
             this.label8.TabIndex = 10;
@@ -375,7 +371,7 @@
             // 
             // txtMinScore
             // 
-            this.txtMinScore.Location = new System.Drawing.Point(152, 479);
+            this.txtMinScore.Location = new System.Drawing.Point(73, 427);
             this.txtMinScore.Name = "txtMinScore";
             this.txtMinScore.Size = new System.Drawing.Size(51, 20);
             this.txtMinScore.TabIndex = 11;
@@ -385,16 +381,16 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 549);
+            this.label9.Location = new System.Drawing.Point(6, 525);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 13);
+            this.label9.Size = new System.Drawing.Size(74, 13);
             this.label9.TabIndex = 10;
-            this.label9.Text = "Words:";
+            this.label9.Text = "Words Found:";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(12, 574);
+            this.label10.Location = new System.Drawing.Point(6, 550);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(106, 13);
             this.label10.TabIndex = 10;
@@ -403,7 +399,7 @@
             // lblWords
             // 
             this.lblWords.AutoSize = true;
-            this.lblWords.Location = new System.Drawing.Point(125, 549);
+            this.lblWords.Location = new System.Drawing.Point(119, 525);
             this.lblWords.Name = "lblWords";
             this.lblWords.Size = new System.Drawing.Size(13, 13);
             this.lblWords.TabIndex = 10;
@@ -412,17 +408,102 @@
             // lblMaxPossibleScore
             // 
             this.lblMaxPossibleScore.AutoSize = true;
-            this.lblMaxPossibleScore.Location = new System.Drawing.Point(125, 574);
+            this.lblMaxPossibleScore.Location = new System.Drawing.Point(119, 550);
             this.lblMaxPossibleScore.Name = "lblMaxPossibleScore";
             this.lblMaxPossibleScore.Size = new System.Drawing.Size(13, 13);
             this.lblMaxPossibleScore.TabIndex = 10;
             this.lblMaxPossibleScore.Text = "0";
+            // 
+            // label11
+            // 
+            this.label11.BackColor = System.Drawing.Color.Blue;
+            this.label11.ForeColor = System.Drawing.Color.Yellow;
+            this.label11.Location = new System.Drawing.Point(4, 451);
+            this.label11.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.label11.Name = "label11";
+            this.label11.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.label11.Size = new System.Drawing.Size(199, 16);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "DICTIONARY";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.chkDictOSPD);
+            this.panel1.Controls.Add(this.chkDictUKACD);
+            this.panel1.Controls.Add(this.chkDictEnable);
+            this.panel1.Location = new System.Drawing.Point(7, 471);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(196, 25);
+            this.panel1.TabIndex = 12;
+            // 
+            // chkDictOSPD
+            // 
+            this.chkDictOSPD.AutoSize = true;
+            this.chkDictOSPD.Checked = true;
+            this.chkDictOSPD.Location = new System.Drawing.Point(8, 3);
+            this.chkDictOSPD.Name = "chkDictOSPD";
+            this.chkDictOSPD.Size = new System.Drawing.Size(55, 17);
+            this.chkDictOSPD.TabIndex = 9;
+            this.chkDictOSPD.TabStop = true;
+            this.chkDictOSPD.Text = "OSPD";
+            this.chkDictOSPD.UseVisualStyleBackColor = true;
+            this.chkDictOSPD.CheckedChanged += new System.EventHandler(this.chkDictOSPD_CheckedChanged);
+            // 
+            // chkDictEnable
+            // 
+            this.chkDictEnable.AutoSize = true;
+            this.chkDictEnable.Location = new System.Drawing.Point(64, 3);
+            this.chkDictEnable.Name = "chkDictEnable";
+            this.chkDictEnable.Size = new System.Drawing.Size(67, 17);
+            this.chkDictEnable.TabIndex = 9;
+            this.chkDictEnable.Text = "ENABLE";
+            this.chkDictEnable.UseVisualStyleBackColor = true;
+            this.chkDictEnable.CheckedChanged += new System.EventHandler(this.chkDictEnable_CheckedChanged);
+            // 
+            // chkDictUKACD
+            // 
+            this.chkDictUKACD.AutoSize = true;
+            this.chkDictUKACD.Location = new System.Drawing.Point(137, 3);
+            this.chkDictUKACD.Name = "chkDictUKACD";
+            this.chkDictUKACD.Size = new System.Drawing.Size(62, 17);
+            this.chkDictUKACD.TabIndex = 9;
+            this.chkDictUKACD.Text = "UKACD";
+            this.chkDictUKACD.UseVisualStyleBackColor = true;
+            this.chkDictUKACD.CheckedChanged += new System.EventHandler(this.chkDictUKACD_CheckedChanged);
+            // 
+            // label12
+            // 
+            this.label12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.label12.ForeColor = System.Drawing.Color.Yellow;
+            this.label12.Location = new System.Drawing.Point(4, 385);
+            this.label12.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.label12.Name = "label12";
+            this.label12.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.label12.Size = new System.Drawing.Size(199, 16);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "SORT ORDER";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label13
+            // 
+            this.label13.BackColor = System.Drawing.Color.Blue;
+            this.label13.ForeColor = System.Drawing.Color.Yellow;
+            this.label13.Location = new System.Drawing.Point(4, 500);
+            this.label13.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.label13.Name = "label13";
+            this.label13.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.label13.Size = new System.Drawing.Size(199, 16);
+            this.label13.TabIndex = 7;
+            this.label13.Text = "STATS";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(698, 836);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.txtMinScore);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.lblMaxPossibleScore);
@@ -443,12 +524,14 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lstResults);
             this.Controls.Add(this.btnClear);
-            this.Controls.Add(this.btnFind);
             this.Controls.Add(this.pnlLetters);
             this.Controls.Add(this.lblResults);
             this.Controls.Add(this.label1);
@@ -456,6 +539,8 @@
             this.Text = "Word Finder";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.pnlLetters.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -465,7 +550,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlLetters;
         private System.Windows.Forms.TableLayoutPanel lettersGrid;
-        private System.Windows.Forms.Button btnFind;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label lblResults;
         private System.Windows.Forms.ListBox lstResults;
@@ -493,6 +577,13 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lblWords;
         private System.Windows.Forms.Label lblMaxPossibleScore;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton chkDictOSPD;
+        private System.Windows.Forms.RadioButton chkDictEnable;
+        private System.Windows.Forms.RadioButton chkDictUKACD;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
     }
 }
 
