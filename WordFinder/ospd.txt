@@ -69245,6 +69245,8 @@ tel
 tela
 telae
 telamon
+telamone
+telamones
 tele
 telecast
 teledu

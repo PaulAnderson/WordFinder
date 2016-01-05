@@ -56,6 +56,10 @@
             this.cbkSortbyLength = new System.Windows.Forms.RadioButton();
             this.label8 = new System.Windows.Forms.Label();
             this.txtMinScore = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.lblWords = new System.Windows.Forms.Label();
+            this.lblMaxPossibleScore = new System.Windows.Forms.Label();
             this.pnlLetters.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -378,12 +382,52 @@
             this.txtMinScore.Text = "25";
             this.txtMinScore.TextChanged += new System.EventHandler(this.txtMinScore_TextChanged);
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 549);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 13);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Words:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 574);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(106, 13);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Max. Possible Score:";
+            // 
+            // lblWords
+            // 
+            this.lblWords.AutoSize = true;
+            this.lblWords.Location = new System.Drawing.Point(125, 549);
+            this.lblWords.Name = "lblWords";
+            this.lblWords.Size = new System.Drawing.Size(13, 13);
+            this.lblWords.TabIndex = 10;
+            this.lblWords.Text = "0";
+            // 
+            // lblMaxPossibleScore
+            // 
+            this.lblMaxPossibleScore.AutoSize = true;
+            this.lblMaxPossibleScore.Location = new System.Drawing.Point(125, 574);
+            this.lblMaxPossibleScore.Name = "lblMaxPossibleScore";
+            this.lblMaxPossibleScore.Size = new System.Drawing.Size(13, 13);
+            this.lblMaxPossibleScore.TabIndex = 10;
+            this.lblMaxPossibleScore.Text = "0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(698, 836);
             this.Controls.Add(this.txtMinScore);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.lblMaxPossibleScore);
+            this.Controls.Add(this.lblWords);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.cbkSortbyLength);
             this.Controls.Add(this.cbkSortbyPath);
@@ -445,6 +489,10 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtMinScore;
         private System.Windows.Forms.RadioButton cbkSortbyScore;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblWords;
+        private System.Windows.Forms.Label lblMaxPossibleScore;
     }
 }
 

@@ -15,7 +15,7 @@ namespace WordFinder
 
     public partial class Form1 : Form
     {
-        const int minWordLength = 3;
+        const int minWordLength = 2;
         const int maxWordLength = 15;
         const int gridSize = 4;
         const string dictionaryFile = "ospd.txt";
@@ -180,6 +180,8 @@ namespace WordFinder
                             wordMultipliers[r, c] = 3;
                             break;
                         case CustomTextBox.ScoreModifier.MI:
+                            letterMultipliers[r, c] = 1;
+                            wordMultipliers[r, c] = 1;
                             usingMandatoryTiles = true;
                             mandatoryLocations.Add(new HistoryItem(r, c));
                             break;
@@ -244,12 +246,23 @@ namespace WordFinder
         }
         private void populateResultsList()
         {
+            readLetters(); //re-read letters to take into account any changed bonuses
+
             lstResults.Items.Clear();
 
             //Sort words longest to shortest. Todo: Take into account letter values and allow setting of board bonuses.
             WordScorer scorer = new WordScorer(letters, letterMultipliers, wordMultipliers);
             scorer.SetWordScores(FoundWords);
-           
+
+            //Get no of words and total possible score if all found words played
+            int maxTotal = 0;
+            for (int i = 0; i < FoundWords.Count; i++)
+            {
+                maxTotal += FoundWords[i].Score;
+            }
+            lblMaxPossibleScore.Text = maxTotal.ToString();
+            lblWords.Text = FoundWords.Count.ToString();
+
             if (cbkSortbyScore.Checked)
             {
                 FoundWords.Sort(new ScoredWordComparer());
@@ -472,6 +485,7 @@ namespace WordFinder
                     letterControls[r, c].Modifier = modifier;
                 }
             }
+            populateResultsList();
         }
         private void lblDL_Click(object sender, EventArgs e)
         {
