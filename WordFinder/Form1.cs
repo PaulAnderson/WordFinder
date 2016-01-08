@@ -32,7 +32,7 @@ namespace WordFinder
         private Words dictWords;
 
         private List<Word> FoundWords;
-        private Dictionary<String, bool> FoundWordsDict; //use for fast lookups to avoid duplicates
+        private Dictionary<String, Word> FoundWordsDict; //use for fast lookups to avoid duplicates
         private List<Direction> Directions;
         private bool usingMandatoryTiles = false;
         private List<HistoryItem> mandatoryLocations;
@@ -263,7 +263,7 @@ namespace WordFinder
             ClearLinePath();
 
             FoundWords = new List<Word>();
-            FoundWordsDict = new Dictionary<String, bool>();
+            FoundWordsDict = new Dictionary<String, Word>();
             findWords();
 
             populateResultsList();
@@ -388,8 +388,21 @@ namespace WordFinder
                 {
                     if (!FoundWordsDict.ContainsKey(prefix))
                     {
-                        FoundWords.Add(new Word(prefix, hist.Copy()));
-                        FoundWordsDict.Add(prefix, true);
+                        Word newWord = new Word(prefix, hist.Copy());
+                        FoundWords.Add(newWord);
+                        FoundWordsDict.Add(prefix, newWord);
+                    }
+                    else {
+                        //found the same word a second time, check to see which one has a higher score, replace if new word has higher score
+                        WordScorer scorer = new WordScorer(letters, letterMultipliers, wordMultipliers);
+                        Word newWord = new Word(prefix, hist.Copy());
+                        int newWordPathScore = scorer.getWordScore(newWord);
+                        int oldWordPathScore = scorer.getWordScore(FoundWordsDict[prefix]);
+                        if (newWordPathScore> oldWordPathScore)
+                        {
+                            FoundWordsDict[prefix] = newWord;
+                            //todo: track alternate spellings
+                        }
                     }
                 }
             }

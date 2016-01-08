@@ -11,7 +11,11 @@ class Word
         this.Text = Text;
         this.Path = Path;
     }
-
+    public override string ToString()
+    {
+        return Text + ": " + Path.ToString();
+        //return base.ToString();
+    }
 }
 class WordScorer
 {

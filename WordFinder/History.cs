@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 class HistoryItem : IComparable 
 {
+    private String[] letters = { "A", "B", "C", "D" };
     public int row { get; set; }
     public int col { get; set; }
     public HistoryItem(int row, int col)
@@ -21,6 +23,11 @@ class HistoryItem : IComparable
     {
         HistoryItem other = (HistoryItem)obj;
         return compareVal.CompareTo(other.compareVal);
+    }
+    public override string ToString()
+    {
+        return letters[col] + row.ToString();
+        //return base.ToString();
     }
 }
 class History : IComparable
@@ -116,6 +123,16 @@ class History : IComparable
             return 1;
         }
         return 0;
+    }
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder(histList.Count*3);
+        for (int i=0;i<histList.Count;i++)
+        {
+            sb.Append(histList[i].ToString());
+        }
+        return sb.ToString();
+        //return base.ToString();
     }
 }
 
