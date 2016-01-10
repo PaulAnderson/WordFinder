@@ -42,9 +42,15 @@ class CustomTextBox : TextBox {
         subCtrl.Size = new Size(10, 20);
         subCtrl.Padding = new Padding(0);
         subCtrl.Margin = new Padding(0);
+        subCtrl.MouseDown += SubCtrl_MouseDown;
         Controls.Add(subCtrl);
     }
-   
+
+    private void SubCtrl_MouseDown(object sender, MouseEventArgs e)
+    {
+        OnMouseDown(e);
+    }
+
     protected override void OnMouseDown(MouseEventArgs e)
     {
         if ((e.Button & MouseButtons.Right) == MouseButtons.Right)
