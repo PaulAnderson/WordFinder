@@ -98,7 +98,108 @@ class History : IComparable
         }
         return false;
     }
+    public int DirectionChanges()
+    {
+        if (histList.Count < 3)
+        {
+            return 0;
+        } else
+        {
+            int changes = 0;
+            for (int i = 2; i < histList.Count; i++)
+            {
+                if (!GetDirection(histList[i - 2], histList[i - 1]).Equals(GetDirection(histList[i - 1], histList[i])))
+                {
+                    changes++;
+                }
+            }
+            return changes;
+        }
+    }
+    public int CrossOvers()
+    {
+        if (histList.Count < 4)
+        {
+            return 0;
+        }
+        else
+        {
+            int crosses=0;
+            List<Tuple<HistoryItem, HistoryItem>> Forwards = new List<Tuple<HistoryItem, HistoryItem>>();
+            List<Tuple<HistoryItem, HistoryItem>> Backs = new List<Tuple<HistoryItem, HistoryItem>>();
 
+            //Get all diagonals
+            for (int i = 1; i < histList.Count; i++)
+            {
+                if (GetDirection(histList[i - 1], histList[i]).IsForwardSlash())
+                {
+                    Forwards.Add(Tuple.Create(histList[i - 1], histList[i]));
+                }
+                if (GetDirection(histList[i - 1], histList[i]).IsBackSlash())
+                {
+                    Backs.Add(Tuple.Create(histList[i - 1], histList[i]));
+                }
+            }
+
+            //check which diagonals cross over
+            if (Forwards.Count>0 && Backs.Count>0)
+            {
+                for(int i=0;i<Forwards.Count;i++)
+                {
+                    for (int j=0;j<Backs.Count;j++)
+                    {
+                        if (IsCrossed(Forwards[i], Backs[j])) 
+                        {
+                          crosses++;
+                        }
+                    }
+                }
+            }
+            return crosses;
+        }
+    }
+    public static bool IsCrossed(Tuple<HistoryItem, HistoryItem> forward, Tuple<HistoryItem, HistoryItem> back)
+    {
+        //Back components
+        HistoryItem topLeft;
+        HistoryItem bottomRight;
+
+        //Forward Components
+        HistoryItem topRight;
+        HistoryItem bottomLeft;
+
+        if (back.Item1.row > back.Item2.row)
+        {
+            topLeft = back.Item2;
+            bottomRight = back.Item1;
+        }
+        else
+        {
+            topLeft = back.Item1;
+            bottomRight = back.Item2;
+        }
+        if (forward.Item1.row > forward.Item2.row)
+        {
+            topRight = forward.Item2;
+            bottomLeft = forward.Item1;
+        }
+        else
+        {
+            
+            topRight = forward.Item1;
+            bottomLeft = forward.Item2;
+        }
+
+        if (topLeft.row==topRight.row && topLeft.col+1==topRight.col)
+        {
+            return true;
+        }
+        return false;
+    }
+    public static Direction GetDirection(HistoryItem item1, HistoryItem item2)
+    {
+        return new Direction(item2.row - item1.row, item2.col - item1.col);
+    }
     public int CompareTo(object obj)
     {
         History other = (History)obj;

@@ -191,6 +191,38 @@ class ScoredWordComparer : IComparer<Word>
     }
 }
 /// <summary>
+/// Compares word based  on word score,divided by word complexity (no of letters, no of changes of direction) Must use wordscored on words first.
+/// </summary>
+class ScoredComplexWordComparer : IComparer<Word>
+{
+    private int GetAdjustedScore(Word x)
+    {
+        int newScore = x.Score * 10;
+        int dirChanges = x.Path.DirectionChanges();
+        int crossOvers = x.Path.CrossOvers();
+        if (dirChanges > 0) newScore -= (dirChanges*10);
+        if (crossOvers > 0) newScore -= (crossOvers*40);
+        return newScore;
+    }
+    public int Compare(Word x, Word y)
+    {
+        int xScore = GetAdjustedScore(x);
+        int yScore = GetAdjustedScore(y);
+        int result = (xScore.CompareTo(yScore));
+        //if (result == 0)
+        //{
+        //    //if words are the same score, sort by length
+        //    result = y.Text.Length.CompareTo(x.Text.Length);
+        //    if (result == 0)
+        //    {
+        //        //words have same score and are the same length, sort alphabetically
+        //        result = string.Compare(y.Text, x.Text, StringComparison.InvariantCultureIgnoreCase);
+        //    }
+        //}
+        return result;
+    }
+}
+/// <summary>
 /// Compares words based on path taken (compares path historyItems), so words starting on the same tile are grouped together
 /// </summary>
 class WordPathComparer : IComparer<Word>

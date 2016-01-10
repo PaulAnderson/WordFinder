@@ -15,10 +15,15 @@ namespace WordFinder
 
     public partial class Form1 : Form
     {
-        const string DICTFILE_OSPD = "\\..\\..\\ospd.txt";
-        const string DICTFILE_ENABLE = "\\..\\..\\enable1.txt";
-        const string DICTFILE_UKACD = "\\..\\..\\UK%20Advanced%20Cryptics%20Dictionary.txt";
-
+#if DEBUG 
+        const string DICTFILE_OSPD = "..\\..\\ospd.txt";
+        const string DICTFILE_ENABLE = "..\\..\\enable1.txt";
+        const string DICTFILE_UKACD = ".\\..\\UK%20Advanced%20Cryptics%20Dictionary.txt";
+#else
+        const string DICTFILE_OSPD = "ospd.txt";
+        const string DICTFILE_ENABLE = "enable1.txt";
+        const string DICTFILE_UKACD = "UK%20Advanced%20Cryptics%20Dictionary.txt";
+#endif 
         const int minWordLength = 2;
         const int maxWordLength = 15;
         const int gridSize = 4;
@@ -68,15 +73,7 @@ namespace WordFinder
             }
 
             //Set up directions
-            Directions = new List<Direction>();
-            Directions.Add(new Direction(0, -1));  //N
-            Directions.Add(new Direction(1, -1));  //NE
-            Directions.Add(new Direction(1, 0));   //E
-            Directions.Add(new Direction(1, 1));   //SE
-            Directions.Add(new Direction(0, 1));   //S
-            Directions.Add(new Direction(-1, 1));  //SW
-            Directions.Add(new Direction(-1, 0));   //W
-            Directions.Add(new Direction(-1, -1)); //NW
+            Directions = Direction.get8Directions();
 
            }
 
@@ -160,13 +157,13 @@ namespace WordFinder
             {
                 for (int c = 0; c < gridSize; c++)
                 {
-                    if (!string.IsNullOrWhiteSpace(letterControls[c, r].Text))
+                    if (!string.IsNullOrWhiteSpace(letterControls[r,c].Text))
                     {
-                        letters[r, c] = letterControls[c, r].Text.ToCharArray()[0];
+                        letters[r, c] = letterControls[r,c].Text.ToCharArray()[0];
                     } else {
                         letters[r, c] = ' ';
                     }
-                    switch (letterControls[c,r].Modifier)
+                    switch (letterControls[r,c].Modifier)
                     {
                         case CustomTextBox.ScoreModifier.DL:
                             letterMultipliers[r, c] = 2;
@@ -220,7 +217,7 @@ namespace WordFinder
                 dictionaries.Add(fileName,dictWords);
 
                 //Read words from file
-                FileStream fs = File.Open(Application.StartupPath + fileName, FileMode.Open);
+                FileStream fs = File.Open(Path.Combine(Application.StartupPath , fileName), FileMode.Open);
                 try
                 {
                     StreamReader sr = new StreamReader(fs);
@@ -295,6 +292,17 @@ namespace WordFinder
                 foreach (Word word in FoundWords)
                 {
                     lstResults.Items.Add(word.Text + "  (" + word.Score.ToString()+")");
+                }
+
+            }
+            if (cbkSortbyScoreComplexity.Checked)
+            {
+                FoundWords.Sort(new ScoredComplexWordComparer());
+                FoundWords.Reverse();
+                lstResults.FormattingEnabled = true;
+                foreach (Word word in FoundWords)
+                {
+                    lstResults.Items.Add(word.Text + "  (" + word.Score.ToString() + ")");
                 }
 
             }
@@ -440,6 +448,12 @@ namespace WordFinder
                 if (word.Equals(foundWord.Text))
                 {
                     ShowPath(foundWord.Path);
+
+                    //word stats
+                    lblCurrentWordLetters.Text = foundWord.Text.Length.ToString();
+                    lblCurrentWordDirChanges.Text = foundWord.Path.DirectionChanges().ToString();
+                    lblCurrentWordCrossovers.Text = foundWord.Path.CrossOvers().ToString();
+
                 }
             }
             //Set timer length based on word length
@@ -461,7 +475,7 @@ namespace WordFinder
             ClearLinePath();
             foreach (HistoryItem pathStop in path.GetList())
             {
-                Control letterControl = letterControls[pathStop.col, pathStop.row];
+                Control letterControl = letterControls[ pathStop.row, pathStop.col];
 
                 //Highlight control
                 letterControl.BackColor = Color.Orange;
@@ -472,7 +486,7 @@ namespace WordFinder
                 linePath.Add(centre);
             }
 
-            letterControls[path.GetList()[0].col, path.GetList()[0].row].BackColor = Color.Red;
+            letterControls[path.GetList()[0].row, path.GetList()[0].col].BackColor = Color.Red;
 
             lettersGrid.Refresh(); //cause repaint
         }
