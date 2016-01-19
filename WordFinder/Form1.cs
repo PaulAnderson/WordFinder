@@ -409,10 +409,12 @@ namespace WordFinder
                         Word newWord = new Word(prefix, hist.Copy());
                         int newWordPathScore = scorer.getWordScore(newWord);
                         int oldWordPathScore = scorer.getWordScore(FoundWordsDict[prefix]);
-                        if (newWordPathScore> oldWordPathScore)
+                        if (newWordPathScore > oldWordPathScore)
                         {
-                            FoundWordsDict[prefix] = newWord;
-                            //todo: track alternate spellings
+                            FoundWordsDict[prefix].AlternatePaths.Add(FoundWordsDict[prefix].Path);  
+                            FoundWordsDict[prefix].Path = newWord.Path;
+                        } else {
+                            FoundWordsDict[prefix].AlternatePaths.Add(newWord.Path);  
                         }
                     }
                 }

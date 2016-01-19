@@ -5,11 +5,13 @@ class Word
 {
     public string Text { get; set; }
     public History Path { get; set; }
+    public List<History> AlternatePaths { get; set; }
     public int Score { get; set; } //populated when using score comparitor
     public Word(string Text, History Path)
     {
         this.Text = Text;
         this.Path = Path;
+        this.AlternatePaths = new List<History>();
     }
     public override string ToString()
     {
