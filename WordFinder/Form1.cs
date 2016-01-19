@@ -41,7 +41,7 @@ namespace WordFinder
         private List<Direction> Directions;
         private bool usingMandatoryTiles = false;
         private List<HistoryItem> mandatoryLocations;
-
+        private DateTime boardLastChangedTime ;
         public Form1()
         {
             InitializeComponent();
@@ -80,6 +80,7 @@ namespace WordFinder
         private void NewTextBox_Changed(object sender)
         {
             doFindIfReady();
+            
         }
 
         private void NewTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -110,6 +111,8 @@ namespace WordFinder
         private void NewTextBox_TextChanged(object sender, EventArgs e)
         {
             if (inChangeEvent) return;
+
+            boardLastChangedTime = DateTime.Now;
 
             try
             {
@@ -493,6 +496,14 @@ namespace WordFinder
 
         private void btnClear_Click(object sender, EventArgs e)
         {
+            if (boardLastChangedTime.AddMinutes(2)>DateTime.Now)
+            {
+                if (MessageBox.Show(this,"You changed the board less than 2 minutes ago. Are you sure you want to clear it?","Clear board?",MessageBoxButtons.YesNo,MessageBoxIcon.Asterisk,MessageBoxDefaultButton.Button2 )==DialogResult.No)
+                {
+                    return;
+                }
+            }
+
             for (int r = 0; r < gridSize; r++)
             {
                 for (int c = 0; c < gridSize; c++)
