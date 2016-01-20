@@ -69,18 +69,19 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.cbkSortbyScoreComplexity = new System.Windows.Forms.RadioButton();
             this.panel5 = new System.Windows.Forms.Panel();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.cbkSortbyScoreComplexity = new System.Windows.Forms.RadioButton();
             this.SelectedWordPanel = new System.Windows.Forms.Panel();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.lblCurrentWordLetters = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.lblCurrentWordCrossovers = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.lblCurrentWordDirChanges = new System.Windows.Forms.Label();
-            this.lblCurrentWordCrossovers = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.pnlLetters.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -163,6 +164,7 @@
             this.lstResults.Size = new System.Drawing.Size(477, 796);
             this.lstResults.TabIndex = 5;
             this.lstResults.SelectedIndexChanged += new System.EventHandler(this.lstResults_SelectedIndexChanged);
+            this.lstResults.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lstResults_KeyPress);
             // 
             // label2
             // 
@@ -355,6 +357,7 @@
             this.cbkSortbyScore.Name = "cbkSortbyScore";
             this.cbkSortbyScore.Size = new System.Drawing.Size(53, 17);
             this.cbkSortbyScore.TabIndex = 9;
+            this.cbkSortbyScore.TabStop = true;
             this.cbkSortbyScore.Text = "Score";
             this.cbkSortbyScore.UseVisualStyleBackColor = true;
             this.cbkSortbyScore.CheckedChanged += new System.EventHandler(this.cbkSortbyScore_CheckedChanged_1);
@@ -461,12 +464,10 @@
             // chkDictOSPD
             // 
             this.chkDictOSPD.AutoSize = true;
-            this.chkDictOSPD.Checked = true;
-            this.chkDictOSPD.Location = new System.Drawing.Point(8, 3);
+            this.chkDictOSPD.Location = new System.Drawing.Point(77, 3);
             this.chkDictOSPD.Name = "chkDictOSPD";
             this.chkDictOSPD.Size = new System.Drawing.Size(55, 17);
-            this.chkDictOSPD.TabIndex = 9;
-            this.chkDictOSPD.TabStop = true;
+            this.chkDictOSPD.TabIndex = 1;
             this.chkDictOSPD.Text = "OSPD";
             this.chkDictOSPD.UseVisualStyleBackColor = true;
             this.chkDictOSPD.CheckedChanged += new System.EventHandler(this.chkDictOSPD_CheckedChanged);
@@ -477,7 +478,7 @@
             this.chkDictUKACD.Location = new System.Drawing.Point(137, 3);
             this.chkDictUKACD.Name = "chkDictUKACD";
             this.chkDictUKACD.Size = new System.Drawing.Size(62, 17);
-            this.chkDictUKACD.TabIndex = 9;
+            this.chkDictUKACD.TabIndex = 2;
             this.chkDictUKACD.Text = "UKACD";
             this.chkDictUKACD.UseVisualStyleBackColor = true;
             this.chkDictUKACD.CheckedChanged += new System.EventHandler(this.chkDictUKACD_CheckedChanged);
@@ -485,10 +486,12 @@
             // chkDictEnable
             // 
             this.chkDictEnable.AutoSize = true;
-            this.chkDictEnable.Location = new System.Drawing.Point(64, 3);
+            this.chkDictEnable.Checked = true;
+            this.chkDictEnable.Location = new System.Drawing.Point(4, 3);
             this.chkDictEnable.Name = "chkDictEnable";
             this.chkDictEnable.Size = new System.Drawing.Size(67, 17);
-            this.chkDictEnable.TabIndex = 9;
+            this.chkDictEnable.TabIndex = 0;
+            this.chkDictEnable.TabStop = true;
             this.chkDictEnable.Text = "ENABLE";
             this.chkDictEnable.UseVisualStyleBackColor = true;
             this.chkDictEnable.CheckedChanged += new System.EventHandler(this.chkDictEnable_CheckedChanged);
@@ -554,6 +557,17 @@
             this.panel4.Size = new System.Drawing.Size(200, 113);
             this.panel4.TabIndex = 15;
             // 
+            // cbkSortbyScoreComplexity
+            // 
+            this.cbkSortbyScoreComplexity.AutoSize = true;
+            this.cbkSortbyScoreComplexity.Location = new System.Drawing.Point(4, 43);
+            this.cbkSortbyScoreComplexity.Name = "cbkSortbyScoreComplexity";
+            this.cbkSortbyScoreComplexity.Size = new System.Drawing.Size(108, 17);
+            this.cbkSortbyScoreComplexity.TabIndex = 9;
+            this.cbkSortbyScoreComplexity.Text = "Score/Complexity";
+            this.cbkSortbyScoreComplexity.UseVisualStyleBackColor = true;
+            this.cbkSortbyScoreComplexity.CheckedChanged += new System.EventHandler(this.cbkSortbyScore_CheckedChanged_1);
+            // 
             // panel5
             // 
             this.panel5.Controls.Add(this.label2);
@@ -589,17 +603,6 @@
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(200, 45);
             this.panel7.TabIndex = 16;
-            // 
-            // cbkSortbyScoreComplexity
-            // 
-            this.cbkSortbyScoreComplexity.AutoSize = true;
-            this.cbkSortbyScoreComplexity.Location = new System.Drawing.Point(4, 43);
-            this.cbkSortbyScoreComplexity.Name = "cbkSortbyScoreComplexity";
-            this.cbkSortbyScoreComplexity.Size = new System.Drawing.Size(108, 17);
-            this.cbkSortbyScoreComplexity.TabIndex = 9;
-            this.cbkSortbyScoreComplexity.Text = "Score/Complexity";
-            this.cbkSortbyScoreComplexity.UseVisualStyleBackColor = true;
-            this.cbkSortbyScoreComplexity.CheckedChanged += new System.EventHandler(this.cbkSortbyScore_CheckedChanged_1);
             // 
             // SelectedWordPanel
             // 
@@ -646,6 +649,24 @@
             this.lblCurrentWordLetters.TabIndex = 10;
             this.lblCurrentWordLetters.Text = "0";
             // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(4, 52);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(65, 13);
+            this.label20.TabIndex = 10;
+            this.label20.Text = "Cross-overs:";
+            // 
+            // lblCurrentWordCrossovers
+            // 
+            this.lblCurrentWordCrossovers.AutoSize = true;
+            this.lblCurrentWordCrossovers.Location = new System.Drawing.Point(116, 52);
+            this.lblCurrentWordCrossovers.Name = "lblCurrentWordCrossovers";
+            this.lblCurrentWordCrossovers.Size = new System.Drawing.Size(13, 13);
+            this.lblCurrentWordCrossovers.TabIndex = 10;
+            this.lblCurrentWordCrossovers.Text = "0";
+            // 
             // label17
             // 
             this.label17.AutoSize = true;
@@ -664,23 +685,15 @@
             this.lblCurrentWordDirChanges.TabIndex = 10;
             this.lblCurrentWordDirChanges.Text = "0";
             // 
-            // lblCurrentWordCrossovers
+            // label16
             // 
-            this.lblCurrentWordCrossovers.AutoSize = true;
-            this.lblCurrentWordCrossovers.Location = new System.Drawing.Point(116, 52);
-            this.lblCurrentWordCrossovers.Name = "lblCurrentWordCrossovers";
-            this.lblCurrentWordCrossovers.Size = new System.Drawing.Size(13, 13);
-            this.lblCurrentWordCrossovers.TabIndex = 10;
-            this.lblCurrentWordCrossovers.Text = "0";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(4, 52);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(65, 13);
-            this.label20.TabIndex = 10;
-            this.label20.Text = "Cross-overs:";
+            this.label16.AutoSize = true;
+            this.label16.ForeColor = System.Drawing.Color.Green;
+            this.label16.Location = new System.Drawing.Point(209, 823);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(220, 13);
+            this.label16.TabIndex = 10;
+            this.label16.Text = "Press Space Bar to scroll current word to top.";
             // 
             // Form1
             // 
@@ -690,6 +703,7 @@
             this.Controls.Add(this.SelectedWordPanel);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel6);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
@@ -772,6 +786,7 @@
         private System.Windows.Forms.Label lblCurrentWordCrossovers;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label lblCurrentWordDirChanges;
+        private System.Windows.Forms.Label label16;
     }
 }
 

@@ -200,7 +200,7 @@ namespace WordFinder
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadDictionary(DICTFILE_OSPD);
+            loadSelectedDictionary();
         }
 
         private void LoadDictionary(string fileName)
@@ -442,6 +442,7 @@ namespace WordFinder
 
         private void lstResults_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
             ClearLetterColours();
             string word = (string)lstResults.SelectedItem;
             if (!string.IsNullOrEmpty(word))
@@ -624,21 +625,41 @@ namespace WordFinder
 
         private void chkDictOSPD_CheckedChanged(object sender, EventArgs e)
         {
-            LoadDictionary(DICTFILE_OSPD);
-            doFindIfReady();
-
+            loadSelectedDictionary();
         }
-
         private void chkDictEnable_CheckedChanged(object sender, EventArgs e)
         {
-            LoadDictionary(DICTFILE_ENABLE);
-            doFindIfReady();
+            loadSelectedDictionary();
         }
-
         private void chkDictUKACD_CheckedChanged(object sender, EventArgs e)
         {
-            LoadDictionary(DICTFILE_UKACD);
-            doFindIfReady();
+            loadSelectedDictionary();
+        }
+        private void loadSelectedDictionary()
+        {
+            if (chkDictOSPD.Checked)
+            {
+                LoadDictionary(DICTFILE_OSPD);
+                doFindIfReady();
+            }
+            else if(chkDictEnable.Checked)
+            {
+                LoadDictionary(DICTFILE_ENABLE);
+                doFindIfReady();
+            }
+            else if (chkDictUKACD.Checked)
+            {
+                LoadDictionary(DICTFILE_UKACD);
+                doFindIfReady();
+            }
+        }
+
+        private void lstResults_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar==' ')
+            {
+                lstResults.TopIndex = lstResults.SelectedIndex;
+            }
         }
     }
 
