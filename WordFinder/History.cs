@@ -29,6 +29,7 @@ class HistoryItem : IComparable
         return letters[col] + row.ToString();
         //return base.ToString();
     }
+     
 }
 class History : IComparable
 {
@@ -235,5 +236,7 @@ class History : IComparable
         return sb.ToString();
         //return base.ToString();
     }
+     
+
 }
 

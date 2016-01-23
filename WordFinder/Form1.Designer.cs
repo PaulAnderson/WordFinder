@@ -82,6 +82,12 @@
             this.label17 = new System.Windows.Forms.Label();
             this.lblCurrentWordDirChanges = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.btnDoConsole = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.tmrConsole = new System.Windows.Forms.Timer(this.components);
+            this.txtConsole = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.pnlLetters.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -161,7 +167,7 @@
             this.lstResults.Location = new System.Drawing.Point(209, 24);
             this.lstResults.Name = "lstResults";
             this.lstResults.ScrollAlwaysVisible = true;
-            this.lstResults.Size = new System.Drawing.Size(477, 796);
+            this.lstResults.Size = new System.Drawing.Size(477, 730);
             this.lstResults.TabIndex = 5;
             this.lstResults.SelectedIndexChanged += new System.EventHandler(this.lstResults_SelectedIndexChanged);
             this.lstResults.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lstResults_KeyPress);
@@ -689,17 +695,71 @@
             // 
             this.label16.AutoSize = true;
             this.label16.ForeColor = System.Drawing.Color.Green;
-            this.label16.Location = new System.Drawing.Point(209, 823);
+            this.label16.Location = new System.Drawing.Point(209, 735);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(220, 13);
             this.label16.TabIndex = 10;
             this.label16.Text = "Press Space Bar to scroll current word to top.";
             // 
+            // btnDoConsole
+            // 
+            this.btnDoConsole.Location = new System.Drawing.Point(2, 751);
+            this.btnDoConsole.Name = "btnDoConsole";
+            this.btnDoConsole.Size = new System.Drawing.Size(80, 23);
+            this.btnDoConsole.TabIndex = 18;
+            this.btnDoConsole.Text = "Do Console";
+            this.btnDoConsole.UseVisualStyleBackColor = true;
+            this.btnDoConsole.Click += new System.EventHandler(this.btnDoConsole_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(2, 780);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(80, 23);
+            this.button2.TabIndex = 18;
+            this.button2.Text = "Stop console";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // tmrConsole
+            // 
+            this.tmrConsole.Tick += new System.EventHandler(this.tmrConsole_Tick);
+            // 
+            // txtConsole
+            // 
+            this.txtConsole.Location = new System.Drawing.Point(88, 751);
+            this.txtConsole.Multiline = true;
+            this.txtConsole.Name = "txtConsole";
+            this.txtConsole.Size = new System.Drawing.Size(598, 69);
+            this.txtConsole.TabIndex = 19;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(88, 826);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(431, 20);
+            this.textBox1.TabIndex = 20;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(525, 823);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 21;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(698, 836);
+            this.ClientSize = new System.Drawing.Size(698, 860);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtConsole);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnDoConsole);
             this.Controls.Add(this.SelectedWordPanel);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel6);
@@ -787,6 +847,12 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label lblCurrentWordDirChanges;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button btnDoConsole;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Timer tmrConsole;
+        private System.Windows.Forms.TextBox txtConsole;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button1;
     }
 }
 
