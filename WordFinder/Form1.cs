@@ -664,253 +664,118 @@ namespace WordFinder
             }
         }
 
-        StreamWriter inputWriter;
-        StreamReader outputReader;
-        StreamReader errorReader;
-        Process process;
+      
         private void btnDoConsole_Click(object sender, EventArgs e)
         {
-            writeTomFile();
-            return;
-            //const string adbPath = @"C:\Android\sdk\platform-tools\adb.exe";
-            // ProcessStartInfo processStartInfo = new ProcessStartInfo(adbPath , "shell");
-            const string adbPath = @"C:\Android\sdk\tools\monkeyrunner.bat";
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(adbPath, "C:\\words.py");
-            processStartInfo.UseShellExecute = false;
-            processStartInfo.RedirectStandardInput = true;
-            processStartInfo.RedirectStandardOutput = true;
-            processStartInfo.RedirectStandardError = true;
-            processStartInfo.CreateNoWindow = false;
-              process = new Process();
-            process.StartInfo = processStartInfo;
-            process.OutputDataReceived += Process_OutputDataReceived;
-            process.OutputDataReceived += (a, args) => Debug.WriteLine("received output: {0}", args.Data);
-            bool processStarted = process.Start();
-            inputWriter = process.StandardInput;
-            errorReader = process.StandardError;
-           //outputReader = process.StandardOutput;
-
-            //process.BeginOutputReadLine();
-            //tmrConsole.Enabled = false;
-            //System.Threading.Thread.Sleep(1000);
-            //inputWriter.WriteLine(@"from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice");
-            //inputWriter.WriteLine(@"device = MonkeyRunner.waitForConnection()");
-            //System.Threading.Thread.Sleep(1000);
-            //tmrConsole.Enabled = true;
+            if (chkShuffle.Checked) Shuffle<Word>(FoundWords);
+            string fileText = GetMonkeyFile(FoundWords);
+            File.WriteAllText("C:\\words.py", fileText);
         }
-        private void writeTomFile()
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            int score = 0;
+            List<Word> randomWords = GetRandomPercent(FoundWords, 25);
+            string fileText = GetMonkeyFile(randomWords);
+            File.WriteAllText("C:\\words.py", fileText);
+            for (int i = 0;i< randomWords.Count;i++)
+            {
+                score += randomWords[i].Score;
+            }
+            button1.Text = String.Format("25% of words ({0})", score);
+            //MessageBox.Show(String.Format("File saved as c:\\words.py. Total score = {0}", score));
+        }
+        private List<Word> GetRandomPercent(List<Word> allWords,int percentToInclude)
+        {
+            Dictionary<int, int> seenIndexes = new Dictionary<int, int>();
+            Random r = new Random();
+            List<Word> newList = new List<Word>();
+            int wordsRequired = allWords.Count * percentToInclude / 100;
+
+            while (newList.Count<wordsRequired)
+            {
+                int randIdx = r.Next(0, allWords.Count - 1);
+                if (!seenIndexes.ContainsKey(randIdx))
+                {
+                    seenIndexes.Add(randIdx,0);
+                    newList.Add(allWords[randIdx]);
+                }
+            }
+            return newList;
+        }
+        private static Random rng = new Random();
+
+        public static void Shuffle<T>(  List<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
+
+        private String GetMonkeyFile(List<Word> wordsToInclude)
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine(@"import time");
-            sb.AppendLine(@"from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice");
-            sb.AppendLine(@"device = MonkeyRunner.waitForConnection()");
+            sb.AppendLine(@"#import time");
+            sb.AppendLine(@"#from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice");
+            sb.AppendLine(@"#device = MonkeyRunner.waitForConnection()");
 
+            foreach (Word word in wordsToInclude)
+            {
+                sb.AppendLine(string.Format(@"""{0}"" ", word.Text));
+
+                foreach (HistoryItem histItem in word.Path.GetList())
+                {
+                    int x = 0;
+                    int y = 0;
+                    switch (histItem.col)
+                    {
+                        case 0:
+                            x = 110;
+                            break;
+                        case 1:
+                            x = 290;
+                            break;
+                        case 2:
+                            x = 450;
+                            break;
+                        case 3:
+                            x = 600;
+                            break;
+                    }
+                    switch (histItem.row)
+                    {
+                        case 0:
+                            y = 450;
+                            break;
+                        case 1:
+                            y = 600;
+                            break;
+                        case 2:
+                            y = 750;
+                            break;
+                        case 3:
+                            y = 940;
+                            break;
+                    }
+
+                    sb.AppendLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", x, y));
+
+                }
+
+                sb.AppendLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", 600, 280));
+                sb.AppendLine(string.Format(@"time.sleep({0})", (.5+(word.Path.GetList().Count/2.5))/10));
+            }
+
+            return sb.ToString();
+        }
+        
       
-            while (true)// (lstResults.SelectedIndex<100)
-            {
-                try
-                {
-                    SelectedWord = null;
-                    lstResults.SelectedIndex += 1;
-                    while (SelectedWord == null)
-                    {
-                        Application.DoEvents(); //todo:eventually timeout here
-                    }
-                    sb.AppendLine(string.Format(@" ""{0}"" ",SelectedWord.Text));
-
-                    foreach (HistoryItem histItem in SelectedWord.Path.GetList())
-                    {
-                        int x = 0;
-                        int y = 0;
-                        switch (histItem.col)
-                        {
-                            case 0:
-                                x = 110;
-                                break;
-                            case 1:
-                                x = 290;
-                                break;
-                            case 2:
-                                x = 450;
-                                break;
-                            case 3:
-                                x = 600;
-                                break;
-                        }
-                        switch (histItem.row)
-                        {
-                            case 0:
-                                y = 450;
-                                break;
-                            case 1:
-                                y = 600;
-                                break;
-                            case 2:
-                                y = 750;
-                                break;
-                            case 3:
-                                y = 940;
-                                break;
-                        }
-
-                        // sb.AppendLine((string.Format(@"device.drag(({0}, {1}),({1}, {2}),.01,5)", x, y, x + 5, y + 5)));
-                        sb.AppendLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", x, y));
-
-
-                    }
-                    //all letters entered, now the accept tick
-                    //sb.AppendLine(string.Format(@"device.drag(({0}, {1}),({1}, {2}),.1,10)", 600, 280, 605, 285));
-
-                    sb.AppendLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", 600, 280));
-                    //inputWriter.WriteLine(string.Format("input tap 600 280"));
-                    sb.AppendLine(@"time.sleep(.4)");
-
-                }
-                catch (ArgumentException)
-                {
-                    File.WriteAllText("C:\\words.py", sb.ToString());
-                    return;
-                }
-            }
-            File.WriteAllText("C:\\words.py", sb.ToString());
-        }
-
-        private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-
-            SetText(e.Data);
-            //throw new NotImplementedException();
-        }
-        delegate void SetTextCallback(string text);
-
-        private void SetText(string text)
-        {
-            // InvokeRequired required compares the thread ID of the
-            // calling thread to the thread ID of the creating thread.
-            // If these threads are different, it returns true.
-            if (this.textBox1.InvokeRequired)
-            {
-                SetTextCallback d = new SetTextCallback(SetText);
-                this.Invoke(d, new object[] { text });
-            }
-            else
-            {
-                this.txtConsole.Text += text;
-            }
-        }
-        private void button2_Click(object sender, EventArgs e)
-        {
-            tmrConsole.Enabled = false;
-        }
-
-        private bool inTimer;
-        private void tmrConsole_Tick(object sender, EventArgs e)
-        {
-            while (process.StandardOutput.Peek() > -1)
-            {
-                txtConsole.Text += (char)process.StandardOutput.Read();
-
-            }
-            while (errorReader.Peek() > 0)
-            {
-                txtConsole.Text += (char)errorReader.Read();
-            }
-            //if ( outputReader.Peek()>0)
-            //{
-            //    txtConsole.Text += outputReader.ReadLine();
-            //}
-            return;
-            if (!inTimer)
-            {
-                inTimer = true;
-                try {
-                    SelectedWord = null;
-                    lstResults.SelectedIndex += 1;
-                    while (SelectedWord == null)
-                    {
-                        Application.DoEvents(); //todo:eventually timeout here
-                    }
-                    foreach (HistoryItem histItem in SelectedWord.Path.GetList())
-                    {
-                        int x = 0;
-                        int y = 0;
-                        switch (histItem.col)
-                        {
-                            case 0:
-                                x = 110;
-                                break;
-                            case 1:
-                                x = 290;
-                                break;
-                            case 2:
-                                x = 450;
-                                break;
-                            case 3:
-                                x = 600;
-                                break;
-                        }
-                        switch (histItem.row)
-                        {
-                            case 0:
-                                y = 450;
-                                break;
-                            case 1:
-                                y = 600;
-                                break;
-                            case 2:
-                                y = 750;
-                                break;
-                            case 3:
-                                y = 940;
-                                break;
-                        }
-
-                        ////inputWriter.WriteLine(string.Format("input tap {0} {1}", x, y));
-                        //inputWriter.WriteLine(string.Format("({0},{1})",x, y));
-                        //inputWriter.Flush();
-                        //inputWriter.WriteLine(string.Format(@"device.type(""{0},{1}"")", x, y));
-                        //inputWriter.Flush();
-
-
-                        //inputWriter.WriteLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", x, y));
-                        inputWriter.WriteLine(string.Format(@"device.drag(({0}, {1}),({1}, {2}),.1,10)", x, y,x+5,y+5));
-                        inputWriter.Flush();
-                        inputWriter.Close ();
-
-                        System.Threading.Thread.Sleep(100);
-                        
-                    }
-                    //all letters entered, now the accept tick
-                    inputWriter.WriteLine(string.Format(@"device.drag(({0}, {1}),({1}, {2}),.1,10)", 600,280,605,285));
-                    inputWriter.Flush();
-
-                    //inputWriter.WriteLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", 600, 280));
-                    System.Threading.Thread.Sleep(100);
-
-                    //inputWriter.WriteLine(string.Format("input tap 600 280"));
-
-                }
-                catch (ArgumentException )
-                {
-                    tmrConsole.Enabled = false;
-                    return;
-                } finally
-                {
-                    inTimer = false;
-                }
-            }
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            inputWriter.WriteLine(textBox1.Text);
-            inputWriter.Flush();
-            process.StandardInput.WriteLine("1");
-            process.StandardInput.AutoFlush = true;
-            process.StandardInput.Flush();
-        }
     }
 
 
