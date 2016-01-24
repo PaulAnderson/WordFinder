@@ -18,11 +18,14 @@ namespace WordFinder
 #if DEBUG 
         const string DICTFILE_OSPD = "..\\..\\ospd.txt";
         const string DICTFILE_ENABLE = "..\\..\\enable1.txt";
-        const string DICTFILE_UKACD = ".\\..\\UK%20Advanced%20Cryptics%20Dictionary.txt";
+        const string DICTFILE_UKACD = "..\\..\\UK%20Advanced%20Cryptics%20Dictionary.txt";
+        const string DICTFILE_SUPPLEMENT = "..\\..\\Supplement.txt"; //extra file of missing words, loaded after the main dictionary
 #else
         const string DICTFILE_OSPD = "ospd.txt";
         const string DICTFILE_ENABLE = "enable1.txt";
         const string DICTFILE_UKACD = "UK%20Advanced%20Cryptics%20Dictionary.txt";
+        const string DICTFILE_SUPPLEMENT = "Supplement.txt"; //extra file of missing words, loaded after the main dictionary
+
 #endif 
         const int minWordLength = 2;
         const int maxWordLength = 15;
@@ -241,10 +244,45 @@ namespace WordFinder
                 {
                     fs.Close();
                 }
+                loadSupplementDictionary();
             }
 
         }
-
+        private void loadSupplementDictionary()
+        {
+            try {
+                //DICTFILE_SUPPLEMENT
+                //Read words from file
+                FileStream fs = File.Open(Path.Combine(Application.StartupPath, DICTFILE_SUPPLEMENT), FileMode.Open);
+                try
+                {
+                    StreamReader sr = new StreamReader(fs);
+                   // bool inWordSection = false;
+                    while (!sr.EndOfStream)
+                    {
+                        var line = sr.ReadLine();
+                        //if (line.Equals("aa", StringComparison.InvariantCultureIgnoreCase)) inWordSection = true; //look for first word, ignore headers etc
+                       // if (inWordSection)
+                        //{
+                            if (line.Length >= minWordLength && line.Length <= maxWordLength)
+                            {
+                                if (!dictWords.isWordInList(line))
+                                {
+                                    dictWords.AddWord(line);
+                                }
+                            }
+                        //}
+                    }
+                }
+                finally
+                {
+                    fs.Close();
+                }
+            } catch (FileNotFoundException)
+            {
+                //ignore
+            }
+        }
         private void btnFind_Click(object sender, EventArgs e)
         {
 
@@ -670,11 +708,13 @@ namespace WordFinder
             if (chkShuffle.Checked) Shuffle<Word>(FoundWords);
             string fileText = GetMonkeyFile(FoundWords);
             File.WriteAllText("C:\\words.py", fileText);
+            Clipboard.SetText(fileText);
+
         }
         private void button1_Click_1(object sender, EventArgs e)
         {
             int score = 0;
-            List<Word> randomWords = GetRandomPercent(FoundWords, 25);
+            List<Word> randomWords = GetRandomPercent(FoundWords, 35);
             string fileText = GetMonkeyFile(randomWords);
             File.WriteAllText("C:\\words.py", fileText);
             for (int i = 0;i< randomWords.Count;i++)
@@ -683,6 +723,7 @@ namespace WordFinder
             }
             button1.Text = String.Format("25% of words ({0})", score);
             //MessageBox.Show(String.Format("File saved as c:\\words.py. Total score = {0}", score));
+            Clipboard.SetText(fileText);
         }
         private List<Word> GetRandomPercent(List<Word> allWords,int percentToInclude)
         {
@@ -769,7 +810,7 @@ namespace WordFinder
                 }
 
                 sb.AppendLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", 600, 280));
-                sb.AppendLine(string.Format(@"time.sleep({0})", (.5+(word.Path.GetList().Count/2.5))/10));
+                sb.AppendLine(string.Format(@"time.sleep({0})", (.4+(word.Path.GetList().Count/2.6))/10));
             }
 
             return sb.ToString();

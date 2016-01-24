@@ -528,6 +528,7 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.label13);
+            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.lblWords);
             this.panel2.Controls.Add(this.label10);
@@ -711,7 +712,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(3, 803);
+            this.button1.Location = new System.Drawing.Point(115, 41);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(201, 23);
             this.button1.TabIndex = 19;
@@ -737,7 +738,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(698, 860);
             this.Controls.Add(this.chkShuffle);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnDoConsole);
             this.Controls.Add(this.SelectedWordPanel);
             this.Controls.Add(this.panel7);
