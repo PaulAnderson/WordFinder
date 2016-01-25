@@ -693,6 +693,12 @@ namespace WordFinder
       
         private void btnDoConsole_Click(object sender, EventArgs e)
         {
+            if (FoundWords == null)
+            {
+                lblStatus.Text = "Search for words first.";
+                return;
+            }
+
             if (chkShuffle.Checked) Shuffle<Word>(FoundWords);
             string fileText = GetMonkeyFile(FoundWords);
             File.WriteAllText("C:\\words.py", fileText);
@@ -701,7 +707,14 @@ namespace WordFinder
         }
         private void button1_Click_1(object sender, EventArgs e)
         {
-            try {
+            if (FoundWords == null)
+            {
+                lblStatus.Text = "Search for words first.";
+                return ;
+            }
+
+            try
+                {
                 string percentOrAmount = txtMonkeyRandomAmount.Text.Trim();
                 int score = 0;
                 List<Word> randomWords;
@@ -729,7 +742,6 @@ namespace WordFinder
         }
         private List<Word> GetRandomPercent(List<Word> allWords,int percentToInclude)
         {
-
             return GetRandomWords(allWords, allWords.Count * percentToInclude / 100);
         }
         private List<Word> GetRandomWords(List<Word> allWords, int NoOfWordsToInclude)
