@@ -44,4 +44,7 @@ meg
 stent
 ager
 iter
-
+ahed
+pere
+rai
+megs

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlLetters = new System.Windows.Forms.Panel();
             this.lettersGrid = new System.Windows.Forms.TableLayoutPanel();
@@ -43,13 +42,6 @@
             this.lblMI = new System.Windows.Forms.Label();
             this.lblNoSpecial = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.timerAutoAdvance = new System.Windows.Forms.Timer(this.components);
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.btnAutoRunGo = new System.Windows.Forms.Button();
-            this.btnAutoRunStop = new System.Windows.Forms.Button();
             this.cbkSortbyScore = new System.Windows.Forms.RadioButton();
             this.cbkSortbyPath = new System.Windows.Forms.RadioButton();
             this.cbkSortbyLength = new System.Windows.Forms.RadioButton();
@@ -71,8 +63,6 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.cbkSortbyScoreComplexity = new System.Windows.Forms.RadioButton();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.panel7 = new System.Windows.Forms.Panel();
             this.SelectedWordPanel = new System.Windows.Forms.Panel();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -81,25 +71,35 @@
             this.lblCurrentWordCrossovers = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.lblCurrentWordDirChanges = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
             this.btnDoConsole = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.chkShuffle = new System.Windows.Forms.CheckBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.txtMonkeyRandomAmount = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.panel9 = new System.Windows.Forms.Panel();
             this.pnlLetters.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
-            this.panel6.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.SelectedWordPanel.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel9.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 8);
+            this.label1.Location = new System.Drawing.Point(3, 1);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 1;
@@ -108,7 +108,7 @@
             // pnlLetters
             // 
             this.pnlLetters.Controls.Add(this.lettersGrid);
-            this.pnlLetters.Location = new System.Drawing.Point(7, 24);
+            this.pnlLetters.Location = new System.Drawing.Point(4, 17);
             this.pnlLetters.Name = "pnlLetters";
             this.pnlLetters.Size = new System.Drawing.Size(196, 180);
             this.pnlLetters.TabIndex = 2;
@@ -147,7 +147,7 @@
             // lblResults
             // 
             this.lblResults.AutoSize = true;
-            this.lblResults.Location = new System.Drawing.Point(209, 9);
+            this.lblResults.Location = new System.Drawing.Point(3, 0);
             this.lblResults.Name = "lblResults";
             this.lblResults.Size = new System.Drawing.Size(42, 13);
             this.lblResults.TabIndex = 1;
@@ -155,18 +155,17 @@
             // 
             // lstResults
             // 
-            this.lstResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstResults.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstResults.FormattingEnabled = true;
             this.lstResults.ItemHeight = 22;
-            this.lstResults.Location = new System.Drawing.Point(209, 24);
+            this.lstResults.Location = new System.Drawing.Point(0, 14);
             this.lstResults.Name = "lstResults";
             this.lstResults.ScrollAlwaysVisible = true;
-            this.lstResults.Size = new System.Drawing.Size(477, 730);
+            this.lstResults.Size = new System.Drawing.Size(495, 725);
             this.lstResults.TabIndex = 5;
             this.lstResults.SelectedIndexChanged += new System.EventHandler(this.lstResults_SelectedIndexChanged);
+            this.lstResults.Enter += new System.EventHandler(this.lstResults_Enter_1);
             this.lstResults.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lstResults_KeyPress);
             // 
             // label2
@@ -277,81 +276,6 @@
             this.label3.Text = "(Right click to set individual tiles.)";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // timerAutoAdvance
-            // 
-            this.timerAutoAdvance.Interval = 1000;
-            this.timerAutoAdvance.Tick += new System.EventHandler(this.timerAutoAdvance_Tick);
-            // 
-            // label4
-            // 
-            this.label4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.label4.Location = new System.Drawing.Point(1, 1);
-            this.label4.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
-            this.label4.Name = "label4";
-            this.label4.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
-            this.label4.Size = new System.Drawing.Size(199, 16);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "WORD LENGTH";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label5
-            // 
-            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.label5.Location = new System.Drawing.Point(1, 18);
-            this.label5.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
-            this.label5.Name = "label5";
-            this.label5.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
-            this.label5.Size = new System.Drawing.Size(41, 16);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "MIN";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label6
-            // 
-            this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.label6.Location = new System.Drawing.Point(1, 35);
-            this.label6.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
-            this.label6.Name = "label6";
-            this.label6.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
-            this.label6.Size = new System.Drawing.Size(41, 16);
-            this.label6.TabIndex = 7;
-            this.label6.Text = "MAX";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label7
-            // 
-            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.label7.Location = new System.Drawing.Point(1, 0);
-            this.label7.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
-            this.label7.Name = "label7";
-            this.label7.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
-            this.label7.Size = new System.Drawing.Size(199, 16);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "AUTO RUN";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnAutoRunGo
-            // 
-            this.btnAutoRunGo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnAutoRunGo.Location = new System.Drawing.Point(4, 19);
-            this.btnAutoRunGo.Name = "btnAutoRunGo";
-            this.btnAutoRunGo.Size = new System.Drawing.Size(75, 23);
-            this.btnAutoRunGo.TabIndex = 8;
-            this.btnAutoRunGo.Text = "GO";
-            this.btnAutoRunGo.UseVisualStyleBackColor = false;
-            this.btnAutoRunGo.Click += new System.EventHandler(this.btnAutoRunGo_Click);
-            // 
-            // btnAutoRunStop
-            // 
-            this.btnAutoRunStop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.btnAutoRunStop.Location = new System.Drawing.Point(85, 19);
-            this.btnAutoRunStop.Name = "btnAutoRunStop";
-            this.btnAutoRunStop.Size = new System.Drawing.Size(75, 23);
-            this.btnAutoRunStop.TabIndex = 8;
-            this.btnAutoRunStop.Text = "STOP";
-            this.btnAutoRunStop.UseVisualStyleBackColor = false;
-            this.btnAutoRunStop.Click += new System.EventHandler(this.btnAutoRunStop_Click);
-            // 
             // cbkSortbyScore
             // 
             this.cbkSortbyScore.AutoSize = true;
@@ -368,7 +292,7 @@
             // cbkSortbyPath
             // 
             this.cbkSortbyPath.AutoSize = true;
-            this.cbkSortbyPath.Location = new System.Drawing.Point(4, 89);
+            this.cbkSortbyPath.Location = new System.Drawing.Point(70, 43);
             this.cbkSortbyPath.Name = "cbkSortbyPath";
             this.cbkSortbyPath.Size = new System.Drawing.Size(47, 17);
             this.cbkSortbyPath.TabIndex = 9;
@@ -379,7 +303,7 @@
             // cbkSortbyLength
             // 
             this.cbkSortbyLength.AutoSize = true;
-            this.cbkSortbyLength.Location = new System.Drawing.Point(4, 66);
+            this.cbkSortbyLength.Location = new System.Drawing.Point(4, 43);
             this.cbkSortbyLength.Name = "cbkSortbyLength";
             this.cbkSortbyLength.Size = new System.Drawing.Size(58, 17);
             this.cbkSortbyLength.TabIndex = 9;
@@ -390,7 +314,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(78, 91);
+            this.label8.Location = new System.Drawing.Point(71, 63);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(61, 13);
             this.label8.TabIndex = 10;
@@ -398,7 +322,7 @@
             // 
             // txtMinScore
             // 
-            this.txtMinScore.Location = new System.Drawing.Point(145, 88);
+            this.txtMinScore.Location = new System.Drawing.Point(136, 60);
             this.txtMinScore.Name = "txtMinScore";
             this.txtMinScore.Size = new System.Drawing.Size(51, 20);
             this.txtMinScore.TabIndex = 11;
@@ -528,12 +452,11 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.label13);
-            this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.lblWords);
             this.panel2.Controls.Add(this.label10);
             this.panel2.Controls.Add(this.lblMaxPossibleScore);
-            this.panel2.Location = new System.Drawing.Point(3, 578);
+            this.panel2.Location = new System.Drawing.Point(0, 433);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 70);
             this.panel2.TabIndex = 13;
@@ -542,7 +465,7 @@
             // 
             this.panel3.Controls.Add(this.label11);
             this.panel3.Controls.Add(this.panel1);
-            this.panel3.Location = new System.Drawing.Point(3, 524);
+            this.panel3.Location = new System.Drawing.Point(0, 288);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(200, 48);
             this.panel3.TabIndex = 14;
@@ -556,15 +479,15 @@
             this.panel4.Controls.Add(this.txtMinScore);
             this.panel4.Controls.Add(this.cbkSortbyLength);
             this.panel4.Controls.Add(this.label8);
-            this.panel4.Location = new System.Drawing.Point(3, 405);
+            this.panel4.Location = new System.Drawing.Point(0, 342);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(200, 113);
+            this.panel4.Size = new System.Drawing.Size(200, 85);
             this.panel4.TabIndex = 15;
             // 
             // cbkSortbyScoreComplexity
             // 
             this.cbkSortbyScoreComplexity.AutoSize = true;
-            this.cbkSortbyScoreComplexity.Location = new System.Drawing.Point(4, 43);
+            this.cbkSortbyScoreComplexity.Location = new System.Drawing.Point(70, 20);
             this.cbkSortbyScoreComplexity.Name = "cbkSortbyScoreComplexity";
             this.cbkSortbyScoreComplexity.Size = new System.Drawing.Size(108, 17);
             this.cbkSortbyScoreComplexity.TabIndex = 9;
@@ -583,30 +506,10 @@
             this.panel5.Controls.Add(this.lblNoSpecial);
             this.panel5.Controls.Add(this.lblTW);
             this.panel5.Controls.Add(this.lblMI);
-            this.panel5.Location = new System.Drawing.Point(3, 210);
+            this.panel5.Location = new System.Drawing.Point(0, 203);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(200, 79);
             this.panel5.TabIndex = 16;
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.label4);
-            this.panel6.Controls.Add(this.label5);
-            this.panel6.Controls.Add(this.label6);
-            this.panel6.Location = new System.Drawing.Point(3, 293);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(200, 58);
-            this.panel6.TabIndex = 16;
-            // 
-            // panel7
-            // 
-            this.panel7.Controls.Add(this.label7);
-            this.panel7.Controls.Add(this.btnAutoRunGo);
-            this.panel7.Controls.Add(this.btnAutoRunStop);
-            this.panel7.Location = new System.Drawing.Point(3, 357);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(200, 45);
-            this.panel7.TabIndex = 16;
             // 
             // SelectedWordPanel
             // 
@@ -617,7 +520,7 @@
             this.SelectedWordPanel.Controls.Add(this.lblCurrentWordCrossovers);
             this.SelectedWordPanel.Controls.Add(this.label17);
             this.SelectedWordPanel.Controls.Add(this.lblCurrentWordDirChanges);
-            this.SelectedWordPanel.Location = new System.Drawing.Point(2, 654);
+            this.SelectedWordPanel.Location = new System.Drawing.Point(0, 509);
             this.SelectedWordPanel.Name = "SelectedWordPanel";
             this.SelectedWordPanel.Size = new System.Drawing.Size(200, 91);
             this.SelectedWordPanel.TabIndex = 17;
@@ -689,34 +592,23 @@
             this.lblCurrentWordDirChanges.TabIndex = 10;
             this.lblCurrentWordDirChanges.Text = "0";
             // 
-            // label16
-            // 
-            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label16.AutoSize = true;
-            this.label16.ForeColor = System.Drawing.Color.Green;
-            this.label16.Location = new System.Drawing.Point(209, 757);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(220, 13);
-            this.label16.TabIndex = 10;
-            this.label16.Text = "Press Space Bar to scroll current word to top.";
-            // 
             // btnDoConsole
             // 
-            this.btnDoConsole.Location = new System.Drawing.Point(2, 751);
+            this.btnDoConsole.Location = new System.Drawing.Point(3, 20);
             this.btnDoConsole.Name = "btnDoConsole";
-            this.btnDoConsole.Size = new System.Drawing.Size(161, 23);
+            this.btnDoConsole.Size = new System.Drawing.Size(91, 23);
             this.btnDoConsole.TabIndex = 18;
-            this.btnDoConsole.Text = "Generate monkeydevice file";
+            this.btnDoConsole.Text = "All Words";
             this.btnDoConsole.UseVisualStyleBackColor = true;
             this.btnDoConsole.Click += new System.EventHandler(this.btnDoConsole_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(115, 41);
+            this.button1.Location = new System.Drawing.Point(3, 47);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(201, 23);
+            this.button1.Size = new System.Drawing.Size(91, 23);
             this.button1.TabIndex = 19;
-            this.button1.Text = "Generate monkeydevice file (random 30%)";
+            this.button1.Text = "Random";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
@@ -725,32 +617,104 @@
             this.chkShuffle.AutoSize = true;
             this.chkShuffle.Checked = true;
             this.chkShuffle.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShuffle.Location = new System.Drawing.Point(3, 780);
+            this.chkShuffle.Location = new System.Drawing.Point(103, 24);
             this.chkShuffle.Name = "chkShuffle";
             this.chkShuffle.Size = new System.Drawing.Size(59, 17);
             this.chkShuffle.TabIndex = 20;
             this.chkShuffle.Text = "Shuffle";
             this.chkShuffle.UseVisualStyleBackColor = true;
             // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.txtMonkeyRandomAmount);
+            this.panel6.Controls.Add(this.label4);
+            this.panel6.Controls.Add(this.button1);
+            this.panel6.Controls.Add(this.chkShuffle);
+            this.panel6.Controls.Add(this.btnDoConsole);
+            this.panel6.Location = new System.Drawing.Point(0, 606);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(200, 77);
+            this.panel6.TabIndex = 21;
+            // 
+            // txtMonkeyRandomAmount
+            // 
+            this.txtMonkeyRandomAmount.Location = new System.Drawing.Point(100, 49);
+            this.txtMonkeyRandomAmount.Name = "txtMonkeyRandomAmount";
+            this.txtMonkeyRandomAmount.Size = new System.Drawing.Size(60, 20);
+            this.txtMonkeyRandomAmount.TabIndex = 21;
+            this.txtMonkeyRandomAmount.Text = "35%";
+            // 
+            // label4
+            // 
+            this.label4.BackColor = System.Drawing.Color.Blue;
+            this.label4.ForeColor = System.Drawing.Color.Yellow;
+            this.label4.Location = new System.Drawing.Point(1, 1);
+            this.label4.Margin = new System.Windows.Forms.Padding(3, 1, 3, 0);
+            this.label4.Name = "label4";
+            this.label4.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+            this.label4.Size = new System.Drawing.Size(199, 16);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Monkey Device";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 739);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(698, 22);
+            this.statusStrip1.TabIndex = 22;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(0, 17);
+            // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.label1);
+            this.panel7.Controls.Add(this.pnlLetters);
+            this.panel7.Controls.Add(this.panel6);
+            this.panel7.Controls.Add(this.panel2);
+            this.panel7.Controls.Add(this.SelectedWordPanel);
+            this.panel7.Controls.Add(this.panel3);
+            this.panel7.Controls.Add(this.panel5);
+            this.panel7.Controls.Add(this.panel4);
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel7.Location = new System.Drawing.Point(0, 0);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(203, 739);
+            this.panel7.TabIndex = 23;
+            // 
+            // panel8
+            // 
+            this.panel8.Controls.Add(this.lstResults);
+            this.panel8.Controls.Add(this.panel9);
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel8.Location = new System.Drawing.Point(203, 0);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(495, 739);
+            this.panel8.TabIndex = 24;
+            // 
+            // panel9
+            // 
+            this.panel9.Controls.Add(this.lblResults);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel9.Location = new System.Drawing.Point(0, 0);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(495, 14);
+            this.panel9.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(698, 860);
-            this.Controls.Add(this.chkShuffle);
-            this.Controls.Add(this.btnDoConsole);
-            this.Controls.Add(this.SelectedWordPanel);
+            this.ClientSize = new System.Drawing.Size(698, 761);
+            this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel7);
-            this.Controls.Add(this.panel6);
-            this.Controls.Add(this.label16);
-            this.Controls.Add(this.panel5);
-            this.Controls.Add(this.panel4);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.lstResults);
-            this.Controls.Add(this.pnlLetters);
-            this.Controls.Add(this.lblResults);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.statusStrip1);
             this.Name = "Form1";
             this.Text = "Word Finder";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -763,10 +727,17 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel5.ResumeLayout(false);
-            this.panel6.ResumeLayout(false);
-            this.panel7.ResumeLayout(false);
             this.SelectedWordPanel.ResumeLayout(false);
             this.SelectedWordPanel.PerformLayout();
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -787,13 +758,6 @@
         private System.Windows.Forms.Label lblMI;
         private System.Windows.Forms.Label lblNoSpecial;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Timer timerAutoAdvance;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button btnAutoRunGo;
-        private System.Windows.Forms.Button btnAutoRunStop;
         private System.Windows.Forms.RadioButton cbkSortbyPath;
         private System.Windows.Forms.RadioButton cbkSortbyLength;
         private System.Windows.Forms.Label label8;
@@ -815,8 +779,6 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.RadioButton cbkSortbyScoreComplexity;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Panel SelectedWordPanel;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
@@ -825,10 +787,17 @@
         private System.Windows.Forms.Label lblCurrentWordCrossovers;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label lblCurrentWordDirChanges;
-        private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Button btnDoConsole;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox chkShuffle;
+        private System.Windows.Forms.TextBox txtMonkeyRandomAmount;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.Panel panel7;
     }
 }
 

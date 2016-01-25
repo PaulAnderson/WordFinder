@@ -502,8 +502,6 @@ namespace WordFinder
                     
                 }
             }
-            //Set timer length based on word length
-            timerAutoAdvance.Interval = 500 + (word.Length * 150); //300ms to find the word, then 100ms for each letter
         }
         private void ClearLetterColours()
         {
@@ -633,16 +631,6 @@ namespace WordFinder
             }
         }
 
-        private void btnAutoRunGo_Click(object sender, EventArgs e)
-        {
-            timerAutoAdvance.Enabled = true;
-        }
-
-        private void btnAutoRunStop_Click(object sender, EventArgs e)
-        {
-            timerAutoAdvance.Enabled = false;
-        }
-
         private void cbkSortbyScore_CheckedChanged_1(object sender, EventArgs e)
         {
             doFindIfReady();
@@ -709,35 +697,55 @@ namespace WordFinder
             string fileText = GetMonkeyFile(FoundWords);
             File.WriteAllText("C:\\words.py", fileText);
             Clipboard.SetText(fileText);
-
+            lblStatus.Text = "File saved as C:\\words.py, and copied to clipboard.";
         }
         private void button1_Click_1(object sender, EventArgs e)
         {
-            int score = 0;
-            List<Word> randomWords = GetRandomPercent(FoundWords, 35);
-            string fileText = GetMonkeyFile(randomWords);
-            File.WriteAllText("C:\\words.py", fileText);
-            for (int i = 0;i< randomWords.Count;i++)
+            try {
+                string percentOrAmount = txtMonkeyRandomAmount.Text.Trim();
+                int score = 0;
+                List<Word> randomWords;
+                if (txtMonkeyRandomAmount.Text.EndsWith("%", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    randomWords = GetRandomPercent(FoundWords, int.Parse(percentOrAmount.Substring(0, percentOrAmount.Length - 1)));
+                }
+                else
+                {
+                    randomWords = GetRandomWords(FoundWords, int.Parse(percentOrAmount));
+                }
+                string fileText = GetMonkeyFile(randomWords);
+                File.WriteAllText("C:\\words.py", fileText);
+                for (int i = 0; i < randomWords.Count; i++)
+                {
+                    score += randomWords[i].Score;
+                }
+                Clipboard.SetText(fileText);
+
+                lblStatus.Text = String.Format("File saved as C:\\words.py, and copied to clipboard. {0} words ({1} points)", randomWords.Count, score);
+            } catch (FormatException)
             {
-                score += randomWords[i].Score;
+                lblStatus.Text = "Enter a number or a percentage of words to include.";
             }
-            button1.Text = String.Format("25% of words ({0})", score);
-            //MessageBox.Show(String.Format("File saved as c:\\words.py. Total score = {0}", score));
-            Clipboard.SetText(fileText);
         }
         private List<Word> GetRandomPercent(List<Word> allWords,int percentToInclude)
         {
+
+            return GetRandomWords(allWords, allWords.Count * percentToInclude / 100);
+        }
+        private List<Word> GetRandomWords(List<Word> allWords, int NoOfWordsToInclude)
+        {
+            if (NoOfWordsToInclude > allWords.Count) NoOfWordsToInclude = allWords.Count;
             Dictionary<int, int> seenIndexes = new Dictionary<int, int>();
             Random r = new Random();
             List<Word> newList = new List<Word>();
-            int wordsRequired = allWords.Count * percentToInclude / 100;
+            int wordsRequired = NoOfWordsToInclude;
 
-            while (newList.Count<wordsRequired)
+            while (newList.Count < wordsRequired)
             {
-                int randIdx = r.Next(0, allWords.Count - 1);
+                int randIdx = r.Next(0, allWords.Count); //minValue inclusive, maxValue exclusive
                 if (!seenIndexes.ContainsKey(randIdx))
                 {
-                    seenIndexes.Add(randIdx,0);
+                    seenIndexes.Add(randIdx, 0);
                     newList.Add(allWords[randIdx]);
                 }
             }
@@ -810,13 +818,19 @@ namespace WordFinder
                 }
 
                 sb.AppendLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", 600, 280));
-                sb.AppendLine(string.Format(@"time.sleep({0})", (.4+(word.Path.GetList().Count/2.6))/10));
+                sb.AppendLine(string.Format(@"time.sleep({0:F2})", (.4+(word.Path.GetList().Count/2.5))/10));
             }
 
             return sb.ToString();
         }
-        
-      
+
+    
+
+        private void lstResults_Enter_1(object sender, EventArgs e)
+        {
+            lblStatus.Text = "Press Space bar to scroll current word to top.";
+
+        }
     }
 
 
