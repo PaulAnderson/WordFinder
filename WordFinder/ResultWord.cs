@@ -104,7 +104,7 @@ class WordScorer
             case 'F':
             case 'M':
             case 'W':
-            case 'P': //'B F V W P'
+            case 'P':
                 letterValue = 4;
                 break;
             case 'K':
@@ -211,16 +211,6 @@ class ScoredComplexWordComparer : IComparer<Word>
         int xScore = GetAdjustedScore(x);
         int yScore = GetAdjustedScore(y);
         int result = (xScore.CompareTo(yScore));
-        //if (result == 0)
-        //{
-        //    //if words are the same score, sort by length
-        //    result = y.Text.Length.CompareTo(x.Text.Length);
-        //    if (result == 0)
-        //    {
-        //        //words have same score and are the same length, sort alphabetically
-        //        result = string.Compare(y.Text, x.Text, StringComparison.InvariantCultureIgnoreCase);
-        //    }
-        //}
         return result;
     }
 }

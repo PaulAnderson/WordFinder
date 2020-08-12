@@ -27,7 +27,6 @@ class HistoryItem : IComparable
     public override string ToString()
     {
         return letters[col] + row.ToString();
-        //return base.ToString();
     }
      
 }
@@ -234,9 +233,6 @@ class History : IComparable
             sb.Append(histList[i].ToString());
         }
         return sb.ToString();
-        //return base.ToString();
     }
-     
-
 }
 

@@ -251,27 +251,21 @@ namespace WordFinder
         private void loadSupplementDictionary()
         {
             try {
-                //DICTFILE_SUPPLEMENT
                 //Read words from file
                 FileStream fs = File.Open(Path.Combine(Application.StartupPath, DICTFILE_SUPPLEMENT), FileMode.Open);
                 try
                 {
                     StreamReader sr = new StreamReader(fs);
-                   // bool inWordSection = false;
                     while (!sr.EndOfStream)
                     {
                         var line = sr.ReadLine();
-                        //if (line.Equals("aa", StringComparison.InvariantCultureIgnoreCase)) inWordSection = true; //look for first word, ignore headers etc
-                       // if (inWordSection)
-                        //{
-                            if (line.Length >= minWordLength && line.Length <= maxWordLength)
+                        if (line.Length >= minWordLength && line.Length <= maxWordLength)
+                        {
+                            if (!dictWords.isWordInList(line))
                             {
-                                if (!dictWords.isWordInList(line))
-                                {
-                                    dictWords.AddWord(line);
-                                }
+                                dictWords.AddWord(line);
                             }
-                        //}
+                        }
                     }
                 }
                 finally

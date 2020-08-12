@@ -34,15 +34,6 @@ class Direction
         Directions.Add(new Direction(-1, -1)); //NW
         return Directions;
     }
-    //public static List<Direction> getDiagonals()
-    //{
-    //    List<Direction> Directions = new List<Direction>();
-    //    Directions.Add(new Direction(1, -1));  //NE
-    //    Directions.Add(new Direction(1, 1));   //SE
-    //    Directions.Add(new Direction(-1, 1));  //SW
-    //    Directions.Add(new Direction(-1, -1)); //NW
-    //    return Directions
-    //}
     public bool IsDiagonal()
     {
         return (RowOffset != 0 && ColOffset != 0);
