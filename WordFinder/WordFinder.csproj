@@ -47,20 +47,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Direction.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="GridGame\Direction.cs" />
+    <Compile Include="GridGame\From2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="GridGame\From2.Designer.cs">
+      <DependentUpon>From2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GridGame\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GridGame\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="History.cs" />
+    <Compile Include="GridGame\History.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResultWord.cs" />
-    <Compile Include="SearchTree.cs" />
-    <Compile Include="Words.cs" />
-    <EmbeddedResource Include="Form1.resx">
+    <Compile Include="GridGame\ResultWord.cs" />
+    <Compile Include="GridGame\SearchTree.cs" />
+    <Compile Include="StartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StartForm.Designer.cs">
+      <DependentUpon>StartForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GridGame\Words.cs" />
+    <EmbeddedResource Include="GridGame\From2.resx">
+      <DependentUpon>From2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GridGame\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -73,9 +88,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="CustomTextBox.cs">
+    <Compile Include="GridGame\CustomTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <EmbeddedResource Include="StartForm.resx">
+      <DependentUpon>StartForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -85,6 +103,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="LettersGame\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
