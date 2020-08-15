@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WordFinder
@@ -32,6 +27,7 @@ namespace WordFinder
         const int gridSizeX = 4;
         const int gridSizeY = 4;
 
+        private WordList wordlist;
 
         private char[,] letters;
         private int[,] letterMultipliers;
@@ -51,10 +47,10 @@ namespace WordFinder
         {
             InitializeComponent();
 
-            letters = new char[gridSize, gridSize];
-            letterMultipliers = new int[gridSize, gridSize];
-            wordMultipliers = new int[gridSize, gridSize];
-            letterControls = new CustomTextBox[gridSize, gridSize];
+            letters = new char[gridSizeX, gridSizeY];
+            letterMultipliers = new int[gridSizeX, gridSizeY];
+            wordMultipliers = new int[gridSizeX, gridSizeY];
+            letterControls = new CustomTextBox[gridSizeX, gridSizeY];
 
             //todo - if increase grid size beyond 4, add rows and columns to gridLayoutPanel
 
@@ -402,22 +398,14 @@ namespace WordFinder
                     findWords(r, c, new History(), "");
                 }
             }
+            filterWords();
         }
         private void findWords(int r, int c, History hist, string prefix)
         {
             //Add to history trail and word
 
             hist.Push(r, c);
-            //if (letters[r, c] == 'Q')
-            //{
-            //    prefix += "QU";
-            //}
-            //else
-            //{
-                prefix += letters[r, c];
-            //}
-
-            //Debug.Print(prefix);
+            prefix += letters[r, c];
 
             if (!dictWords.isWordPrefixInList(prefix))
             {
@@ -486,6 +474,27 @@ namespace WordFinder
                 }
             }
             hist.Pop();
+        }
+
+        private void filterWords()
+        {
+            var prefix = txtStartWith.Text.ToUpper();
+            var suffix = txtEndWith.Text.ToUpper();
+            var infix =  txtContains.Text.ToUpper();
+
+            for (var i = FoundWords.Count-1; i>=0; i--)
+            {
+                if ((prefix.Length > 0 &&
+                    !FoundWords[i].Text.StartsWith(prefix))
+                || (suffix.Length > 0 &&
+                    !FoundWords[i].Text.EndsWith(suffix))
+                || (infix.Length > 0 &&
+                    !FoundWords[i].Text.Contains(infix))
+                    )
+                {
+                    FoundWords.RemoveAt(i);
+                }
+            }
         }
         private Word SelectedWord;
 
@@ -563,6 +572,9 @@ namespace WordFinder
                     letterControls[r, c].Modifier = CustomTextBox.ScoreModifier.None; 
                 }
             }
+            txtStartWith.Text = "";
+            txtEndWith.Text = "";
+            txtContains.Text = "";
             lstResults.Items.Clear();
             ClearLinePath();
             letterControls[0, 0].Focus();
@@ -699,159 +711,22 @@ namespace WordFinder
                 lstResults.TopIndex = lstResults.SelectedIndex;
             }
         }
-
-      
-        private void btnDoConsole_Click(object sender, EventArgs e)
-        {
-            if (FoundWords == null)
-            {
-                lblStatus.Text = "Search for words first.";
-                return;
-            }
-
-            if (chkShuffle.Checked) Shuffle<Word>(FoundWords);
-            string fileText = GetMonkeyFile(FoundWords);
-            File.WriteAllText("C:\\words.py", fileText);
-            Clipboard.SetText(fileText);
-            lblStatus.Text = "File saved as C:\\words.py, and copied to clipboard.";
-        }
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            if (FoundWords == null)
-            {
-                lblStatus.Text = "Search for words first.";
-                return ;
-            }
-
-            try
-                {
-                string percentOrAmount = txtMonkeyRandomAmount.Text.Trim();
-                int score = 0;
-                List<Word> randomWords;
-                if (txtMonkeyRandomAmount.Text.EndsWith("%", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    randomWords = GetRandomPercent(FoundWords, int.Parse(percentOrAmount.Substring(0, percentOrAmount.Length - 1)));
-                }
-                else
-                {
-                    randomWords = GetRandomWords(FoundWords, int.Parse(percentOrAmount));
-                }
-                string fileText = GetMonkeyFile(randomWords);
-                File.WriteAllText("C:\\words.py", fileText);
-                for (int i = 0; i < randomWords.Count; i++)
-                {
-                    score += randomWords[i].Score;
-                }
-                Clipboard.SetText(fileText);
-
-                lblStatus.Text = String.Format("File saved as C:\\words.py, and copied to clipboard. {0} words ({1} points)", randomWords.Count, score);
-            } catch (FormatException)
-            {
-                lblStatus.Text = "Enter a number or a percentage of words to include.";
-            }
-        }
-        private List<Word> GetRandomPercent(List<Word> allWords,int percentToInclude)
-        {
-            return GetRandomWords(allWords, allWords.Count * percentToInclude / 100);
-        }
-        private List<Word> GetRandomWords(List<Word> allWords, int NoOfWordsToInclude)
-        {
-            if (NoOfWordsToInclude > allWords.Count) NoOfWordsToInclude = allWords.Count;
-            Dictionary<int, int> seenIndexes = new Dictionary<int, int>();
-            Random r = new Random();
-            List<Word> newList = new List<Word>();
-            int wordsRequired = NoOfWordsToInclude;
-
-            while (newList.Count < wordsRequired)
-            {
-                int randIdx = r.Next(0, allWords.Count); //minValue inclusive, maxValue exclusive
-                if (!seenIndexes.ContainsKey(randIdx))
-                {
-                    seenIndexes.Add(randIdx, 0);
-                    newList.Add(allWords[randIdx]);
-                }
-            }
-            return newList;
-        }
-        private static Random rng = new Random();
-
-        public static void Shuffle<T>(  List<T> list)
-        {
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = rng.Next(n + 1);
-                T value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
-        }
-
-        private String GetMonkeyFile(List<Word> wordsToInclude)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine(@"#import time");
-            sb.AppendLine(@"#from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice");
-            sb.AppendLine(@"#device = MonkeyRunner.waitForConnection()");
-
-            foreach (Word word in wordsToInclude)
-            {
-                sb.AppendLine(string.Format(@"""{0}"" ", word.Text));
-
-                foreach (HistoryItem histItem in word.Path.GetList())
-                {
-                    int x = 0;
-                    int y = 0;
-                    switch (histItem.col)
-                    {
-                        case 0:
-                            x = 110;
-                            break;
-                        case 1:
-                            x = 290;
-                            break;
-                        case 2:
-                            x = 450;
-                            break;
-                        case 3:
-                            x = 600;
-                            break;
-                    }
-                    switch (histItem.row)
-                    {
-                        case 0:
-                            y = 450;
-                            break;
-                        case 1:
-                            y = 600;
-                            break;
-                        case 2:
-                            y = 750;
-                            break;
-                        case 3:
-                            y = 940;
-                            break;
-                    }
-
-                    sb.AppendLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", x, y));
-
-                }
-
-                sb.AppendLine(string.Format(@"device.touch({0}, {1}, ""downAndUp"")", 600, 280));
-                sb.AppendLine(string.Format(@"time.sleep({0:F2})", (.4+(word.Path.GetList().Count/2.5))/10));
-            }
-
-            return sb.ToString();
-        }
-
-    
+         
 
         private void lstResults_Enter_1(object sender, EventArgs e)
         {
             lblStatus.Text = "Press Space bar to scroll current word to top.";
 
+        }
+
+        private void txtStartWith_TextChanged(object sender, EventArgs e)
+        {
+            doFindIfReady();
+        }
+
+        private void txtEndWith_TextChanged(object sender, EventArgs e)
+        {
+            doFindIfReady();
         }
     }
 

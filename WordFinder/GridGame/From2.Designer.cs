@@ -34,35 +34,25 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.lblResults = new System.Windows.Forms.Label();
             this.lstResults = new System.Windows.Forms.ListBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblDL = new System.Windows.Forms.Label();
-            this.lblTL = new System.Windows.Forms.Label();
-            this.lblDW = new System.Windows.Forms.Label();
-            this.lblTW = new System.Windows.Forms.Label();
-            this.lblMI = new System.Windows.Forms.Label();
-            this.lblNoSpecial = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.cbkSortbyScore = new System.Windows.Forms.RadioButton();
             this.cbkSortbyPath = new System.Windows.Forms.RadioButton();
             this.cbkSortbyLength = new System.Windows.Forms.RadioButton();
             this.label8 = new System.Windows.Forms.Label();
             this.txtMinScore = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.lblWords = new System.Windows.Forms.Label();
-            this.lblMaxPossibleScore = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.chkDictOSPD = new System.Windows.Forms.RadioButton();
             this.chkDictUKACD = new System.Windows.Forms.RadioButton();
             this.chkDictEnable = new System.Windows.Forms.RadioButton();
             this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.cbkSortbyScoreComplexity = new System.Windows.Forms.RadioButton();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.txtEndWith = new System.Windows.Forms.TextBox();
+            this.txtStartWith = new System.Windows.Forms.TextBox();
+            this.lblEndWith = new System.Windows.Forms.Label();
+            this.lblStartWith = new System.Windows.Forms.Label();
             this.SelectedWordPanel = new System.Windows.Forms.Panel();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -71,29 +61,31 @@
             this.lblCurrentWordCrossovers = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.lblCurrentWordDirChanges = new System.Windows.Forms.Label();
-            this.btnDoConsole = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.chkShuffle = new System.Windows.Forms.CheckBox();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.txtMonkeyRandomAmount = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.customTextBox1 = new CustomTextBox();
+            this.lblMaxPossibleScore = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.lblWords = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtContains = new System.Windows.Forms.TextBox();
             this.pnlLetters.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
             this.SelectedWordPanel.SuspendLayout();
-            this.panel6.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel9.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -110,7 +102,7 @@
             // 
             this.pnlLetters.Controls.Add(this.lettersGrid);
             this.pnlLetters.Location = new System.Drawing.Point(8, 33);
-            this.pnlLetters.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.pnlLetters.Margin = new System.Windows.Forms.Padding(6);
             this.pnlLetters.Name = "pnlLetters";
             this.pnlLetters.Size = new System.Drawing.Size(392, 346);
             this.pnlLetters.TabIndex = 2;
@@ -126,7 +118,7 @@
             this.lettersGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lettersGrid.Font = new System.Drawing.Font("Consolas", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lettersGrid.Location = new System.Drawing.Point(0, 0);
-            this.lettersGrid.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.lettersGrid.Margin = new System.Windows.Forms.Padding(6);
             this.lettersGrid.Name = "lettersGrid";
             this.lettersGrid.RowCount = 4;
             this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -134,13 +126,12 @@
             this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.lettersGrid.Size = new System.Drawing.Size(392, 346);
-            this.lettersGrid.TabIndex = 3;
-            this.lettersGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.lettersGrid_Paint);
+            this.lettersGrid.TabIndex = 4;
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(8, 104);
-            this.btnClear.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnClear.Location = new System.Drawing.Point(0, 192);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(6);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(278, 44);
             this.btnClear.TabIndex = 4;
@@ -165,7 +156,7 @@
             this.lstResults.FormattingEnabled = true;
             this.lstResults.ItemHeight = 45;
             this.lstResults.Location = new System.Drawing.Point(0, 27);
-            this.lstResults.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.lstResults.Margin = new System.Windows.Forms.Padding(6);
             this.lstResults.Name = "lstResults";
             this.lstResults.ScrollAlwaysVisible = true;
             this.lstResults.Size = new System.Drawing.Size(990, 1414);
@@ -174,120 +165,12 @@
             this.lstResults.Enter += new System.EventHandler(this.lstResults_Enter_1);
             this.lstResults.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lstResults_KeyPress);
             // 
-            // label2
-            // 
-            this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.label2.Location = new System.Drawing.Point(2, 2);
-            this.label2.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.label2.Name = "label2";
-            this.label2.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.label2.Size = new System.Drawing.Size(398, 31);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "ALL TILES BONUS:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblDL
-            // 
-            this.lblDL.BackColor = System.Drawing.Color.Blue;
-            this.lblDL.ForeColor = System.Drawing.Color.White;
-            this.lblDL.Location = new System.Drawing.Point(2, 35);
-            this.lblDL.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.lblDL.Name = "lblDL";
-            this.lblDL.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lblDL.Size = new System.Drawing.Size(54, 31);
-            this.lblDL.TabIndex = 7;
-            this.lblDL.Text = "DL";
-            this.lblDL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDL.Click += new System.EventHandler(this.lblDL_Click);
-            // 
-            // lblTL
-            // 
-            this.lblTL.BackColor = System.Drawing.Color.LightGreen;
-            this.lblTL.ForeColor = System.Drawing.Color.White;
-            this.lblTL.Location = new System.Drawing.Point(68, 35);
-            this.lblTL.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.lblTL.Name = "lblTL";
-            this.lblTL.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lblTL.Size = new System.Drawing.Size(54, 31);
-            this.lblTL.TabIndex = 7;
-            this.lblTL.Text = "TL";
-            this.lblTL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTL.Click += new System.EventHandler(this.lblTL_Click);
-            // 
-            // lblDW
-            // 
-            this.lblDW.BackColor = System.Drawing.Color.Red;
-            this.lblDW.ForeColor = System.Drawing.Color.White;
-            this.lblDW.Location = new System.Drawing.Point(134, 35);
-            this.lblDW.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.lblDW.Name = "lblDW";
-            this.lblDW.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lblDW.Size = new System.Drawing.Size(54, 31);
-            this.lblDW.TabIndex = 7;
-            this.lblDW.Text = "DW";
-            this.lblDW.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblDW.Click += new System.EventHandler(this.lblDW_Click);
-            // 
-            // lblTW
-            // 
-            this.lblTW.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.lblTW.ForeColor = System.Drawing.Color.White;
-            this.lblTW.Location = new System.Drawing.Point(200, 35);
-            this.lblTW.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.lblTW.Name = "lblTW";
-            this.lblTW.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lblTW.Size = new System.Drawing.Size(54, 31);
-            this.lblTW.TabIndex = 7;
-            this.lblTW.Text = "TW";
-            this.lblTW.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblTW.Click += new System.EventHandler(this.lblTW_Click);
-            // 
-            // lblMI
-            // 
-            this.lblMI.BackColor = System.Drawing.Color.DarkRed;
-            this.lblMI.ForeColor = System.Drawing.Color.White;
-            this.lblMI.Location = new System.Drawing.Point(266, 35);
-            this.lblMI.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.lblMI.Name = "lblMI";
-            this.lblMI.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lblMI.Size = new System.Drawing.Size(54, 31);
-            this.lblMI.TabIndex = 7;
-            this.lblMI.Text = "**";
-            this.lblMI.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblMI.Click += new System.EventHandler(this.lblMI_Click);
-            // 
-            // lblNoSpecial
-            // 
-            this.lblNoSpecial.BackColor = System.Drawing.Color.Black;
-            this.lblNoSpecial.ForeColor = System.Drawing.Color.White;
-            this.lblNoSpecial.Location = new System.Drawing.Point(332, 35);
-            this.lblNoSpecial.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.lblNoSpecial.Name = "lblNoSpecial";
-            this.lblNoSpecial.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lblNoSpecial.Size = new System.Drawing.Size(54, 31);
-            this.lblNoSpecial.TabIndex = 7;
-            this.lblNoSpecial.Text = "--";
-            this.lblNoSpecial.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblNoSpecial.Click += new System.EventHandler(this.lblNoSpecial_Click);
-            // 
-            // label3
-            // 
-            this.label3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
-            this.label3.Location = new System.Drawing.Point(2, 67);
-            this.label3.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.label3.Name = "label3";
-            this.label3.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.label3.Size = new System.Drawing.Size(398, 31);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "(Right click to set individual tiles.)";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // cbkSortbyScore
             // 
             this.cbkSortbyScore.AutoSize = true;
             this.cbkSortbyScore.Checked = true;
             this.cbkSortbyScore.Location = new System.Drawing.Point(8, 38);
-            this.cbkSortbyScore.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cbkSortbyScore.Margin = new System.Windows.Forms.Padding(6);
             this.cbkSortbyScore.Name = "cbkSortbyScore";
             this.cbkSortbyScore.Size = new System.Drawing.Size(99, 29);
             this.cbkSortbyScore.TabIndex = 9;
@@ -300,7 +183,7 @@
             // 
             this.cbkSortbyPath.AutoSize = true;
             this.cbkSortbyPath.Location = new System.Drawing.Point(140, 83);
-            this.cbkSortbyPath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cbkSortbyPath.Margin = new System.Windows.Forms.Padding(6);
             this.cbkSortbyPath.Name = "cbkSortbyPath";
             this.cbkSortbyPath.Size = new System.Drawing.Size(87, 29);
             this.cbkSortbyPath.TabIndex = 9;
@@ -312,7 +195,7 @@
             // 
             this.cbkSortbyLength.AutoSize = true;
             this.cbkSortbyLength.Location = new System.Drawing.Point(8, 83);
-            this.cbkSortbyLength.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cbkSortbyLength.Margin = new System.Windows.Forms.Padding(6);
             this.cbkSortbyLength.Name = "cbkSortbyLength";
             this.cbkSortbyLength.Size = new System.Drawing.Size(109, 29);
             this.cbkSortbyLength.TabIndex = 9;
@@ -333,52 +216,12 @@
             // txtMinScore
             // 
             this.txtMinScore.Location = new System.Drawing.Point(272, 115);
-            this.txtMinScore.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtMinScore.Margin = new System.Windows.Forms.Padding(6);
             this.txtMinScore.Name = "txtMinScore";
             this.txtMinScore.Size = new System.Drawing.Size(98, 31);
             this.txtMinScore.TabIndex = 11;
             this.txtMinScore.Text = "25";
             this.txtMinScore.TextChanged += new System.EventHandler(this.txtMinScore_TextChanged);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 50);
-            this.label9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(147, 25);
-            this.label9.TabIndex = 10;
-            this.label9.Text = "Words Found:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 98);
-            this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(215, 25);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "Max. Possible Score:";
-            // 
-            // lblWords
-            // 
-            this.lblWords.AutoSize = true;
-            this.lblWords.Location = new System.Drawing.Point(232, 50);
-            this.lblWords.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.lblWords.Name = "lblWords";
-            this.lblWords.Size = new System.Drawing.Size(24, 25);
-            this.lblWords.TabIndex = 10;
-            this.lblWords.Text = "0";
-            // 
-            // lblMaxPossibleScore
-            // 
-            this.lblMaxPossibleScore.AutoSize = true;
-            this.lblMaxPossibleScore.Location = new System.Drawing.Point(232, 98);
-            this.lblMaxPossibleScore.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.lblMaxPossibleScore.Name = "lblMaxPossibleScore";
-            this.lblMaxPossibleScore.Size = new System.Drawing.Size(24, 25);
-            this.lblMaxPossibleScore.TabIndex = 10;
-            this.lblMaxPossibleScore.Text = "0";
             // 
             // label11
             // 
@@ -399,7 +242,7 @@
             this.panel1.Controls.Add(this.chkDictUKACD);
             this.panel1.Controls.Add(this.chkDictEnable);
             this.panel1.Location = new System.Drawing.Point(0, 40);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(392, 48);
             this.panel1.TabIndex = 12;
@@ -408,7 +251,7 @@
             // 
             this.chkDictOSPD.AutoSize = true;
             this.chkDictOSPD.Location = new System.Drawing.Point(154, 6);
-            this.chkDictOSPD.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.chkDictOSPD.Margin = new System.Windows.Forms.Padding(6);
             this.chkDictOSPD.Name = "chkDictOSPD";
             this.chkDictOSPD.Size = new System.Drawing.Size(102, 29);
             this.chkDictOSPD.TabIndex = 1;
@@ -420,7 +263,7 @@
             // 
             this.chkDictUKACD.AutoSize = true;
             this.chkDictUKACD.Location = new System.Drawing.Point(274, 6);
-            this.chkDictUKACD.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.chkDictUKACD.Margin = new System.Windows.Forms.Padding(6);
             this.chkDictUKACD.Name = "chkDictUKACD";
             this.chkDictUKACD.Size = new System.Drawing.Size(116, 29);
             this.chkDictUKACD.TabIndex = 2;
@@ -433,7 +276,7 @@
             this.chkDictEnable.AutoSize = true;
             this.chkDictEnable.Checked = true;
             this.chkDictEnable.Location = new System.Drawing.Point(8, 6);
-            this.chkDictEnable.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.chkDictEnable.Margin = new System.Windows.Forms.Padding(6);
             this.chkDictEnable.Name = "chkDictEnable";
             this.chkDictEnable.Size = new System.Drawing.Size(126, 29);
             this.chkDictEnable.TabIndex = 0;
@@ -455,38 +298,12 @@
             this.label12.Text = "SORT ORDER";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label13
-            // 
-            this.label13.BackColor = System.Drawing.Color.Blue;
-            this.label13.ForeColor = System.Drawing.Color.Yellow;
-            this.label13.Location = new System.Drawing.Point(2, 2);
-            this.label13.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.label13.Name = "label13";
-            this.label13.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.label13.Size = new System.Drawing.Size(398, 31);
-            this.label13.TabIndex = 7;
-            this.label13.Text = "STATS";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.label13);
-            this.panel2.Controls.Add(this.label9);
-            this.panel2.Controls.Add(this.lblWords);
-            this.panel2.Controls.Add(this.label10);
-            this.panel2.Controls.Add(this.lblMaxPossibleScore);
-            this.panel2.Location = new System.Drawing.Point(0, 833);
-            this.panel2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(400, 135);
-            this.panel2.TabIndex = 13;
-            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.label11);
             this.panel3.Controls.Add(this.panel1);
-            this.panel3.Location = new System.Drawing.Point(0, 554);
-            this.panel3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel3.Location = new System.Drawing.Point(0, 638);
+            this.panel3.Margin = new System.Windows.Forms.Padding(6);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(400, 92);
             this.panel3.TabIndex = 14;
@@ -500,8 +317,8 @@
             this.panel4.Controls.Add(this.txtMinScore);
             this.panel4.Controls.Add(this.cbkSortbyLength);
             this.panel4.Controls.Add(this.label8);
-            this.panel4.Location = new System.Drawing.Point(0, 658);
-            this.panel4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel4.Location = new System.Drawing.Point(0, 742);
+            this.panel4.Margin = new System.Windows.Forms.Padding(6);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(400, 163);
             this.panel4.TabIndex = 15;
@@ -510,7 +327,7 @@
             // 
             this.cbkSortbyScoreComplexity.AutoSize = true;
             this.cbkSortbyScoreComplexity.Location = new System.Drawing.Point(140, 38);
-            this.cbkSortbyScoreComplexity.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cbkSortbyScoreComplexity.Margin = new System.Windows.Forms.Padding(6);
             this.cbkSortbyScoreComplexity.Name = "cbkSortbyScoreComplexity";
             this.cbkSortbyScoreComplexity.Size = new System.Drawing.Size(211, 29);
             this.cbkSortbyScoreComplexity.TabIndex = 9;
@@ -520,20 +337,54 @@
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.txtContains);
+            this.panel5.Controls.Add(this.txtEndWith);
             this.panel5.Controls.Add(this.label2);
+            this.panel5.Controls.Add(this.txtStartWith);
+            this.panel5.Controls.Add(this.lblEndWith);
+            this.panel5.Controls.Add(this.lblStartWith);
             this.panel5.Controls.Add(this.btnClear);
-            this.panel5.Controls.Add(this.label3);
-            this.panel5.Controls.Add(this.lblDL);
-            this.panel5.Controls.Add(this.lblTL);
-            this.panel5.Controls.Add(this.lblDW);
-            this.panel5.Controls.Add(this.lblNoSpecial);
-            this.panel5.Controls.Add(this.lblTW);
-            this.panel5.Controls.Add(this.lblMI);
             this.panel5.Location = new System.Drawing.Point(0, 390);
-            this.panel5.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel5.Margin = new System.Windows.Forms.Padding(6);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(400, 152);
+            this.panel5.Size = new System.Drawing.Size(400, 242);
             this.panel5.TabIndex = 16;
+            // 
+            // txtEndWith
+            // 
+            this.txtEndWith.Location = new System.Drawing.Point(134, 54);
+            this.txtEndWith.Margin = new System.Windows.Forms.Padding(6);
+            this.txtEndWith.Name = "txtEndWith";
+            this.txtEndWith.Size = new System.Drawing.Size(260, 31);
+            this.txtEndWith.TabIndex = 13;
+            this.txtEndWith.TextChanged += new System.EventHandler(this.txtEndWith_TextChanged);
+            // 
+            // txtStartWith
+            // 
+            this.txtStartWith.Location = new System.Drawing.Point(134, 11);
+            this.txtStartWith.Margin = new System.Windows.Forms.Padding(6);
+            this.txtStartWith.Name = "txtStartWith";
+            this.txtStartWith.Size = new System.Drawing.Size(260, 31);
+            this.txtStartWith.TabIndex = 12;
+            this.txtStartWith.TextChanged += new System.EventHandler(this.txtStartWith_TextChanged);
+            // 
+            // lblEndWith
+            // 
+            this.lblEndWith.AutoSize = true;
+            this.lblEndWith.Location = new System.Drawing.Point(13, 57);
+            this.lblEndWith.Name = "lblEndWith";
+            this.lblEndWith.Size = new System.Drawing.Size(105, 25);
+            this.lblEndWith.TabIndex = 6;
+            this.lblEndWith.Text = "End With:";
+            // 
+            // lblStartWith
+            // 
+            this.lblStartWith.AutoSize = true;
+            this.lblStartWith.Location = new System.Drawing.Point(13, 14);
+            this.lblStartWith.Name = "lblStartWith";
+            this.lblStartWith.Size = new System.Drawing.Size(112, 25);
+            this.lblStartWith.TabIndex = 5;
+            this.lblStartWith.Text = "Start With:";
             // 
             // SelectedWordPanel
             // 
@@ -544,8 +395,8 @@
             this.SelectedWordPanel.Controls.Add(this.lblCurrentWordCrossovers);
             this.SelectedWordPanel.Controls.Add(this.label17);
             this.SelectedWordPanel.Controls.Add(this.lblCurrentWordDirChanges);
-            this.SelectedWordPanel.Location = new System.Drawing.Point(0, 979);
-            this.SelectedWordPanel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.SelectedWordPanel.Location = new System.Drawing.Point(0, 1063);
+            this.SelectedWordPanel.Margin = new System.Windows.Forms.Padding(6);
             this.SelectedWordPanel.Name = "SelectedWordPanel";
             this.SelectedWordPanel.Size = new System.Drawing.Size(400, 175);
             this.SelectedWordPanel.TabIndex = 17;
@@ -623,76 +474,6 @@
             this.lblCurrentWordDirChanges.TabIndex = 10;
             this.lblCurrentWordDirChanges.Text = "0";
             // 
-            // btnDoConsole
-            // 
-            this.btnDoConsole.Location = new System.Drawing.Point(6, 38);
-            this.btnDoConsole.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.btnDoConsole.Name = "btnDoConsole";
-            this.btnDoConsole.Size = new System.Drawing.Size(182, 44);
-            this.btnDoConsole.TabIndex = 18;
-            this.btnDoConsole.Text = "All Words";
-            this.btnDoConsole.UseVisualStyleBackColor = true;
-            this.btnDoConsole.Click += new System.EventHandler(this.btnDoConsole_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(6, 90);
-            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(182, 44);
-            this.button1.TabIndex = 19;
-            this.button1.Text = "Random";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // chkShuffle
-            // 
-            this.chkShuffle.AutoSize = true;
-            this.chkShuffle.Checked = true;
-            this.chkShuffle.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShuffle.Location = new System.Drawing.Point(206, 46);
-            this.chkShuffle.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.chkShuffle.Name = "chkShuffle";
-            this.chkShuffle.Size = new System.Drawing.Size(111, 29);
-            this.chkShuffle.TabIndex = 20;
-            this.chkShuffle.Text = "Shuffle";
-            this.chkShuffle.UseVisualStyleBackColor = true;
-            // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.txtMonkeyRandomAmount);
-            this.panel6.Controls.Add(this.label4);
-            this.panel6.Controls.Add(this.button1);
-            this.panel6.Controls.Add(this.chkShuffle);
-            this.panel6.Controls.Add(this.btnDoConsole);
-            this.panel6.Location = new System.Drawing.Point(0, 1165);
-            this.panel6.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(400, 148);
-            this.panel6.TabIndex = 21;
-            // 
-            // txtMonkeyRandomAmount
-            // 
-            this.txtMonkeyRandomAmount.Location = new System.Drawing.Point(200, 94);
-            this.txtMonkeyRandomAmount.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.txtMonkeyRandomAmount.Name = "txtMonkeyRandomAmount";
-            this.txtMonkeyRandomAmount.Size = new System.Drawing.Size(116, 31);
-            this.txtMonkeyRandomAmount.TabIndex = 21;
-            this.txtMonkeyRandomAmount.Text = "35%";
-            // 
-            // label4
-            // 
-            this.label4.BackColor = System.Drawing.Color.Blue;
-            this.label4.ForeColor = System.Drawing.Color.Yellow;
-            this.label4.Location = new System.Drawing.Point(2, 2);
-            this.label4.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.label4.Name = "label4";
-            this.label4.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.label4.Size = new System.Drawing.Size(398, 31);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Monkey Device";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
@@ -714,7 +495,6 @@
             // 
             this.panel7.Controls.Add(this.label1);
             this.panel7.Controls.Add(this.pnlLetters);
-            this.panel7.Controls.Add(this.panel6);
             this.panel7.Controls.Add(this.panel2);
             this.panel7.Controls.Add(this.SelectedWordPanel);
             this.panel7.Controls.Add(this.panel3);
@@ -722,18 +502,19 @@
             this.panel7.Controls.Add(this.panel4);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel7.Location = new System.Drawing.Point(0, 0);
-            this.panel7.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel7.Margin = new System.Windows.Forms.Padding(6);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(406, 1441);
             this.panel7.TabIndex = 23;
             // 
             // panel8
             // 
+            this.panel8.Controls.Add(this.customTextBox1);
             this.panel8.Controls.Add(this.lstResults);
             this.panel8.Controls.Add(this.panel9);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(406, 0);
-            this.panel8.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel8.Margin = new System.Windows.Forms.Padding(6);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(990, 1441);
             this.panel8.TabIndex = 24;
@@ -743,12 +524,105 @@
             this.panel9.Controls.Add(this.lblResults);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel9.Location = new System.Drawing.Point(0, 0);
-            this.panel9.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel9.Margin = new System.Windows.Forms.Padding(6);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(990, 27);
             this.panel9.TabIndex = 6;
             // 
-            // Form1
+            // customTextBox1
+            // 
+            this.customTextBox1.Location = new System.Drawing.Point(444, 218);
+            this.customTextBox1.Modifier = CustomTextBox.ScoreModifier.None;
+            this.customTextBox1.Name = "customTextBox1";
+            this.customTextBox1.ShortcutsEnabled = false;
+            this.customTextBox1.Size = new System.Drawing.Size(100, 31);
+            this.customTextBox1.TabIndex = 7;
+            // 
+            // lblMaxPossibleScore
+            // 
+            this.lblMaxPossibleScore.AutoSize = true;
+            this.lblMaxPossibleScore.Location = new System.Drawing.Point(232, 98);
+            this.lblMaxPossibleScore.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblMaxPossibleScore.Name = "lblMaxPossibleScore";
+            this.lblMaxPossibleScore.Size = new System.Drawing.Size(24, 25);
+            this.lblMaxPossibleScore.TabIndex = 10;
+            this.lblMaxPossibleScore.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 98);
+            this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(215, 25);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Max. Possible Score:";
+            // 
+            // lblWords
+            // 
+            this.lblWords.AutoSize = true;
+            this.lblWords.Location = new System.Drawing.Point(232, 50);
+            this.lblWords.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblWords.Name = "lblWords";
+            this.lblWords.Size = new System.Drawing.Size(24, 25);
+            this.lblWords.TabIndex = 10;
+            this.lblWords.Text = "0";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 50);
+            this.label9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(147, 25);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Words Found:";
+            // 
+            // label13
+            // 
+            this.label13.BackColor = System.Drawing.Color.Blue;
+            this.label13.ForeColor = System.Drawing.Color.Yellow;
+            this.label13.Location = new System.Drawing.Point(2, 2);
+            this.label13.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
+            this.label13.Name = "label13";
+            this.label13.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.label13.Size = new System.Drawing.Size(398, 31);
+            this.label13.TabIndex = 7;
+            this.label13.Text = "STATS";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.label13);
+            this.panel2.Controls.Add(this.label9);
+            this.panel2.Controls.Add(this.lblWords);
+            this.panel2.Controls.Add(this.label10);
+            this.panel2.Controls.Add(this.lblMaxPossibleScore);
+            this.panel2.Location = new System.Drawing.Point(0, 917);
+            this.panel2.Margin = new System.Windows.Forms.Padding(6);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(400, 135);
+            this.panel2.TabIndex = 13;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 100);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(103, 25);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Contains:";
+            // 
+            // txtContains
+            // 
+            this.txtContains.Location = new System.Drawing.Point(134, 97);
+            this.txtContains.Margin = new System.Windows.Forms.Padding(6);
+            this.txtContains.Name = "txtContains";
+            this.txtContains.Size = new System.Drawing.Size(260, 31);
+            this.txtContains.TabIndex = 13;
+            this.txtContains.TextChanged += new System.EventHandler(this.txtEndWith_TextChanged);
+            // 
+            // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -756,30 +630,30 @@
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.statusStrip1);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.Name = "Form1";
+            this.Margin = new System.Windows.Forms.Padding(6);
+            this.Name = "Form2";
             this.Text = "Word Finder";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.pnlLetters.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
             this.SelectedWordPanel.ResumeLayout(false);
             this.SelectedWordPanel.PerformLayout();
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -788,35 +662,20 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlLetters;
-        private System.Windows.Forms.TableLayoutPanel lettersGrid;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label lblResults;
         private System.Windows.Forms.ListBox lstResults;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label lblDL;
-        private System.Windows.Forms.Label lblTL;
-        private System.Windows.Forms.Label lblDW;
-        private System.Windows.Forms.Label lblTW;
-        private System.Windows.Forms.Label lblMI;
-        private System.Windows.Forms.Label lblNoSpecial;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.RadioButton cbkSortbyPath;
         private System.Windows.Forms.RadioButton cbkSortbyLength;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtMinScore;
         private System.Windows.Forms.RadioButton cbkSortbyScore;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label lblWords;
-        private System.Windows.Forms.Label lblMaxPossibleScore;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton chkDictOSPD;
         private System.Windows.Forms.RadioButton chkDictEnable;
         private System.Windows.Forms.RadioButton chkDictUKACD;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.RadioButton cbkSortbyScoreComplexity;
@@ -829,17 +688,25 @@
         private System.Windows.Forms.Label lblCurrentWordCrossovers;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label lblCurrentWordDirChanges;
-        private System.Windows.Forms.Button btnDoConsole;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox chkShuffle;
-        private System.Windows.Forms.TextBox txtMonkeyRandomAmount;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Panel panel7;
+        private CustomTextBox customTextBox1;
+        private System.Windows.Forms.TableLayoutPanel lettersGrid;
+        private System.Windows.Forms.TextBox txtEndWith;
+        private System.Windows.Forms.TextBox txtStartWith;
+        private System.Windows.Forms.Label lblEndWith;
+        private System.Windows.Forms.Label lblStartWith;
+        private System.Windows.Forms.TextBox txtContains;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblWords;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label lblMaxPossibleScore;
     }
 }
 
