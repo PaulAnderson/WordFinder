@@ -29,7 +29,9 @@ namespace WordFinder
 #endif 
         const int minWordLength = 2;
         const int maxWordLength = 15;
-        const int gridSize = 4;
+        const int gridSizeX = 4;
+        const int gridSizeY = 4;
+
 
         private char[,] letters;
         private int[,] letterMultipliers;
@@ -57,9 +59,9 @@ namespace WordFinder
             //todo - if increase grid size beyond 4, add rows and columns to gridLayoutPanel
 
             //Set up textboxes and letter array
-            for (int r = 0; r < gridSize; r++)
+            for (int r = 0; r < gridSizeX; r++)
             {
-                for (int c = 0; c < gridSize; c++)
+                for (int c = 0; c < gridSizeY; c++)
                 {
                     CustomTextBox newTextBox = new CustomTextBox();
                     letterControls[r, c] = newTextBox;
@@ -159,9 +161,9 @@ namespace WordFinder
             usingMandatoryTiles = false;
             mandatoryLocations = new List<HistoryItem>();
 
-            for (int r = 0; r < gridSize; r++)
+            for (int r = 0; r < gridSizeX; r++)
             {
-                for (int c = 0; c < gridSize; c++)
+                for (int c = 0; c < gridSizeY; c++)
                 {
                     if (!string.IsNullOrWhiteSpace(letterControls[r,c].Text))
                     {
@@ -379,9 +381,9 @@ namespace WordFinder
         private bool checkBoard()
         {
             var foundLetters = 0;
-            for (int r = 0; r < gridSize; r++)
+            for (int r = 0; r < gridSizeX; r++)
             {
-                for (int c = 0; c < gridSize; c++)
+                for (int c = 0; c < gridSizeY; c++)
                 {
                     if (Char.IsLetter(letters[r, c]))
                     {
@@ -393,9 +395,9 @@ namespace WordFinder
         }
         private void findWords()
         {
-            for (int r = 0; r < gridSize; r++)
+            for (int r = 0; r < gridSizeX; r++)
             {
-                for (int c = 0; c < gridSize; c++)
+                for (int c = 0; c < gridSizeY; c++)
                 {
                     findWords(r, c, new History(), "");
                 }
@@ -461,9 +463,9 @@ namespace WordFinder
             }
 
             //Explore alternate paths from this location
-            for (int newRow = 0; newRow < gridSize; newRow++)
+            for (int newRow = 0; newRow < gridSizeX; newRow++)
             {
-                for (int newCol = 0; newCol < gridSize; newCol++)
+                for (int newCol = 0; newCol < gridSizeY; newCol++)
                 {
                     if (!(newRow == r && newCol == c) && !hist.Contains(newRow, newCol) && letters[newRow, newCol] != ' ')
                     {
@@ -513,9 +515,9 @@ namespace WordFinder
         }
         private void ClearLetterColours()
         {
-            for (int r = 0; r < gridSize; r++)
+            for (int r = 0; r < gridSizeX; r++)
             {
-                for (int c = 0; c < gridSize; c++)
+                for (int c = 0; c < gridSizeY; c++)
                 {
                     letterControls[r, c].BackColor = Color.White;
                 }
@@ -553,9 +555,9 @@ namespace WordFinder
                 }
             }
 
-            for (int r = 0; r < gridSize; r++)
+            for (int r = 0; r < gridSizeX; r++)
             {
-                for (int c = 0; c < gridSize; c++)
+                for (int c = 0; c < gridSizeY; c++)
                 {
                     letterControls[r, c].Text = "";
                     letterControls[r, c].Modifier = CustomTextBox.ScoreModifier.None; 
@@ -589,9 +591,9 @@ namespace WordFinder
 
         private void SetLetterModifiers(CustomTextBox.ScoreModifier modifier)
         {
-            for (int r = 0; r < gridSize; r++)
+            for (int r = 0; r < gridSizeX; r++)
             {
-                for (int c = 0; c < gridSize; c++)
+                for (int c = 0; c < gridSizeY; c++)
                 {
                     letterControls[r, c].Modifier = modifier;
                 }
