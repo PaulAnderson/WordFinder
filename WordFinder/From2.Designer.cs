@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.pnlLetters = new System.Windows.Forms.Panel();
-            this.lettersGrid = new WordFinder.Letters();
+            this.lettersGrid = new Letters();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblResults = new System.Windows.Forms.Label();
             this.lstResults = new System.Windows.Forms.ListBox();
