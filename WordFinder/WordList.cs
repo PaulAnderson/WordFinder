@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace WordFinder
 {
   
-    public class WordList : WordSearchList
+    class WordList : WordSearchList
     {
 
 #if DEBUG

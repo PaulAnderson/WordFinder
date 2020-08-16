@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using WordFinder;
 
 class Word
 {
@@ -40,6 +41,12 @@ class WordScorer
     private int[,] letterMultipliers;
     private int[,] wordMultipliers;
 
+    public WordScorer(BoardLettersModel boardModel)
+    {
+        this.letters = boardModel.Letters;
+        this.letterMultipliers = boardModel.LetterMultipliers;
+        this.wordMultipliers = boardModel.WordMultipliers;
+    }
     public WordScorer(char[,] letters, int[,] letterMultipliers, int[,] wordMultipliers)
     {
         this.letters = letters;

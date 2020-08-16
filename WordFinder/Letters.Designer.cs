@@ -1,4 +1,4 @@
-﻿namespace WordFinder.GridGame
+﻿namespace WordFinder
 {
     partial class Letters
     {
@@ -62,6 +62,7 @@
             this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.lettersGrid.Size = new System.Drawing.Size(392, 346);
             this.lettersGrid.TabIndex = 3;
+            this.lettersGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.lettersGrid_Paint);
             // 
             // Letters
             // 

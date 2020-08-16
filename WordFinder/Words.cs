@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WordFinder
 {
-    public class Words : WordSearchList
+    class Words : WordSearchList
     {
         private List<String> wordList { get; set; }
         private Dictionary<String, bool> wordsDict { get; set; }

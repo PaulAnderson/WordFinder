@@ -30,7 +30,6 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.pnlLetters = new System.Windows.Forms.Panel();
-            this.lettersGrid = new System.Windows.Forms.TableLayoutPanel();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblResults = new System.Windows.Forms.Label();
             this.lstResults = new System.Windows.Forms.ListBox();
@@ -49,7 +48,9 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.cbkSortbyScoreComplexity = new System.Windows.Forms.RadioButton();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.txtContains = new System.Windows.Forms.TextBox();
             this.txtEndWith = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.txtStartWith = new System.Windows.Forms.TextBox();
             this.lblEndWith = new System.Windows.Forms.Label();
             this.lblStartWith = new System.Windows.Forms.Label();
@@ -64,17 +65,16 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.lblWords = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.lblMaxPossibleScore = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
             this.customTextBox1 = new CustomTextBox();
-            this.lblMaxPossibleScore = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.lblWords = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtContains = new System.Windows.Forms.TextBox();
+            this.lettersGrid = new WordFinder.Letters();
             this.pnlLetters.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -83,9 +83,9 @@
             this.SelectedWordPanel.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel7.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.panel8.SuspendLayout();
             this.panel9.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -106,27 +106,6 @@
             this.pnlLetters.Name = "pnlLetters";
             this.pnlLetters.Size = new System.Drawing.Size(392, 346);
             this.pnlLetters.TabIndex = 2;
-            // 
-            // lettersGrid
-            // 
-            this.lettersGrid.BackColor = System.Drawing.Color.White;
-            this.lettersGrid.ColumnCount = 4;
-            this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lettersGrid.Font = new System.Drawing.Font("Consolas", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lettersGrid.Location = new System.Drawing.Point(0, 0);
-            this.lettersGrid.Margin = new System.Windows.Forms.Padding(6);
-            this.lettersGrid.Name = "lettersGrid";
-            this.lettersGrid.RowCount = 4;
-            this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.Size = new System.Drawing.Size(392, 346);
-            this.lettersGrid.TabIndex = 4;
             // 
             // btnClear
             // 
@@ -350,6 +329,15 @@
             this.panel5.Size = new System.Drawing.Size(400, 242);
             this.panel5.TabIndex = 16;
             // 
+            // txtContains
+            // 
+            this.txtContains.Location = new System.Drawing.Point(134, 97);
+            this.txtContains.Margin = new System.Windows.Forms.Padding(6);
+            this.txtContains.Name = "txtContains";
+            this.txtContains.Size = new System.Drawing.Size(260, 31);
+            this.txtContains.TabIndex = 13;
+            this.txtContains.TextChanged += new System.EventHandler(this.txtEndWith_TextChanged);
+            // 
             // txtEndWith
             // 
             this.txtEndWith.Location = new System.Drawing.Point(134, 54);
@@ -358,6 +346,15 @@
             this.txtEndWith.Size = new System.Drawing.Size(260, 31);
             this.txtEndWith.TabIndex = 13;
             this.txtEndWith.TextChanged += new System.EventHandler(this.txtEndWith_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 100);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(103, 25);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Contains:";
             // 
             // txtStartWith
             // 
@@ -507,6 +504,72 @@
             this.panel7.Size = new System.Drawing.Size(406, 1441);
             this.panel7.TabIndex = 23;
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.label13);
+            this.panel2.Controls.Add(this.label9);
+            this.panel2.Controls.Add(this.lblWords);
+            this.panel2.Controls.Add(this.label10);
+            this.panel2.Controls.Add(this.lblMaxPossibleScore);
+            this.panel2.Location = new System.Drawing.Point(0, 917);
+            this.panel2.Margin = new System.Windows.Forms.Padding(6);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(400, 135);
+            this.panel2.TabIndex = 13;
+            // 
+            // label13
+            // 
+            this.label13.BackColor = System.Drawing.Color.Blue;
+            this.label13.ForeColor = System.Drawing.Color.Yellow;
+            this.label13.Location = new System.Drawing.Point(2, 2);
+            this.label13.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
+            this.label13.Name = "label13";
+            this.label13.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.label13.Size = new System.Drawing.Size(398, 31);
+            this.label13.TabIndex = 7;
+            this.label13.Text = "STATS";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 50);
+            this.label9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(147, 25);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Words Found:";
+            // 
+            // lblWords
+            // 
+            this.lblWords.AutoSize = true;
+            this.lblWords.Location = new System.Drawing.Point(232, 50);
+            this.lblWords.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblWords.Name = "lblWords";
+            this.lblWords.Size = new System.Drawing.Size(24, 25);
+            this.lblWords.TabIndex = 10;
+            this.lblWords.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 98);
+            this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(215, 25);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Max. Possible Score:";
+            // 
+            // lblMaxPossibleScore
+            // 
+            this.lblMaxPossibleScore.AutoSize = true;
+            this.lblMaxPossibleScore.Location = new System.Drawing.Point(232, 98);
+            this.lblMaxPossibleScore.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.lblMaxPossibleScore.Name = "lblMaxPossibleScore";
+            this.lblMaxPossibleScore.Size = new System.Drawing.Size(24, 25);
+            this.lblMaxPossibleScore.TabIndex = 10;
+            this.lblMaxPossibleScore.Text = "0";
+            // 
             // panel8
             // 
             this.panel8.Controls.Add(this.customTextBox1);
@@ -538,89 +601,17 @@
             this.customTextBox1.Size = new System.Drawing.Size(100, 31);
             this.customTextBox1.TabIndex = 7;
             // 
-            // lblMaxPossibleScore
+            // lettersGrid
             // 
-            this.lblMaxPossibleScore.AutoSize = true;
-            this.lblMaxPossibleScore.Location = new System.Drawing.Point(232, 98);
-            this.lblMaxPossibleScore.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.lblMaxPossibleScore.Name = "lblMaxPossibleScore";
-            this.lblMaxPossibleScore.Size = new System.Drawing.Size(24, 25);
-            this.lblMaxPossibleScore.TabIndex = 10;
-            this.lblMaxPossibleScore.Text = "0";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 98);
-            this.label10.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(215, 25);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "Max. Possible Score:";
-            // 
-            // lblWords
-            // 
-            this.lblWords.AutoSize = true;
-            this.lblWords.Location = new System.Drawing.Point(232, 50);
-            this.lblWords.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.lblWords.Name = "lblWords";
-            this.lblWords.Size = new System.Drawing.Size(24, 25);
-            this.lblWords.TabIndex = 10;
-            this.lblWords.Text = "0";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 50);
-            this.label9.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(147, 25);
-            this.label9.TabIndex = 10;
-            this.label9.Text = "Words Found:";
-            // 
-            // label13
-            // 
-            this.label13.BackColor = System.Drawing.Color.Blue;
-            this.label13.ForeColor = System.Drawing.Color.Yellow;
-            this.label13.Location = new System.Drawing.Point(2, 2);
-            this.label13.Margin = new System.Windows.Forms.Padding(6, 2, 6, 0);
-            this.label13.Name = "label13";
-            this.label13.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.label13.Size = new System.Drawing.Size(398, 31);
-            this.label13.TabIndex = 7;
-            this.label13.Text = "STATS";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.label13);
-            this.panel2.Controls.Add(this.label9);
-            this.panel2.Controls.Add(this.lblWords);
-            this.panel2.Controls.Add(this.label10);
-            this.panel2.Controls.Add(this.lblMaxPossibleScore);
-            this.panel2.Location = new System.Drawing.Point(0, 917);
-            this.panel2.Margin = new System.Windows.Forms.Padding(6);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(400, 135);
-            this.panel2.TabIndex = 13;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 100);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(103, 25);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Contains:";
-            // 
-            // txtContains
-            // 
-            this.txtContains.Location = new System.Drawing.Point(134, 97);
-            this.txtContains.Margin = new System.Windows.Forms.Padding(6);
-            this.txtContains.Name = "txtContains";
-            this.txtContains.Size = new System.Drawing.Size(260, 31);
-            this.txtContains.TabIndex = 13;
-            this.txtContains.TextChanged += new System.EventHandler(this.txtEndWith_TextChanged);
+            this.lettersGrid.AutoSize = true;
+            this.lettersGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.lettersGrid.Cols = 0;
+            this.lettersGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lettersGrid.Location = new System.Drawing.Point(0, 0);
+            this.lettersGrid.Name = "lettersGrid";
+            this.lettersGrid.Rows = 0;
+            this.lettersGrid.Size = new System.Drawing.Size(392, 346);
+            this.lettersGrid.TabIndex = 0;
             // 
             // Form2
             // 
@@ -635,6 +626,7 @@
             this.Text = "Word Finder";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.pnlLetters.ResumeLayout(false);
+            this.pnlLetters.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -648,12 +640,12 @@
             this.statusStrip1.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -694,7 +686,6 @@
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Panel panel7;
         private CustomTextBox customTextBox1;
-        private System.Windows.Forms.TableLayoutPanel lettersGrid;
         private System.Windows.Forms.TextBox txtEndWith;
         private System.Windows.Forms.TextBox txtStartWith;
         private System.Windows.Forms.Label lblEndWith;
@@ -707,6 +698,7 @@
         private System.Windows.Forms.Label lblWords;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lblMaxPossibleScore;
+        private Letters lettersGrid;
     }
 }
 

@@ -47,47 +47,50 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GridGame\DictionaryLoader.cs" />
-    <Compile Include="GridGame\WordList.cs" />
-    <Compile Include="GridGame\Direction.cs" />
-    <Compile Include="GridGame\From2.cs">
+    <Compile Include="BoardController.cs" />
+    <Compile Include="BoardLettersModel.cs" />
+    <Compile Include="DictionaryLoader.cs" />
+    <Compile Include="Public.cs" />
+    <Compile Include="WordList.cs" />
+    <Compile Include="Direction.cs" />
+    <Compile Include="From2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GridGame\From2.Designer.cs">
+    <Compile Include="From2.Designer.cs">
       <DependentUpon>From2.cs</DependentUpon>
     </Compile>
-    <Compile Include="GridGame\Form1.cs">
+    <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GridGame\Form1.Designer.cs">
+    <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GridGame\History.cs" />
-    <Compile Include="GridGame\Letters.cs">
+    <Compile Include="History.cs" />
+    <Compile Include="Letters.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GridGame\Letters.Designer.cs">
+    <Compile Include="Letters.Designer.cs">
       <DependentUpon>Letters.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GridGame\ResultWord.cs" />
-    <Compile Include="GridGame\SearchTree.cs" />
+    <Compile Include="ResultWord.cs" />
+    <Compile Include="SearchTree.cs" />
     <Compile Include="StartForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="StartForm.Designer.cs">
       <DependentUpon>StartForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GridGame\Words.cs" />
-    <Compile Include="GridGame\WordSearchList.cs" />
-    <EmbeddedResource Include="GridGame\From2.resx">
+    <Compile Include="Words.cs" />
+    <Compile Include="WordSearchList.cs" />
+    <EmbeddedResource Include="From2.resx">
       <DependentUpon>From2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GridGame\Form1.resx">
+    <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GridGame\Letters.resx">
+    <EmbeddedResource Include="Letters.resx">
       <DependentUpon>Letters.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -100,7 +103,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GridGame\CustomTextBox.cs">
+    <Compile Include="CustomTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="StartForm.resx">
@@ -117,6 +120,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="GridGame\" />
     <Folder Include="LettersGame\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

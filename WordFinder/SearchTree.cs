@@ -7,8 +7,8 @@ namespace WordFinder
     class SearchTree
     {
         node root;
-        public LinkedList<node> nodesWithKeys;  //A list of leaf nodes.
-        public class node
+        internal LinkedList<node> nodesWithKeys;  //A list of leaf nodes.
+        internal class node
         {
             public LinkedList<node> childNodes;
             public node parent;
@@ -166,7 +166,7 @@ namespace WordFinder
             currentNode.numericKeys.CopyTo(outputArray, 0);   //convert to array for (safe) return
             return outputArray;
         }
-        public String getStringFromNode(node startNode) {
+        internal String getStringFromNode(node startNode) {
             //node should be a leaf node.
             String result = "";
             node currentNode = startNode;
@@ -179,7 +179,7 @@ namespace WordFinder
 
             return result;
         }
-        public String getStringFromNode(LinkedListNode<node> startNode)
+        internal String getStringFromNode(LinkedListNode<node> startNode)
         {
             //startNode should be a leaf node.
             String result = "";
