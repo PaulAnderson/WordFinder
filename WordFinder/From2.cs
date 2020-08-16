@@ -16,14 +16,12 @@ namespace WordFinder
         const int gridSizeY = 4;
 
         private WordList wordList;
-
         private BoardLettersModel boardModel;
         private BoardController boardController;
-        private List<Word> FoundWords;
-        private Dictionary<String, Word> FoundWordsDict; //use for fast lookups to avoid duplicates
-        private List<Direction> Directions;
+        private WordFinder wordFinder;
+        private List<Word> foundWords;
+        private Word SelectedWord;
 
-        
         public Form2()
         {
             InitializeComponent();
@@ -31,12 +29,16 @@ namespace WordFinder
             wordList = new WordList() { MinWordLength = minWordLength, MaxWordLength = maxWordLength };
             boardModel = new BoardLettersModel(gridSizeX, gridSizeY);
             boardController = new BoardController(boardModel, lettersGrid);
+            wordFinder = new WordFinder(boardModel, wordList);
 
             lettersGrid.TextChanged += LettersGrid_TextChanged;
-            //Set up directions
-            Directions = Direction.get8Directions();
 
-           }
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            LoadSelectedDictionary();
+        }
 
         private void LettersGrid_TextChanged(object sender, EventArgs e)
         {
@@ -45,18 +47,16 @@ namespace WordFinder
 
         private void doFindIfReady()
         {
+            wordFinder.prefix = txtStartWith.Text;
+            wordFinder.suffix = txtEndWith.Text;
+            wordFinder.infix = txtContains.Text;
+
             if (checkBoard())
             {
                 Application.DoEvents();
-                doFind(); //no point waiting, we have all the letters
+                doFind();
             }
         }
-        
-        private void Form2_Load(object sender, EventArgs e)
-        {
-            LoadSelectedDictionary();
-        }
-
       
         private void btnFind_Click(object sender, EventArgs e)
         {
@@ -71,35 +71,32 @@ namespace WordFinder
         private void doFind()
         {
             boardController.ClearLinePath();
-
-            FoundWords = new List<Word>();
-            FoundWordsDict = new Dictionary<String, Word>();
-            findWords();
-
+            foundWords = wordFinder.FindWords();
             populateResultsList();
         }
+
         private void populateResultsList()
         {
             lstResults.Items.Clear();
 
             WordScorer scorer = new WordScorer(boardModel);
-            scorer.SetWordScores(FoundWords);
+            scorer.SetWordScores(foundWords);
 
             //Get no of words and total possible score if all found words played
             int maxTotal = 0;
-            for (int i = 0; i < FoundWords.Count; i++)
+            for (int i = 0; i < foundWords.Count; i++)
             {
-                maxTotal += FoundWords[i].Score;
+                maxTotal += foundWords[i].Score;
             }
             lblMaxPossibleScore.Text = maxTotal.ToString();
-            lblWords.Text = FoundWords.Count.ToString();
+            lblWords.Text = foundWords.Count.ToString();
 
             if (cbkSortbyScore.Checked)
             {
-                FoundWords.Sort(new ScoredWordComparer());
-                FoundWords.Reverse();
+                foundWords.Sort(new ScoredWordComparer());
+                foundWords.Reverse();
                 lstResults.FormattingEnabled = true;
-                foreach (Word word in FoundWords)
+                foreach (Word word in foundWords)
                 {
                     lstResults.Items.Add(word.Text + "  (" + word.Score.ToString()+")");
                 }
@@ -107,10 +104,10 @@ namespace WordFinder
             }
             if (cbkSortbyScoreComplexity.Checked)
             {
-                FoundWords.Sort(new ScoredComplexWordComparer());
-                FoundWords.Reverse();
+                foundWords.Sort(new ScoredComplexWordComparer());
+                foundWords.Reverse();
                 lstResults.FormattingEnabled = true;
-                foreach (Word word in FoundWords)
+                foreach (Word word in foundWords)
                 {
                     lstResults.Items.Add(word.Text + "  (" + word.Score.ToString() + ")");
                 }
@@ -123,28 +120,28 @@ namespace WordFinder
                 if (Int32.TryParse(txtMinScore.Text, out minScore))
                 {
                     //Got the min. score, now remove too-low words
-                    for(int i = FoundWords.Count - 1; i >= 0; i--)
+                    for(int i = foundWords.Count - 1; i >= 0; i--)
                     {
-                        if (FoundWords[i].Score< minScore)
+                        if (foundWords[i].Score< minScore)
                         {
-                            FoundWords.RemoveAt(i);
+                            foundWords.RemoveAt(i);
                         }
                     }
                 }
 
-                FoundWords.Sort(new WordPathComparer());
+                foundWords.Sort(new WordPathComparer());
                 lstResults.FormattingEnabled = true;
-                foreach (Word word in FoundWords)
+                foreach (Word word in foundWords)
                 {
                     lstResults.Items.Add(word.Text + "  (" + word.Score.ToString() + ")");
                 }
             }
             if (cbkSortbyLength.Checked)
             {
-                FoundWords.Sort(new WordLengthComparer());
-                FoundWords.Reverse();
+                foundWords.Sort(new WordLengthComparer());
+                foundWords.Reverse();
 
-                foreach (Word word in FoundWords)
+                foreach (Word word in foundWords)
                 {
                     lstResults.Items.Add(word.Text);
                 }
@@ -156,114 +153,6 @@ namespace WordFinder
             
             return (boardModel.LetterCount > 1);
         }
-        private void findWords()
-        {
-            for (int r = 0; r < gridSizeX; r++)
-            {
-                for (int c = 0; c < gridSizeY; c++)
-                {
-                    findWords(r, c, new History(), "");
-                }
-            }
-            filterWords();
-        }
-        private void findWords(int r, int c, History hist, string prefix)
-        {
-            //Add to history trail and word
-
-            hist.Push(r, c);
-            prefix += boardModel.Letters[r, c];
-
-            if (!wordList.Find(prefix, wholeWord: false))
-            {
-                //prefix not in dictionary, no point continuing this way
-                hist.Pop();
-                return;
-            }
-
-            //only return words passing through one of the mandatory tiles, if enabled.
-            if (!boardModel.UsingMandatoryTiles || hist.Overlaps(boardModel.MandatoryLocations)) { 
-
-                //check if the current path is a valid word
-                if (prefix.Length >= minWordLength && wordList.Find(prefix, wholeWord:true))
-                {
-                    if (!FoundWordsDict.ContainsKey(prefix))
-                    {
-                        Word newWord = new Word(prefix, hist.Copy());
-                        FoundWords.Add(newWord);
-                        FoundWordsDict.Add(prefix, newWord);
-                    }
-                    else {
-                        //found the same word a second time, check to see which one has a higher score, replace if new word has higher score
-                        WordScorer scorer = new WordScorer(boardModel);
-                        Word newWord = new Word(prefix, hist.Copy());
-                        int newWordPathScore = scorer.getWordScore(newWord);
-                        int oldWordPathScore = scorer.getWordScore(FoundWordsDict[prefix]);
-                        if (newWordPathScore > oldWordPathScore)
-                        {
-                            FoundWordsDict[prefix].AlternatePaths.Add(FoundWordsDict[prefix].Path);  
-                            FoundWordsDict[prefix].Path = newWord.Path;
-                        } else {
-                            FoundWordsDict[prefix].AlternatePaths.Add(newWord.Path);  
-                        }
-                    }
-                }
-            }
-
-            //stop recursion if we are at max length
-            if (hist.Count == maxWordLength)
-            {
-                hist.Pop();
-                return;
-            }
-
-            //Explore alternate paths from this location
-            for (int newRow = 0; newRow < gridSizeX; newRow++)
-            {
-                for (int newCol = 0; newCol < gridSizeY; newCol++)
-                {
-                    if (!(newRow == r && newCol == c) && !hist.Contains(newRow, newCol) && boardModel.Letters[newRow, newCol] != ' ')
-                    {
-                        if (boardModel.Letters[newRow, newCol] != '?')
-                        {
-                            findWords(newRow, newCol, hist, prefix);
-                        }
-                        else
-                        {
-                            for (char ch = 'A'; ch <='Z'; ch++)
-                            {
-                                boardModel.Letters[newRow, newCol] = ch;
-                                findWords(newRow, newCol, hist, prefix);
-                            }
-                            boardModel.Letters[newRow, newCol] = '?';
-                        }
-                    }
-                }
-            }
-            hist.Pop();
-        }
-
-        private void filterWords()
-        {
-            var prefix = txtStartWith.Text.ToUpper();
-            var suffix = txtEndWith.Text.ToUpper();
-            var infix =  txtContains.Text.ToUpper();
-
-            for (var i = FoundWords.Count-1; i>=0; i--)
-            {
-                if ((prefix.Length > 0 &&
-                    !FoundWords[i].Text.StartsWith(prefix))
-                || (suffix.Length > 0 &&
-                    !FoundWords[i].Text.EndsWith(suffix))
-                || (infix.Length > 0 &&
-                    !FoundWords[i].Text.Contains(infix))
-                    )
-                {
-                    FoundWords.RemoveAt(i);
-                }
-            }
-        }
-        private Word SelectedWord;
 
         private void lstResults_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -274,7 +163,7 @@ namespace WordFinder
             {
                 word = word.Split(' ')[0];
             }
-            foreach (Word foundWord in FoundWords)
+            foreach (Word foundWord in foundWords)
             {
                 if (word.Equals(foundWord.Text))
                 {
@@ -289,8 +178,6 @@ namespace WordFinder
                 }
             }
         }
-        
-       
 
         private void btnClear_Click(object sender, EventArgs e)
         {
@@ -308,14 +195,10 @@ namespace WordFinder
             boardController.Clear();
         }
         
-       
-        
         private void cbkSortbyScore_CheckedChanged(object sender, EventArgs e)
         {
             doFindIfReady();
         }
-
-
 
         private void lblDL_Click(object sender, EventArgs e)
         {
@@ -385,6 +268,10 @@ namespace WordFinder
         {
             doFindIfReady();
         }
+        private void txtContains_TextChanged(object sender, EventArgs e)
+        {
+            doFindIfReady();
+        }
         private void chkDictOSPD_CheckedChanged(object sender, EventArgs e)
         {
             LoadSelectedDictionary();
@@ -435,9 +322,13 @@ namespace WordFinder
         private void lstResults_Enter_1(object sender, EventArgs e)
         {
             lblStatus.Text = "Press Space bar to scroll current word to top.";
+        }
+
+        private void panel5_Paint(object sender, PaintEventArgs e)
+        {
 
         }
+
+
     }
-
-
 }

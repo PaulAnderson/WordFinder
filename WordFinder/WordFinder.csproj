@@ -51,6 +51,7 @@
     <Compile Include="BoardLettersModel.cs" />
     <Compile Include="DictionaryLoader.cs" />
     <Compile Include="Public.cs" />
+    <Compile Include="WordFinder.cs" />
     <Compile Include="WordList.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="From2.cs">

@@ -30,6 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.pnlLetters = new System.Windows.Forms.Panel();
+            this.lettersGrid = new WordFinder.Letters();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblResults = new System.Windows.Forms.Label();
             this.lstResults = new System.Windows.Forms.ListBox();
@@ -72,9 +73,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.lblMaxPossibleScore = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.panel9 = new System.Windows.Forms.Panel();
             this.customTextBox1 = new CustomTextBox();
-            this.lettersGrid = new WordFinder.Letters();
+            this.panel9 = new System.Windows.Forms.Panel();
             this.pnlLetters.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -106,6 +106,18 @@
             this.pnlLetters.Name = "pnlLetters";
             this.pnlLetters.Size = new System.Drawing.Size(392, 346);
             this.pnlLetters.TabIndex = 2;
+            // 
+            // lettersGrid
+            // 
+            this.lettersGrid.AutoSize = true;
+            this.lettersGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.lettersGrid.Cols = 0;
+            this.lettersGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lettersGrid.Location = new System.Drawing.Point(0, 0);
+            this.lettersGrid.Name = "lettersGrid";
+            this.lettersGrid.Rows = 0;
+            this.lettersGrid.Size = new System.Drawing.Size(392, 346);
+            this.lettersGrid.TabIndex = 0;
             // 
             // btnClear
             // 
@@ -328,6 +340,7 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(400, 242);
             this.panel5.TabIndex = 16;
+            this.panel5.Paint += new System.Windows.Forms.PaintEventHandler(this.panel5_Paint);
             // 
             // txtContains
             // 
@@ -336,7 +349,7 @@
             this.txtContains.Name = "txtContains";
             this.txtContains.Size = new System.Drawing.Size(260, 31);
             this.txtContains.TabIndex = 13;
-            this.txtContains.TextChanged += new System.EventHandler(this.txtEndWith_TextChanged);
+            this.txtContains.TextChanged += new System.EventHandler(this.txtContains_TextChanged);
             // 
             // txtEndWith
             // 
@@ -582,16 +595,6 @@
             this.panel8.Size = new System.Drawing.Size(990, 1441);
             this.panel8.TabIndex = 24;
             // 
-            // panel9
-            // 
-            this.panel9.Controls.Add(this.lblResults);
-            this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel9.Location = new System.Drawing.Point(0, 0);
-            this.panel9.Margin = new System.Windows.Forms.Padding(6);
-            this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(990, 27);
-            this.panel9.TabIndex = 6;
-            // 
             // customTextBox1
             // 
             this.customTextBox1.Location = new System.Drawing.Point(444, 218);
@@ -601,17 +604,15 @@
             this.customTextBox1.Size = new System.Drawing.Size(100, 31);
             this.customTextBox1.TabIndex = 7;
             // 
-            // lettersGrid
+            // panel9
             // 
-            this.lettersGrid.AutoSize = true;
-            this.lettersGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.lettersGrid.Cols = 0;
-            this.lettersGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lettersGrid.Location = new System.Drawing.Point(0, 0);
-            this.lettersGrid.Name = "lettersGrid";
-            this.lettersGrid.Rows = 0;
-            this.lettersGrid.Size = new System.Drawing.Size(392, 346);
-            this.lettersGrid.TabIndex = 0;
+            this.panel9.Controls.Add(this.lblResults);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel9.Location = new System.Drawing.Point(0, 0);
+            this.panel9.Margin = new System.Windows.Forms.Padding(6);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(990, 27);
+            this.panel9.TabIndex = 6;
             // 
             // Form2
             // 
