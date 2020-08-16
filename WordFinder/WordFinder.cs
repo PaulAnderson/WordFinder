@@ -131,11 +131,11 @@ namespace WordFinder
             for (var i = foundWords.Count - 1; i >= 0; i--)
             {
                 if ((prefix?.Length > 0 &&
-                    !foundWords[i].Text.StartsWith(prefix))
+                    !foundWords[i].Text.StartsWith(prefix, StringComparison.InvariantCultureIgnoreCase))
                 || (suffix?.Length > 0 &&
-                    !foundWords[i].Text.EndsWith(suffix))
+                    !foundWords[i].Text.EndsWith(suffix, StringComparison.InvariantCultureIgnoreCase))
                 || (infix?.Length > 0 &&
-                    !foundWords[i].Text.Contains(infix))
+                    !foundWords[i].Text.Contains(infix.ToUpperInvariant()))
                     )
                 {
                     foundWords.RemoveAt(i);
