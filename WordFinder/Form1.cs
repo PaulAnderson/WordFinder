@@ -15,191 +15,53 @@ namespace WordFinder
 
     public partial class Form1 : Form
     {
- 
+
         const int minWordLength = 2;
         const int maxWordLength = 15;
-        const int gridSize = 4;
 
-        private char[,] letters;
-        private int[,] letterMultipliers;
-        private int[,] wordMultipliers;
-        private CustomTextBox[,] letterControls;
+        const int gridSizeX = 4;
+        const int gridSizeY = 4;
 
         private WordList wordList;
+        private BoardLettersModel boardModel;
+        private BoardController boardController;
+        private WordFinder wordFinder;
+        private List<Word> foundWords;
+        private Word SelectedWord;
 
-        private List<Word> FoundWords;
-        private Dictionary<String, Word> FoundWordsDict; //use for fast lookups to avoid duplicates
-        private List<Direction> Directions;
-        private bool usingMandatoryTiles = false;
-        private List<HistoryItem> mandatoryLocations;
-        private DateTime boardLastChangedTime ;
         public Form1()
         {
             InitializeComponent();
 
             wordList = new WordList() { MinWordLength = minWordLength, MaxWordLength = maxWordLength };
-            letters = new char[gridSize, gridSize];
-            letterMultipliers = new int[gridSize, gridSize];
-            wordMultipliers = new int[gridSize, gridSize];
-            letterControls = new CustomTextBox[gridSize, gridSize];
+            boardModel = new BoardLettersModel(gridSizeX, gridSizeY);
+            boardController = new BoardController(boardModel, lettersGrid);
+            wordFinder = new WordFinder(boardModel, wordList, new CardinalDirectionStrategy());
 
-            //todo - if increase grid size beyond 4, add rows and columns to gridLayoutPanel
+            lettersGrid.TextChanged += LettersGrid_TextChanged;
+        }
 
-            //Set up textboxes and letter array
-            for (int r = 0; r < gridSize; r++)
-            {
-                for (int c = 0; c < gridSize; c++)
-                {
-                    CustomTextBox newTextBox = new CustomTextBox();
-                    letterControls[r, c] = newTextBox;
-                    letters[r, c] = ' ';
-                    lettersGrid.Controls.Add(newTextBox, c, r);
-                    newTextBox.Dock = DockStyle.Fill;
-                    newTextBox.MaxLength = 1;
-                    newTextBox.TextAlign = HorizontalAlignment.Center;
-                    newTextBox.TextChanged += NewTextBox_TextChanged;
-                    newTextBox.Enter += NewTextBox_Enter;
-                    newTextBox.PreviewKeyDown += NewTextBox_PreviewKeyDown;
-                    newTextBox.Changed += NewTextBox_Changed;
-                }
-            }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            LoadSelectedDictionary();
+        }
 
-            //Set up directions
-            Directions = Direction.get8Directions();
-
-           }
-
-        private void NewTextBox_Changed(object sender)
+        private void LettersGrid_TextChanged(object sender, EventArgs e)
         {
             doFindIfReady();
-            
         }
 
-        private void NewTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            TextBox thisTextBox = (TextBox)sender;
-            switch (e.KeyCode)
-            {
-                case Keys.Back:
-                case Keys.Left:
-                    if (thisTextBox.Text.Length == 0)
-                    {
-                        lettersGrid.SelectNextControl(thisTextBox, false, true, false, true);
-                    }
-                    break;
-                case Keys.Right:
-                    lettersGrid.SelectNextControl(thisTextBox, true, true, false, true);
-                    break;
-            }
-        }
-
-        private void NewTextBox_Enter(object sender, EventArgs e)
-        {
-            TextBox thisTextBox = (TextBox)sender;
-            thisTextBox.SelectAll();
-        }
-
-        private Boolean inChangeEvent = false;
-        private void NewTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (inChangeEvent) return;
-
-            boardLastChangedTime = DateTime.Now;
-
-            try
-            {
-                inChangeEvent = true;
-
-                TextBox thisTextBox = (TextBox)sender;
-
-                if (thisTextBox.Text.Length > 0)
-                {
-                    if (Char.IsLetter(thisTextBox.Text.ToCharArray()[0]))
-                    {
-                        thisTextBox.Text = thisTextBox.Text.ToUpper();
-                        thisTextBox.BackColor = Color.LightGreen;
-                        SendKeys.Send("{TAB}");
-                    } else
-                    {
-                        thisTextBox.BackColor = Color.White;
-                    }
-                } else
-                {
-                    thisTextBox.BackColor = Color.White;
-                }
-            }
-            finally
-            {
-                inChangeEvent = false;
-            }
-            doFindIfReady();
-        }
         private void doFindIfReady()
         {
-            readLetters();
             if (checkBoard())
             {
                 Application.DoEvents();
                 doFind(); //no point waiting, we have all the letters
             }
         }
-        private void readLetters()
-        {
-            usingMandatoryTiles = false;
-            mandatoryLocations = new List<HistoryItem>();
-
-            for (int r = 0; r < gridSize; r++)
-            {
-                for (int c = 0; c < gridSize; c++)
-                {
-                    if (!string.IsNullOrWhiteSpace(letterControls[r,c].Text))
-                    {
-                        letters[r, c] = letterControls[r,c].Text.ToCharArray()[0];
-                    } else {
-                        letters[r, c] = ' ';
-                    }
-                    switch (letterControls[r,c].Modifier)
-                    {
-                        case CustomTextBox.ScoreModifier.DL:
-                            letterMultipliers[r, c] = 2;
-                            wordMultipliers[r, c] = 1;
-                            break;
-                        case CustomTextBox.ScoreModifier.TL:
-                            letterMultipliers[r, c] = 3;
-                            wordMultipliers[r, c] = 1;
-                            break;
-                        case CustomTextBox.ScoreModifier.DW:
-                            letterMultipliers[r, c] = 1;
-                            wordMultipliers[r, c] = 2;
-                            break;
-                        case CustomTextBox.ScoreModifier.TW:
-                            letterMultipliers[r, c] = 1;
-                            wordMultipliers[r, c] = 3;
-                            break;
-                        case CustomTextBox.ScoreModifier.MI:
-                            letterMultipliers[r, c] = 1;
-                            wordMultipliers[r, c] = 1;
-                            usingMandatoryTiles = true;
-                            mandatoryLocations.Add(new HistoryItem(r, c));
-                            break;
-                        case CustomTextBox.ScoreModifier.None:
-                            letterMultipliers[r, c] = 1;
-                            wordMultipliers[r, c] = 1;
-                            break;
-                    }
-                }
-            }
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            LoadSelectedDictionary();
-        }
  
         private void btnFind_Click(object sender, EventArgs e)
         {
-
-            readLetters();
-
             if (!checkBoard())
             {
                 MessageBox.Show("Board not complete. You must enter a letter in every square to proceed.");
@@ -207,42 +69,40 @@ namespace WordFinder
             }
             doFind();
         }
+        private bool checkBoard()
+        {
+            return (boardModel.LetterCount > 15);
+        }
 
         private void doFind()
         {
-            ClearLinePath();
-
-            FoundWords = new List<Word>();
-            FoundWordsDict = new Dictionary<String, Word>();
-            findWords();
-
+            boardController.ClearLinePath();
+            foundWords = wordFinder.FindWords();
             populateResultsList();
         }
+
         private void populateResultsList()
         {
-            readLetters(); //re-read letters to take into account any changed bonuses
-
             lstResults.Items.Clear();
 
-            //Sort words longest to shortest. Todo: Take into account letter values and allow setting of board bonuses.
-            WordScorer scorer = new WordScorer(letters, letterMultipliers, wordMultipliers);
-            scorer.SetWordScores(FoundWords);
+            WordScorer scorer = new WordScorer(boardModel);
+            scorer.SetWordScores(foundWords);
 
             //Get no of words and total possible score if all found words played
             int maxTotal = 0;
-            for (int i = 0; i < FoundWords.Count; i++)
+            for (int i = 0; i < foundWords.Count; i++)
             {
-                maxTotal += FoundWords[i].Score;
+                maxTotal += foundWords[i].Score;
             }
             lblMaxPossibleScore.Text = maxTotal.ToString();
-            lblWords.Text = FoundWords.Count.ToString();
+            lblWords.Text = foundWords.Count.ToString();
 
             if (cbkSortbyScore.Checked)
             {
-                FoundWords.Sort(new ScoredWordComparer());
-                FoundWords.Reverse();
+                foundWords.Sort(new ScoredWordComparer());
+                foundWords.Reverse();
                 lstResults.FormattingEnabled = true;
-                foreach (Word word in FoundWords)
+                foreach (Word word in foundWords)
                 {
                     lstResults.Items.Add(word.Text + "  (" + word.Score.ToString()+")");
                 }
@@ -250,10 +110,10 @@ namespace WordFinder
             }
             if (cbkSortbyScoreComplexity.Checked)
             {
-                FoundWords.Sort(new ScoredComplexWordComparer());
-                FoundWords.Reverse();
+                foundWords.Sort(new ScoredComplexWordComparer());
+                foundWords.Reverse();
                 lstResults.FormattingEnabled = true;
-                foreach (Word word in FoundWords)
+                foreach (Word word in foundWords)
                 {
                     lstResults.Items.Add(word.Text + "  (" + word.Score.ToString() + ")");
                 }
@@ -266,146 +126,51 @@ namespace WordFinder
                 if (Int32.TryParse(txtMinScore.Text, out minScore))
                 {
                     //Got the min. score, now remove too-low words
-                    for(int i = FoundWords.Count - 1; i >= 0; i--)
+                    for(int i = foundWords.Count - 1; i >= 0; i--)
                     {
-                        if (FoundWords[i].Score< minScore)
+                        if (foundWords[i].Score< minScore)
                         {
-                            FoundWords.RemoveAt(i);
+                            foundWords.RemoveAt(i);
                         }
                     }
                 }
 
-                FoundWords.Sort(new WordPathComparer());
+                foundWords.Sort(new WordPathComparer());
                 lstResults.FormattingEnabled = true;
-                foreach (Word word in FoundWords)
+                foreach (Word word in foundWords)
                 {
                     lstResults.Items.Add(word.Text + "  (" + word.Score.ToString() + ")");
                 }
             }
             if (cbkSortbyLength.Checked)
             {
-                FoundWords.Sort(new WordLengthComparer());
-                FoundWords.Reverse();
+                foundWords.Sort(new WordLengthComparer());
+                foundWords.Reverse();
 
-                foreach (Word word in FoundWords)
+                foreach (Word word in foundWords)
                 {
                     lstResults.Items.Add(word.Text);
                 }
             }
             
         }
-        private bool checkBoard()
-        {
-            for (int r = 0; r < gridSize; r++)
-            {
-                for (int c = 0; c < gridSize; c++)
-                {
-                    if (!Char.IsLetter(letters[r, c]))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        private void findWords()
-        {
-            for (int r = 0; r < gridSize; r++)
-            {
-                for (int c = 0; c < gridSize; c++)
-                {
-                    findWords(r, c, new History(), "");
-                }
-            }
-        }
-        private void findWords(int r, int c, History hist, string prefix)
-        {
-            //Add to history trail and word
-
-            hist.Push(r, c);
-            if (letters[r, c] == 'Q')
-            {
-                prefix += "QU";
-            }
-            else
-            {
-                prefix += letters[r, c];
-            }
-
-            //Debug.Print(prefix);
-
-            if (!wordList.Find(prefix, wholeWord: false))
-            {
-                //prefix not in dictionary, no point continuing this way
-                hist.Pop();
-                return;
-            }
-
-            //only return words passing through one of the mandatory tiles, if enabled.
-            if (!usingMandatoryTiles || hist.Overlaps(mandatoryLocations)) { 
-
-                //check if the current path is a valid word
-                if (prefix.Length >= minWordLength && wordList.Find(prefix, wholeWord: true))
-                {
-                    if (!FoundWordsDict.ContainsKey(prefix))
-                    {
-                        Word newWord = new Word(prefix, hist.Copy());
-                        FoundWords.Add(newWord);
-                        FoundWordsDict.Add(prefix, newWord);
-                    }
-                    else {
-                        //found the same word a second time, check to see which one has a higher score, replace if new word has higher score
-                        WordScorer scorer = new WordScorer(letters, letterMultipliers, wordMultipliers);
-                        Word newWord = new Word(prefix, hist.Copy());
-                        int newWordPathScore = scorer.getWordScore(newWord);
-                        int oldWordPathScore = scorer.getWordScore(FoundWordsDict[prefix]);
-                        if (newWordPathScore > oldWordPathScore)
-                        {
-                            FoundWordsDict[prefix].AlternatePaths.Add(FoundWordsDict[prefix].Path);  
-                            FoundWordsDict[prefix].Path = newWord.Path;
-                        } else {
-                            FoundWordsDict[prefix].AlternatePaths.Add(newWord.Path);  
-                        }
-                    }
-                }
-            }
-
-            //stop recursion if we are at max length
-            if (hist.Count == maxWordLength)
-            {
-                hist.Pop();
-                return;
-            }
-
-            //Explore alternate paths from this location
-            foreach (Direction dir in Directions)
-            {
-                int newRow = r + dir.RowOffset;
-                int newCol = c + dir.ColOffset;
-                if (newRow >= 0 && newCol >= 0 && newRow < gridSize && newCol < gridSize && !hist.Contains(newRow, newCol))
-                {
-                    findWords(newRow, newCol, hist, prefix);
-                }
-            }
-            hist.Pop();
-        }
-        private Word SelectedWord;
-
+      
+    
         private void lstResults_SelectedIndexChanged(object sender, EventArgs e)
         {
             
-            ClearLetterColours();
+            boardController.ClearLetterColours();
             string word = (string)lstResults.SelectedItem;
             if (!string.IsNullOrEmpty(word))
             {
                 word = word.Split(' ')[0];
             }
-            foreach (Word foundWord in FoundWords)
+            foreach (Word foundWord in foundWords)
             {
                 if (word.Equals(foundWord.Text))
                 {
                     SelectedWord = foundWord;
-                    ShowPath(foundWord.Path);
+                    boardController.ShowPath(foundWord.Path);
 
                     //word stats
                     lblCurrentWordLetters.Text = foundWord.Text.Length.ToString();
@@ -415,121 +180,53 @@ namespace WordFinder
                 }
             }
         }
-        private void ClearLetterColours()
-        {
-            for (int r = 0; r < gridSize; r++)
-            {
-                for (int c = 0; c < gridSize; c++)
-                {
-                    letterControls[r, c].BackColor = Color.White;
-                }
-            }
-        }
-        private List<Point> linePath;
-        private void ShowPath(History path)
-        {
-            ClearLinePath();
-            foreach (HistoryItem pathStop in path.GetList())
-            {
-                Control letterControl = letterControls[ pathStop.row, pathStop.col];
-
-                //Highlight control
-                letterControl.BackColor = Color.Orange;
-
-                //Add control location to a list of points to be painted as a line.
-                Point topLeft = letterControl.Location;
-                Point centre = new Point(topLeft.X + letterControl.Width / 2, topLeft.Y + letterControl.Height / 2);
-                linePath.Add(centre);
-            }
-
-            letterControls[path.GetList()[0].row, path.GetList()[0].col].BackColor = Color.Red;
-
-            lettersGrid.Refresh(); //cause repaint
-        }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            if (boardLastChangedTime.AddMinutes(2)>DateTime.Now)
+            if (boardModel.LastChangedTime.AddMinutes(2) > DateTime.Now)
             {
-                if (MessageBox.Show(this,"You changed the board less than 2 minutes ago. Are you sure you want to clear it?","Clear board?",MessageBoxButtons.YesNo,MessageBoxIcon.Asterisk,MessageBoxDefaultButton.Button2 )==DialogResult.No)
+                if (MessageBox.Show(this, "You changed the board less than 2 minutes ago. Are you sure you want to clear it?", "Clear board?", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button2) == DialogResult.No)
                 {
                     return;
                 }
             }
-
-            for (int r = 0; r < gridSize; r++)
-            {
-                for (int c = 0; c < gridSize; c++)
-                {
-                    letterControls[r, c].Text = "";
-                    letterControls[r, c].Modifier = CustomTextBox.ScoreModifier.None; 
-                }
-            }
             lstResults.Items.Clear();
-            ClearLinePath();
-            letterControls[0, 0].Focus();
+            boardController.Clear();
         }
-        private void ClearLinePath()
-        {
-            linePath = new List<Point>();
-            lettersGrid.Refresh();
-        }
-        private void lettersGrid_Paint(object sender, PaintEventArgs e)
-        {
-            if (linePath != null && linePath.Count > 1)
-            {
-                for (int i = 0; i < linePath.Count - 1; i++)
-                {
-                    e.Graphics.DrawLine(new Pen(Color.Black, 3), linePath[i], linePath[i + 1]);
-                }
-            }
-        }
-        
+
         private void cbkSortbyScore_CheckedChanged(object sender, EventArgs e)
         {
             doFindIfReady();
         }
-
-
-        private void SetLetterModifiers(CustomTextBox.ScoreModifier modifier)
-        {
-            for (int r = 0; r < gridSize; r++)
-            {
-                for (int c = 0; c < gridSize; c++)
-                {
-                    letterControls[r, c].Modifier = modifier;
-                }
-            }
-            doFindIfReady();
-        }
+         
         private void lblDL_Click(object sender, EventArgs e)
         {
-            SetLetterModifiers(CustomTextBox.ScoreModifier.DL);
+            boardController.SetLetterModifiers(CustomTextBox.ScoreModifier.DL);
         }
 
         private void lblTL_Click(object sender, EventArgs e)
         {
-            SetLetterModifiers(CustomTextBox.ScoreModifier.TL);
+            boardController.SetLetterModifiers(CustomTextBox.ScoreModifier.TL);
         }
 
         private void lblDW_Click(object sender, EventArgs e)
         {
-            SetLetterModifiers(CustomTextBox.ScoreModifier.DW);
+            boardController.SetLetterModifiers(CustomTextBox.ScoreModifier.DW);
         }
 
         private void lblTW_Click(object sender, EventArgs e)
         {
-            SetLetterModifiers(CustomTextBox.ScoreModifier.TW);
+            boardController.SetLetterModifiers(CustomTextBox.ScoreModifier.TW);
         }
 
         private void lblMI_Click(object sender, EventArgs e)
         {
-            SetLetterModifiers(CustomTextBox.ScoreModifier.MI);
+            boardController.SetLetterModifiers(CustomTextBox.ScoreModifier.MI);
         }
 
         private void lblNoSpecial_Click(object sender, EventArgs e)
         {
-            SetLetterModifiers(CustomTextBox.ScoreModifier.None);
+            boardController.SetLetterModifiers(CustomTextBox.ScoreModifier.None);
         }
 
         private void timerAutoAdvance_Tick(object sender, EventArgs e)
@@ -613,21 +310,21 @@ namespace WordFinder
       
         private void btnDoConsole_Click(object sender, EventArgs e)
         {
-            if (FoundWords == null)
+            if (foundWords == null)
             {
                 lblStatus.Text = "Search for words first.";
                 return;
             }
 
-            if (chkShuffle.Checked) Shuffle<Word>(FoundWords);
-            string fileText = GetMonkeyFile(FoundWords);
+            if (chkShuffle.Checked) Shuffle<Word>(foundWords);
+            string fileText = GetMonkeyFile(foundWords);
             File.WriteAllText("C:\\words.py", fileText);
             Clipboard.SetText(fileText);
             lblStatus.Text = "File saved as C:\\words.py, and copied to clipboard.";
         }
         private void button1_Click_1(object sender, EventArgs e)
         {
-            if (FoundWords == null)
+            if (foundWords == null)
             {
                 lblStatus.Text = "Search for words first.";
                 return ;
@@ -640,11 +337,11 @@ namespace WordFinder
                 List<Word> randomWords;
                 if (txtMonkeyRandomAmount.Text.EndsWith("%", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    randomWords = GetRandomPercent(FoundWords, int.Parse(percentOrAmount.Substring(0, percentOrAmount.Length - 1)));
+                    randomWords = GetRandomPercent(foundWords, int.Parse(percentOrAmount.Substring(0, percentOrAmount.Length - 1)));
                 }
                 else
                 {
-                    randomWords = GetRandomWords(FoundWords, int.Parse(percentOrAmount));
+                    randomWords = GetRandomWords(foundWords, int.Parse(percentOrAmount));
                 }
                 string fileText = GetMonkeyFile(randomWords);
                 File.WriteAllText("C:\\words.py", fileText);

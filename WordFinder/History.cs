@@ -4,7 +4,8 @@ using System.Text;
 
 class HistoryItem : IComparable 
 {
-    private String[] letters = { "A", "B", "C", "D" };
+    private String[] letters = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+                                 "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
     public int row { get; set; }
     public int col { get; set; }
     public HistoryItem(int row, int col)
@@ -28,7 +29,6 @@ class HistoryItem : IComparable
     {
         return letters[col] + row.ToString();
     }
-     
 }
 class History : IComparable
 {

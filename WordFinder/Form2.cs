@@ -29,7 +29,7 @@ namespace WordFinder
             wordList = new WordList() { MinWordLength = minWordLength, MaxWordLength = maxWordLength };
             boardModel = new BoardLettersModel(gridSizeX, gridSizeY);
             boardController = new BoardController(boardModel, lettersGrid);
-            wordFinder = new WordFinder(boardModel, wordList);
+            wordFinder = new WordFinder(boardModel, wordList, new AllOtherTilesDirectionStrategy());
 
             lettersGrid.TextChanged += LettersGrid_TextChanged;
 

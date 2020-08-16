@@ -9,6 +9,7 @@ namespace WordFinder
     class WordFinder
     {
         public BoardLettersModel boardModel { get; set; }
+
         public WordList wordList { get; set; }
 
         public string prefix { get; set; }
@@ -17,14 +18,18 @@ namespace WordFinder
 
         public int MinWordLength { get; set; } = 2;
         public int MaxWordLength { get; set; } = 15;
+        public bool IsQincludeU { get; set; }
+
+        public WordFindDirectionStrategy directionStrategy { get; set; }
 
         private Dictionary<String, Word> foundWordsDict; //use for fast lookups to avoid duplicates
         private List<Word> foundWords;
 
-        public WordFinder(BoardLettersModel boardModel, WordList wordList)
+        public WordFinder(BoardLettersModel boardModel, WordList wordList, WordFindDirectionStrategy directionStrategy)
         {
             this.boardModel = boardModel;
             this.wordList = wordList;
+            this.directionStrategy = directionStrategy;
 
             foundWords = new List<Word>();
             foundWordsDict = new Dictionary<String, Word>();
@@ -51,7 +56,14 @@ namespace WordFinder
             //Add to history trail and word
 
             hist.Push(r, c);
-            prefix += boardModel.Letters[r, c];
+
+            var letter = boardModel.Letters[r, c];
+            prefix += letter;
+
+            if (IsQincludeU && letter == 'Q')
+            {
+                prefix += 'U';
+            }
 
             if (!wordList.Find(prefix, wholeWord: false))
             {
@@ -100,29 +112,33 @@ namespace WordFinder
                 return;
             }
 
-            //Explore alternate paths from this location
-            for (int newRow = 0; newRow < boardModel.GridSizeX; newRow++)
+            foreach (var direction in directionStrategy.GetNextDirections(r,c,boardModel,hist))
             {
-                for (int newCol = 0; newCol < boardModel.GridSizeY; newCol++)
+                char preOverRideLetter = boardModel.Letters[direction.Row, direction.Column];
+
+                var nextLetter = boardModel.Letters[direction.Row, direction.Column];
+                if (direction.OverrideLetter.HasValue)
                 {
-                    if (!(newRow == r && newCol == c) && !hist.Contains(newRow, newCol) && boardModel.Letters[newRow, newCol] != ' ')
-                    {
-                        if (boardModel.Letters[newRow, newCol] != '?')
-                        {
-                            FindWords(newRow, newCol, hist, prefix);
-                        }
-                        else
-                        {
-                            for (char ch = 'A'; ch <= 'Z'; ch++)
-                            {
-                                boardModel.Letters[newRow, newCol] = ch;
-                                FindWords(newRow, newCol, hist, prefix);
-                            }
-                            boardModel.Letters[newRow, newCol] = '?';
-                        }
-                    }
+                    nextLetter = direction.OverrideLetter.Value;
+                    boardModel.Letters[direction.Row, direction.Column] = nextLetter;
                 }
+
+                if (nextLetter != '?')
+                {
+                    FindWords(direction.Row, direction.Column, hist, prefix);
+                }
+                else
+                {
+                    for (char ch = 'A'; ch <= 'Z'; ch++)
+                    {
+                        boardModel.Letters[direction.Row, direction.Column] = ch;
+                        FindWords(direction.Row, direction.Column, hist, prefix);
+                    }
+                    boardModel.Letters[direction.Row, direction.Column] = '?';
+                }
+                preOverRideLetter = boardModel.Letters[direction.Row, direction.Column];
             }
+
             hist.Pop();
         }
 

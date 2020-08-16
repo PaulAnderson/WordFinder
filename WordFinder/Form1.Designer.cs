@@ -30,7 +30,6 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.pnlLetters = new System.Windows.Forms.Panel();
-            this.lettersGrid = new System.Windows.Forms.TableLayoutPanel();
             this.btnClear = new System.Windows.Forms.Button();
             this.lblResults = new System.Windows.Forms.Label();
             this.lstResults = new System.Windows.Forms.ListBox();
@@ -82,6 +81,7 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
+            this.lettersGrid = new Letters();
             this.pnlLetters.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -110,37 +110,15 @@
             // 
             this.pnlLetters.Controls.Add(this.lettersGrid);
             this.pnlLetters.Location = new System.Drawing.Point(8, 33);
-            this.pnlLetters.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.pnlLetters.Margin = new System.Windows.Forms.Padding(6);
             this.pnlLetters.Name = "pnlLetters";
             this.pnlLetters.Size = new System.Drawing.Size(392, 346);
             this.pnlLetters.TabIndex = 2;
             // 
-            // lettersGrid
-            // 
-            this.lettersGrid.BackColor = System.Drawing.Color.White;
-            this.lettersGrid.ColumnCount = 4;
-            this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lettersGrid.Font = new System.Drawing.Font("Consolas", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lettersGrid.Location = new System.Drawing.Point(0, 0);
-            this.lettersGrid.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.lettersGrid.Name = "lettersGrid";
-            this.lettersGrid.RowCount = 4;
-            this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.Size = new System.Drawing.Size(392, 346);
-            this.lettersGrid.TabIndex = 3;
-            this.lettersGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.lettersGrid_Paint);
-            // 
             // btnClear
             // 
             this.btnClear.Location = new System.Drawing.Point(8, 104);
-            this.btnClear.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(6);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(278, 44);
             this.btnClear.TabIndex = 4;
@@ -165,7 +143,7 @@
             this.lstResults.FormattingEnabled = true;
             this.lstResults.ItemHeight = 45;
             this.lstResults.Location = new System.Drawing.Point(0, 27);
-            this.lstResults.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.lstResults.Margin = new System.Windows.Forms.Padding(6);
             this.lstResults.Name = "lstResults";
             this.lstResults.ScrollAlwaysVisible = true;
             this.lstResults.Size = new System.Drawing.Size(990, 1414);
@@ -287,7 +265,7 @@
             this.cbkSortbyScore.AutoSize = true;
             this.cbkSortbyScore.Checked = true;
             this.cbkSortbyScore.Location = new System.Drawing.Point(8, 38);
-            this.cbkSortbyScore.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cbkSortbyScore.Margin = new System.Windows.Forms.Padding(6);
             this.cbkSortbyScore.Name = "cbkSortbyScore";
             this.cbkSortbyScore.Size = new System.Drawing.Size(99, 29);
             this.cbkSortbyScore.TabIndex = 9;
@@ -300,7 +278,7 @@
             // 
             this.cbkSortbyPath.AutoSize = true;
             this.cbkSortbyPath.Location = new System.Drawing.Point(140, 83);
-            this.cbkSortbyPath.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cbkSortbyPath.Margin = new System.Windows.Forms.Padding(6);
             this.cbkSortbyPath.Name = "cbkSortbyPath";
             this.cbkSortbyPath.Size = new System.Drawing.Size(87, 29);
             this.cbkSortbyPath.TabIndex = 9;
@@ -312,7 +290,7 @@
             // 
             this.cbkSortbyLength.AutoSize = true;
             this.cbkSortbyLength.Location = new System.Drawing.Point(8, 83);
-            this.cbkSortbyLength.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cbkSortbyLength.Margin = new System.Windows.Forms.Padding(6);
             this.cbkSortbyLength.Name = "cbkSortbyLength";
             this.cbkSortbyLength.Size = new System.Drawing.Size(109, 29);
             this.cbkSortbyLength.TabIndex = 9;
@@ -333,7 +311,7 @@
             // txtMinScore
             // 
             this.txtMinScore.Location = new System.Drawing.Point(272, 115);
-            this.txtMinScore.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtMinScore.Margin = new System.Windows.Forms.Padding(6);
             this.txtMinScore.Name = "txtMinScore";
             this.txtMinScore.Size = new System.Drawing.Size(98, 31);
             this.txtMinScore.TabIndex = 11;
@@ -399,7 +377,7 @@
             this.panel1.Controls.Add(this.chkDictUKACD);
             this.panel1.Controls.Add(this.chkDictEnable);
             this.panel1.Location = new System.Drawing.Point(0, 40);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(392, 48);
             this.panel1.TabIndex = 12;
@@ -408,7 +386,7 @@
             // 
             this.chkDictOSPD.AutoSize = true;
             this.chkDictOSPD.Location = new System.Drawing.Point(154, 6);
-            this.chkDictOSPD.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.chkDictOSPD.Margin = new System.Windows.Forms.Padding(6);
             this.chkDictOSPD.Name = "chkDictOSPD";
             this.chkDictOSPD.Size = new System.Drawing.Size(102, 29);
             this.chkDictOSPD.TabIndex = 1;
@@ -420,7 +398,7 @@
             // 
             this.chkDictUKACD.AutoSize = true;
             this.chkDictUKACD.Location = new System.Drawing.Point(274, 6);
-            this.chkDictUKACD.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.chkDictUKACD.Margin = new System.Windows.Forms.Padding(6);
             this.chkDictUKACD.Name = "chkDictUKACD";
             this.chkDictUKACD.Size = new System.Drawing.Size(116, 29);
             this.chkDictUKACD.TabIndex = 2;
@@ -433,7 +411,7 @@
             this.chkDictEnable.AutoSize = true;
             this.chkDictEnable.Checked = true;
             this.chkDictEnable.Location = new System.Drawing.Point(8, 6);
-            this.chkDictEnable.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.chkDictEnable.Margin = new System.Windows.Forms.Padding(6);
             this.chkDictEnable.Name = "chkDictEnable";
             this.chkDictEnable.Size = new System.Drawing.Size(126, 29);
             this.chkDictEnable.TabIndex = 0;
@@ -476,7 +454,7 @@
             this.panel2.Controls.Add(this.label10);
             this.panel2.Controls.Add(this.lblMaxPossibleScore);
             this.panel2.Location = new System.Drawing.Point(0, 833);
-            this.panel2.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel2.Margin = new System.Windows.Forms.Padding(6);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(400, 135);
             this.panel2.TabIndex = 13;
@@ -486,7 +464,7 @@
             this.panel3.Controls.Add(this.label11);
             this.panel3.Controls.Add(this.panel1);
             this.panel3.Location = new System.Drawing.Point(0, 554);
-            this.panel3.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel3.Margin = new System.Windows.Forms.Padding(6);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(400, 92);
             this.panel3.TabIndex = 14;
@@ -501,7 +479,7 @@
             this.panel4.Controls.Add(this.cbkSortbyLength);
             this.panel4.Controls.Add(this.label8);
             this.panel4.Location = new System.Drawing.Point(0, 658);
-            this.panel4.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel4.Margin = new System.Windows.Forms.Padding(6);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(400, 163);
             this.panel4.TabIndex = 15;
@@ -510,7 +488,7 @@
             // 
             this.cbkSortbyScoreComplexity.AutoSize = true;
             this.cbkSortbyScoreComplexity.Location = new System.Drawing.Point(140, 38);
-            this.cbkSortbyScoreComplexity.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.cbkSortbyScoreComplexity.Margin = new System.Windows.Forms.Padding(6);
             this.cbkSortbyScoreComplexity.Name = "cbkSortbyScoreComplexity";
             this.cbkSortbyScoreComplexity.Size = new System.Drawing.Size(211, 29);
             this.cbkSortbyScoreComplexity.TabIndex = 9;
@@ -530,7 +508,7 @@
             this.panel5.Controls.Add(this.lblTW);
             this.panel5.Controls.Add(this.lblMI);
             this.panel5.Location = new System.Drawing.Point(0, 390);
-            this.panel5.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel5.Margin = new System.Windows.Forms.Padding(6);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(400, 152);
             this.panel5.TabIndex = 16;
@@ -545,7 +523,7 @@
             this.SelectedWordPanel.Controls.Add(this.label17);
             this.SelectedWordPanel.Controls.Add(this.lblCurrentWordDirChanges);
             this.SelectedWordPanel.Location = new System.Drawing.Point(0, 979);
-            this.SelectedWordPanel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.SelectedWordPanel.Margin = new System.Windows.Forms.Padding(6);
             this.SelectedWordPanel.Name = "SelectedWordPanel";
             this.SelectedWordPanel.Size = new System.Drawing.Size(400, 175);
             this.SelectedWordPanel.TabIndex = 17;
@@ -626,7 +604,7 @@
             // btnDoConsole
             // 
             this.btnDoConsole.Location = new System.Drawing.Point(6, 38);
-            this.btnDoConsole.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.btnDoConsole.Margin = new System.Windows.Forms.Padding(6);
             this.btnDoConsole.Name = "btnDoConsole";
             this.btnDoConsole.Size = new System.Drawing.Size(182, 44);
             this.btnDoConsole.TabIndex = 18;
@@ -637,7 +615,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(6, 90);
-            this.button1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.button1.Margin = new System.Windows.Forms.Padding(6);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(182, 44);
             this.button1.TabIndex = 19;
@@ -651,7 +629,7 @@
             this.chkShuffle.Checked = true;
             this.chkShuffle.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShuffle.Location = new System.Drawing.Point(206, 46);
-            this.chkShuffle.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.chkShuffle.Margin = new System.Windows.Forms.Padding(6);
             this.chkShuffle.Name = "chkShuffle";
             this.chkShuffle.Size = new System.Drawing.Size(111, 29);
             this.chkShuffle.TabIndex = 20;
@@ -666,7 +644,7 @@
             this.panel6.Controls.Add(this.chkShuffle);
             this.panel6.Controls.Add(this.btnDoConsole);
             this.panel6.Location = new System.Drawing.Point(0, 1165);
-            this.panel6.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel6.Margin = new System.Windows.Forms.Padding(6);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(400, 148);
             this.panel6.TabIndex = 21;
@@ -674,7 +652,7 @@
             // txtMonkeyRandomAmount
             // 
             this.txtMonkeyRandomAmount.Location = new System.Drawing.Point(200, 94);
-            this.txtMonkeyRandomAmount.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.txtMonkeyRandomAmount.Margin = new System.Windows.Forms.Padding(6);
             this.txtMonkeyRandomAmount.Name = "txtMonkeyRandomAmount";
             this.txtMonkeyRandomAmount.Size = new System.Drawing.Size(116, 31);
             this.txtMonkeyRandomAmount.TabIndex = 21;
@@ -722,7 +700,7 @@
             this.panel7.Controls.Add(this.panel4);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel7.Location = new System.Drawing.Point(0, 0);
-            this.panel7.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel7.Margin = new System.Windows.Forms.Padding(6);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(406, 1441);
             this.panel7.TabIndex = 23;
@@ -733,7 +711,7 @@
             this.panel8.Controls.Add(this.panel9);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(406, 0);
-            this.panel8.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel8.Margin = new System.Windows.Forms.Padding(6);
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(990, 1441);
             this.panel8.TabIndex = 24;
@@ -743,10 +721,22 @@
             this.panel9.Controls.Add(this.lblResults);
             this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel9.Location = new System.Drawing.Point(0, 0);
-            this.panel9.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel9.Margin = new System.Windows.Forms.Padding(6);
             this.panel9.Name = "panel9";
             this.panel9.Size = new System.Drawing.Size(990, 27);
             this.panel9.TabIndex = 6;
+            // 
+            // lettersGrid
+            // 
+            this.lettersGrid.AutoSize = true;
+            this.lettersGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.lettersGrid.Cols = 0;
+            this.lettersGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lettersGrid.Location = new System.Drawing.Point(0, 0);
+            this.lettersGrid.Name = "lettersGrid";
+            this.lettersGrid.Rows = 0;
+            this.lettersGrid.Size = new System.Drawing.Size(392, 346);
+            this.lettersGrid.TabIndex = 1;
             // 
             // Form1
             // 
@@ -756,11 +746,12 @@
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.statusStrip1);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
             this.Text = "Word Finder";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.pnlLetters.ResumeLayout(false);
+            this.pnlLetters.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -788,7 +779,6 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pnlLetters;
-        private System.Windows.Forms.TableLayoutPanel lettersGrid;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label lblResults;
         private System.Windows.Forms.ListBox lstResults;
@@ -840,6 +830,7 @@
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Panel panel7;
+        private Letters lettersGrid;
     }
 }
 

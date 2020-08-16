@@ -87,7 +87,8 @@ namespace WordFinder
 
                 if (thisTextBox.Text.Length > 0)
                 {
-                    if (Char.IsLetter(thisTextBox.Text.ToCharArray()[0]))
+                    var textBoxChar = thisTextBox.Text.ToCharArray()[0];
+                    if (Char.IsLetter(textBoxChar) || textBoxChar == '?')
                     {
                         thisTextBox.Text = thisTextBox.Text.ToUpper();
                         thisTextBox.BackColor = Color.LightGreen;
