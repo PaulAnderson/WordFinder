@@ -69,14 +69,14 @@
     <Compile Include="GridGame\Letters.Designer.cs">
       <DependentUpon>Letters.cs</DependentUpon>
     </Compile>
-    <Compile Include="GridGame\Program.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GridGame\ResultWord.cs" />
     <Compile Include="GridGame\SearchTree.cs" />
-    <Compile Include="GridGame\StartForm.cs">
+    <Compile Include="StartForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GridGame\StartForm.Designer.cs">
+    <Compile Include="StartForm.Designer.cs">
       <DependentUpon>StartForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GridGame\Words.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="GridGame\CustomTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="GridGame\StartForm.resx">
+    <EmbeddedResource Include="StartForm.resx">
       <DependentUpon>StartForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
