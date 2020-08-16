@@ -15,18 +15,7 @@ namespace WordFinder
 
     public partial class Form1 : Form
     {
-#if DEBUG 
-        const string DICTFILE_OSPD = "..\\..\\ospd.txt";
-        const string DICTFILE_ENABLE = "..\\..\\enable1.txt";
-        const string DICTFILE_UKACD = "..\\..\\UK%20Advanced%20Cryptics%20Dictionary.txt";
-        const string DICTFILE_SUPPLEMENT = "..\\..\\Supplement.txt"; //extra file of missing words, loaded after the main dictionary
-#else
-        const string DICTFILE_OSPD = "ospd.txt";
-        const string DICTFILE_ENABLE = "enable1.txt";
-        const string DICTFILE_UKACD = "UK%20Advanced%20Cryptics%20Dictionary.txt";
-        const string DICTFILE_SUPPLEMENT = "Supplement.txt"; //extra file of missing words, loaded after the main dictionary
-
-#endif 
+ 
         const int minWordLength = 2;
         const int maxWordLength = 15;
         const int gridSize = 4;
@@ -36,8 +25,7 @@ namespace WordFinder
         private int[,] wordMultipliers;
         private CustomTextBox[,] letterControls;
 
-        private Dictionary<string, Words> dictionaries;
-        private Words dictWords;
+        private WordList wordList;
 
         private List<Word> FoundWords;
         private Dictionary<String, Word> FoundWordsDict; //use for fast lookups to avoid duplicates
@@ -49,6 +37,7 @@ namespace WordFinder
         {
             InitializeComponent();
 
+            wordList = new WordList() { MinWordLength = minWordLength, MaxWordLength = maxWordLength };
             letters = new char[gridSize, gridSize];
             letterMultipliers = new int[gridSize, gridSize];
             wordMultipliers = new int[gridSize, gridSize];
@@ -203,80 +192,9 @@ namespace WordFinder
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            loadSelectedDictionary();
+            LoadSelectedDictionary();
         }
-
-        private void LoadDictionary(string fileName)
-        {
-            if (dictionaries== null)
-            {
-                dictionaries=new Dictionary<string, Words> ();
-            }
-            if (dictionaries.ContainsKey(fileName))
-            {
-                //swap out the dictionary for the pre-loaded one if available
-                dictWords = dictionaries[fileName];
-            } else
-            {
-                //not already loaded, load it now and store for later.
-                dictWords = new Words();
-                dictionaries.Add(fileName,dictWords);
-
-                //Read words from file
-                FileStream fs = File.Open(Path.Combine(Application.StartupPath , fileName), FileMode.Open);
-                try
-                {
-                    StreamReader sr = new StreamReader(fs);
-                    bool inWordSection = false;
-                    while (!sr.EndOfStream)
-                    {
-                        var line = sr.ReadLine();
-                        if (line.Equals("aa", StringComparison.InvariantCultureIgnoreCase)) inWordSection = true; //look for first word, ignore headers etc
-                        if (inWordSection) { 
-                            if (line.Length >= minWordLength && line.Length <= maxWordLength)
-                            {
-                                dictWords.AddWord(line);
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    fs.Close();
-                }
-                loadSupplementDictionary();
-            }
-
-        }
-        private void loadSupplementDictionary()
-        {
-            try {
-                //Read words from file
-                FileStream fs = File.Open(Path.Combine(Application.StartupPath, DICTFILE_SUPPLEMENT), FileMode.Open);
-                try
-                {
-                    StreamReader sr = new StreamReader(fs);
-                    while (!sr.EndOfStream)
-                    {
-                        var line = sr.ReadLine();
-                        if (line.Length >= minWordLength && line.Length <= maxWordLength)
-                        {
-                            if (!dictWords.isWordInList(line))
-                            {
-                                dictWords.AddWord(line);
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    fs.Close();
-                }
-            } catch (FileNotFoundException)
-            {
-                //ignore
-            }
-        }
+ 
         private void btnFind_Click(object sender, EventArgs e)
         {
 
@@ -416,7 +334,7 @@ namespace WordFinder
 
             //Debug.Print(prefix);
 
-            if (!dictWords.isWordPrefixInList(prefix))
+            if (!wordList.Find(prefix, wholeWord: false))
             {
                 //prefix not in dictionary, no point continuing this way
                 hist.Pop();
@@ -427,7 +345,7 @@ namespace WordFinder
             if (!usingMandatoryTiles || hist.Overlaps(mandatoryLocations)) { 
 
                 //check if the current path is a valid word
-                if (prefix.Length >= minWordLength && dictWords.isWordInList(prefix))
+                if (prefix.Length >= minWordLength && wordList.Find(prefix, wholeWord: true))
                 {
                     if (!FoundWordsDict.ContainsKey(prefix))
                     {
@@ -647,33 +565,41 @@ namespace WordFinder
 
         private void chkDictOSPD_CheckedChanged(object sender, EventArgs e)
         {
-            loadSelectedDictionary();
+            LoadSelectedDictionary();
         }
         private void chkDictEnable_CheckedChanged(object sender, EventArgs e)
         {
-            loadSelectedDictionary();
+            LoadSelectedDictionary();
         }
         private void chkDictUKACD_CheckedChanged(object sender, EventArgs e)
         {
-            loadSelectedDictionary();
+            LoadSelectedDictionary();
         }
-        private void loadSelectedDictionary()
+        private void LoadSelectedDictionary()
         {
+            DictionaryEdition edition;
+
             if (chkDictOSPD.Checked)
             {
-                LoadDictionary(DICTFILE_OSPD);
-                doFindIfReady();
+                edition = DictionaryEdition.OSPD;
             }
-            else if(chkDictEnable.Checked)
+            else if (chkDictEnable.Checked)
             {
-                LoadDictionary(DICTFILE_ENABLE);
-                doFindIfReady();
+                edition = DictionaryEdition.ENABLE;
             }
             else if (chkDictUKACD.Checked)
             {
-                LoadDictionary(DICTFILE_UKACD);
-                doFindIfReady();
+                edition = DictionaryEdition.UKACD;
             }
+            else
+            {
+                throw new Exception("Unknown word list");
+            }
+
+            wordList.LoadDictionary(edition);
+
+            doFindIfReady();
+
         }
 
         private void lstResults_KeyPress(object sender, KeyPressEventArgs e)

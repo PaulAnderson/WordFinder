@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -10,32 +9,17 @@ namespace WordFinder
 
     public partial class Form2 : Form
     {
-#if DEBUG 
-        const string DICTFILE_OSPD = "..\\..\\ospd.txt";
-        const string DICTFILE_ENABLE = "..\\..\\enable1.txt";
-        const string DICTFILE_UKACD = "..\\..\\UK%20Advanced%20Cryptics%20Dictionary.txt";
-        const string DICTFILE_SUPPLEMENT = "..\\..\\Supplement.txt"; //extra file of missing words, loaded after the main dictionary
-#else
-        const string DICTFILE_OSPD = "ospd.txt";
-        const string DICTFILE_ENABLE = "enable1.txt";
-        const string DICTFILE_UKACD = "UK%20Advanced%20Cryptics%20Dictionary.txt";
-        const string DICTFILE_SUPPLEMENT = "Supplement.txt"; //extra file of missing words, loaded after the main dictionary
-
-#endif 
         const int minWordLength = 2;
         const int maxWordLength = 15;
         const int gridSizeX = 4;
         const int gridSizeY = 4;
 
-        private WordList wordlist;
+        private WordList wordList;
 
         private char[,] letters;
         private int[,] letterMultipliers;
         private int[,] wordMultipliers;
         private CustomTextBox[,] letterControls;
-
-        private Dictionary<string, Words> dictionaries;
-        private Words dictWords;
 
         private List<Word> FoundWords;
         private Dictionary<String, Word> FoundWordsDict; //use for fast lookups to avoid duplicates
@@ -47,6 +31,7 @@ namespace WordFinder
         {
             InitializeComponent();
 
+            wordList = new WordList() { MinWordLength = minWordLength, MaxWordLength = maxWordLength };
             letters = new char[gridSizeX, gridSizeY];
             letterMultipliers = new int[gridSizeX, gridSizeY];
             wordMultipliers = new int[gridSizeX, gridSizeY];
@@ -81,7 +66,6 @@ namespace WordFinder
         private void NewTextBox_Changed(object sender)
         {
             doFindIfReady();
-            
         }
 
         private void NewTextBox_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -199,82 +183,12 @@ namespace WordFinder
                 }
             }
         }
-        private void Form1_Load(object sender, EventArgs e)
+        private void Form2_Load(object sender, EventArgs e)
         {
-            loadSelectedDictionary();
+            LoadSelectedDictionary();
         }
 
-        private void LoadDictionary(string fileName)
-        {
-            if (dictionaries== null)
-            {
-                dictionaries=new Dictionary<string, Words> ();
-            }
-            if (dictionaries.ContainsKey(fileName))
-            {
-                //swap out the dictionary for the pre-loaded one if available
-                dictWords = dictionaries[fileName];
-            } else
-            {
-                //not already loaded, load it now and store for later.
-                dictWords = new Words();
-                dictionaries.Add(fileName,dictWords);
-
-                //Read words from file
-                FileStream fs = File.Open(Path.Combine(Application.StartupPath , fileName), FileMode.Open);
-                try
-                {
-                    StreamReader sr = new StreamReader(fs);
-                    bool inWordSection = false;
-                    while (!sr.EndOfStream)
-                    {
-                        var line = sr.ReadLine();
-                        if (line.Equals("aa", StringComparison.InvariantCultureIgnoreCase)) inWordSection = true; //look for first word, ignore headers etc
-                        if (inWordSection) { 
-                            if (line.Length >= minWordLength && line.Length <= maxWordLength)
-                            {
-                                dictWords.AddWord(line);
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    fs.Close();
-                }
-                loadSupplementDictionary();
-            }
-
-        }
-        private void loadSupplementDictionary()
-        {
-            try {
-                //Read words from file
-                FileStream fs = File.Open(Path.Combine(Application.StartupPath, DICTFILE_SUPPLEMENT), FileMode.Open);
-                try
-                {
-                    StreamReader sr = new StreamReader(fs);
-                    while (!sr.EndOfStream)
-                    {
-                        var line = sr.ReadLine();
-                        if (line.Length >= minWordLength && line.Length <= maxWordLength)
-                        {
-                            if (!dictWords.isWordInList(line))
-                            {
-                                dictWords.AddWord(line);
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    fs.Close();
-                }
-            } catch (FileNotFoundException)
-            {
-                //ignore
-            }
-        }
+      
         private void btnFind_Click(object sender, EventArgs e)
         {
 
@@ -304,7 +218,6 @@ namespace WordFinder
 
             lstResults.Items.Clear();
 
-            //Sort words longest to shortest. Todo: Take into account letter values and allow setting of board bonuses.
             WordScorer scorer = new WordScorer(letters, letterMultipliers, wordMultipliers);
             scorer.SetWordScores(FoundWords);
 
@@ -407,7 +320,7 @@ namespace WordFinder
             hist.Push(r, c);
             prefix += letters[r, c];
 
-            if (!dictWords.isWordPrefixInList(prefix))
+            if (!wordList.Find(prefix, wholeWord: false))
             {
                 //prefix not in dictionary, no point continuing this way
                 hist.Pop();
@@ -418,7 +331,7 @@ namespace WordFinder
             if (!usingMandatoryTiles || hist.Overlaps(mandatoryLocations)) { 
 
                 //check if the current path is a valid word
-                if (prefix.Length >= minWordLength && dictWords.isWordInList(prefix))
+                if (prefix.Length >= minWordLength && wordList.Find(prefix, wholeWord:true))
                 {
                     if (!FoundWordsDict.ContainsKey(prefix))
                     {
@@ -672,36 +585,50 @@ namespace WordFinder
         {
             doFindIfReady();
         }
-
+        private void txtStartWith_TextChanged(object sender, EventArgs e)
+        {
+            doFindIfReady();
+        }
+        private void txtEndWith_TextChanged(object sender, EventArgs e)
+        {
+            doFindIfReady();
+        }
         private void chkDictOSPD_CheckedChanged(object sender, EventArgs e)
         {
-            loadSelectedDictionary();
+            LoadSelectedDictionary();
         }
         private void chkDictEnable_CheckedChanged(object sender, EventArgs e)
         {
-            loadSelectedDictionary();
+            LoadSelectedDictionary();
         }
         private void chkDictUKACD_CheckedChanged(object sender, EventArgs e)
         {
-            loadSelectedDictionary();
+            LoadSelectedDictionary();
         }
-        private void loadSelectedDictionary()
+        private void LoadSelectedDictionary()
         {
+            DictionaryEdition edition;
+ 
             if (chkDictOSPD.Checked)
             {
-                LoadDictionary(DICTFILE_OSPD);
-                doFindIfReady();
+                edition = DictionaryEdition.OSPD;
             }
             else if(chkDictEnable.Checked)
             {
-                LoadDictionary(DICTFILE_ENABLE);
-                doFindIfReady();
+                edition = DictionaryEdition.ENABLE;
             }
             else if (chkDictUKACD.Checked)
             {
-                LoadDictionary(DICTFILE_UKACD);
-                doFindIfReady();
+                edition = DictionaryEdition.UKACD;
+            } else
+            {
+                throw new Exception("Unknown word list");
             }
+
+            wordList.LoadDictionary(edition);
+
+            doFindIfReady();
+
         }
 
         private void lstResults_KeyPress(object sender, KeyPressEventArgs e)
@@ -717,16 +644,6 @@ namespace WordFinder
         {
             lblStatus.Text = "Press Space bar to scroll current word to top.";
 
-        }
-
-        private void txtStartWith_TextChanged(object sender, EventArgs e)
-        {
-            doFindIfReady();
-        }
-
-        private void txtEndWith_TextChanged(object sender, EventArgs e)
-        {
-            doFindIfReady();
         }
     }
 

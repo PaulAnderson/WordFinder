@@ -633,7 +633,7 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form2";
             this.Text = "Word Finder";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.pnlLetters.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

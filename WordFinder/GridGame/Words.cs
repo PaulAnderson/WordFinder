@@ -3,12 +3,11 @@ using System.Collections.Generic;
 
 namespace WordFinder
 {
-    public class Words
+    public class Words : WordSearchList
     {
         private List<String> wordList { get; set; }
         private Dictionary<String, bool> wordsDict { get; set; }
         private SearchTree STree;
-        //todo: change to use a search trie if too slow
 
         public Words()
         {
@@ -28,24 +27,17 @@ namespace WordFinder
             STree.addString(1, word);
         }
 
-        public bool isWordPrefixInList(string prefix)
+        public bool Find(string word, bool wholeWord)
         {
-            return STree.findPrefix(prefix);
-        }
+            if (wholeWord)
+            {
+                //true if word is a valid word
+                return (STree.findString(word) > -1);
+            } else {
+                //true if word is a prefix of a valid word
+                return STree.findPrefix(word);
 
-        public bool isWordInList(string word)
-        {
-            return (STree.findString(word)>-1);
-
-            //return wordsDict.ContainsKey(word);
-            //foreach (string w in wordList)
-            //{
-            //    if (w.Equals(word,StringComparison.InvariantCultureIgnoreCase))
-            //    {
-            //        return true;
-            //    }
-            //}
-            //return false;
+            }
         }
     }
 }
