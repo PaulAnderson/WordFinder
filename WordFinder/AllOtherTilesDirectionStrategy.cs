@@ -4,7 +4,7 @@ namespace WordFinder
 {
     class AllOtherTilesDirectionStrategy : WordFindDirectionStrategy
     {
-        public override List<WordFindDirectionStrategyResult> GetNextDirections(int r, int c, BoardLettersModel boardModel, History history)
+        public override IEnumerable<WordFindDirectionStrategyResult> GetNextDirections(int r, int c, BoardLettersModel boardModel, History history, object directionData)
         {
             var results = new List<WordFindDirectionStrategyResult>();
 
@@ -19,6 +19,17 @@ namespace WordFinder
                 }
             }
             return results;
+        }
+
+        public override IEnumerable<WordFindDirectionStrategyResult> GetStartingDirections(BoardLettersModel board)
+        {
+            for (int r = 0; r < board.GridSizeX; r++)
+            {
+                for (int c = 0; c < board.GridSizeY; c++)
+                {
+                    yield return new WordFindDirectionStrategyResult() { Row = r, Column = c };
+                }
+            }
         }
     }
 }

@@ -40,18 +40,17 @@ namespace WordFinder
             foundWords.Clear();
             foundWordsDict.Clear();
 
-            for (int r = 0; r < boardModel.GridSizeX; r++)
+            foreach (var startingPoint in directionStrategy.GetStartingDirections(boardModel))
             {
-                for (int c = 0; c < boardModel.GridSizeY; c++)
-                {
-                    FindWords(r, c, new History(), "");
-                }
+                FindWords(startingPoint.Row, startingPoint.Column, new History(), "", startingPoint.DirectionData);
+
             }
+
             filterWords();
             return foundWords;
         }
 
-        public void FindWords(int r, int c, History hist, string prefix)
+        public void FindWords(int r, int c, History hist, string prefix, object directionData)
         {
             //Add to history trail and word
 
@@ -112,7 +111,7 @@ namespace WordFinder
                 return;
             }
 
-            foreach (var direction in directionStrategy.GetNextDirections(r,c,boardModel,hist))
+            foreach (var direction in directionStrategy.GetNextDirections(r,c,boardModel,hist,directionData))
             {
                 char preOverRideLetter = boardModel.Letters[direction.Row, direction.Column];
 
@@ -125,14 +124,14 @@ namespace WordFinder
 
                 if (nextLetter != '?')
                 {
-                    FindWords(direction.Row, direction.Column, hist, prefix);
+                    FindWords(direction.Row, direction.Column, hist, prefix, directionData);
                 }
                 else
                 {
                     for (char ch = 'A'; ch <= 'Z'; ch++)
                     {
                         boardModel.Letters[direction.Row, direction.Column] = ch;
-                        FindWords(direction.Row, direction.Column, hist, prefix);
+                        FindWords(direction.Row, direction.Column, hist, prefix, directionData);
                     }
                     boardModel.Letters[direction.Row, direction.Column] = '?';
                 }

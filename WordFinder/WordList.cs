@@ -23,13 +23,19 @@ namespace WordFinder
         const string DICTFILE_UKACD = "UK%20Advanced%20Cryptics%20Dictionary.txt";
         const string DICTFILE_SUPPLEMENT = "Supplement.txt"; //extra file of missing words, loaded after the main dictionary
 
-#endif
+#endif 
 
-        public int MinWordLength { get; set; } = 0;
+        public int MinWordLength { get; set; } = 2;
         public int MaxWordLength { get; set; } = 15;
 
         private Dictionary<string, Words> dictionaries;
         private Words dictWords;
+        private FileService fileService;
+
+        public WordList(FileService fileService = null)
+        {
+            this.fileService = fileService ?? (FileService) new FileServiceImplementation();
+        }
 
         public void LoadDictionary(DictionaryEdition edition)
         {
@@ -69,14 +75,14 @@ namespace WordFinder
                 dictionaries.Add(fileName, dictWords);
 
                 //Read words from file
-                FileStream fs = File.Open(Path.Combine(Application.StartupPath, fileName), FileMode.Open);
+                Stream fs = fileService.OpenFileStream(Path.Combine(Application.StartupPath, fileName));
                 try
                 {
                     StreamReader sr = new StreamReader(fs);
                     bool inWordSection = false;
                     while (!sr.EndOfStream)
                     {
-                        var line = sr.ReadLine();
+                        var line = sr.ReadLine().Trim();
                         if (line.Equals("aa", StringComparison.InvariantCultureIgnoreCase)) inWordSection = true; //look for first word, ignore headers etc
                         if (inWordSection)
                         {
@@ -100,7 +106,7 @@ namespace WordFinder
             try
             {
                 //Read words from file
-                FileStream fs = File.Open(Path.Combine(Application.StartupPath, DICTFILE_SUPPLEMENT), FileMode.Open);
+                Stream fs = fileService.OpenFileStream(Path.Combine(Application.StartupPath, DICTFILE_SUPPLEMENT));
                 try
                 {
                     StreamReader sr = new StreamReader(fs);

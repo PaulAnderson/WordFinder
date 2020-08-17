@@ -50,6 +50,8 @@
     <Compile Include="AllOtherTilesDirectionStrategy.cs" />
     <Compile Include="BoardController.cs" />
     <Compile Include="BoardLettersModel.cs" />
+    <Compile Include="FileService.cs" />
+    <Compile Include="RightDownSubstituteDirectionStrategy.cs" />
     <Compile Include="CardinalDirectionStrategy.cs" />
     <Compile Include="DictionaryLoader.cs" />
     <Compile Include="Public.cs" />

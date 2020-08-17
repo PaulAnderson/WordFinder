@@ -17,6 +17,7 @@ namespace WordFinder
         public List<HistoryItem> MandatoryLocations { get; set; } = new List<HistoryItem>();
         public int LetterCount => CountLetters();
         public char[,] Letters;
+
         public int[,] LetterMultipliers;
         public int[,] WordMultipliers;
 
@@ -24,10 +25,11 @@ namespace WordFinder
         {
             Initialize();
         }
-        public BoardLettersModel(int xSize, int ySize) : this()
+        public BoardLettersModel(int xSize, int ySize) 
         {
             GridSizeX = xSize;
             GridSizeY = ySize;
+            Initialize();
         }
 
         public void Initialize()
@@ -59,6 +61,21 @@ namespace WordFinder
                 }
             }
             return foundLetters;
+        }
+
+
+        internal IEnumerable<char> GetAllLetters()
+        {
+            for (int r = 0; r < GridSizeX; r++)
+            {
+                for (int c = 0; c < GridSizeY; c++)
+                {
+                    if (!Char.IsWhiteSpace(Letters[r, c]))
+                    {
+                        yield return Letters[r, c];
+                    }
+                }
+            }
         }
 
     }
