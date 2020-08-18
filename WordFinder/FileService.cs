@@ -12,7 +12,7 @@ namespace WordFinder
         Stream OpenFileStream(string fileName);
     }
 
-    class FileServiceImplementation
+    class FileServiceImplementation : FileService
     {
         public Stream OpenFileStream(string fileName)
         {

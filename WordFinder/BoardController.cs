@@ -23,7 +23,7 @@ namespace WordFinder
             letterControls = new CustomTextBox[boardModel.GridSizeX, boardModel.GridSizeY];
 
             //todo - if increase grid size beyond 4, add rows and columns to gridLayoutPanel
-
+            
             //Set up textboxes and letter array
             for (int r = 0; r < boardModel.GridSizeX; r++)
             {

@@ -28,5 +28,11 @@ namespace WordFinder
             var frm = new Form2();
             frm.Show();
         }
+
+        private void BoardButton_Click(object sender, EventArgs e)
+        {
+            var frm = new Form3();
+            frm.Show();
+        }
     }
 }

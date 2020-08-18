@@ -8,14 +8,14 @@ namespace WordFinder
         
         List<Direction> Directions;
         List<Char> Substitutions;
+        BoardLettersModel substitutionLetterBoard;
 
-        public RightDownSubstituteDirectionStrategy(BoardLettersModel SubstitutionLetterBoard)
+        public RightDownSubstituteDirectionStrategy(BoardLettersModel substitutionLetterBoard)
         {
             Directions = new List<Direction>();
             Directions.Add(new Direction(1, 0));   //E
             Directions.Add(new Direction(0, 1));   //S
-
-            Substitutions = SubstitutionLetterBoard.GetAllLetters().ToList();
+            this.substitutionLetterBoard=substitutionLetterBoard;
         }
 
         public override IEnumerable<WordFindDirectionStrategyResult> GetNextDirections(int r, int c, BoardLettersModel boardModel, History history, object directionData)
@@ -41,7 +41,7 @@ namespace WordFinder
             else
             {
                 //Nothing on the board. Substitute in all available letters
-                foreach (var subLetter in dirData.SubstitutionLetters)
+                foreach (var subLetter in dirData.SubstitutionLetters.ToList())
                 {
                     //Create a new dirData with the current substitution letter removed from the candidates
                     var newDirectionData = new DirectionData()
@@ -52,7 +52,7 @@ namespace WordFinder
                     newDirectionData.SubstitutionLetters.Remove(subLetter);
 
                     yield return new WordFindDirectionStrategyResult()
-                        { Row = newRow, Column = newCol, OverrideLetter = subLetter, DirectionData = directionData };
+                        { Row = newRow, Column = newCol, OverrideLetter = subLetter, DirectionData = newDirectionData };
 
                 }
             }
@@ -60,6 +60,8 @@ namespace WordFinder
 
         public override IEnumerable<WordFindDirectionStrategyResult> GetStartingDirections(BoardLettersModel board)
         {
+            Substitutions = substitutionLetterBoard.GetAllLetters().ToList();
+
             //Start words going Right and Down from each position on the board
             for (int r = 0; r < board.GridSizeX; r++)
             {
@@ -67,13 +69,49 @@ namespace WordFinder
                 {
                     foreach (var direction in Directions)
                     {
-                        yield return new WordFindDirectionStrategyResult()
-                        { Row = r, Column = c, DirectionData = new DirectionData()
-                        {
-                            WordDirection = direction,
-                            SubstitutionLetters = Substitutions, //Each new starting point can use all the letters
+                        //check the previous cell is whitespace or edge of board
+                        var previousR = r - direction.RowOffset;
+                        var previousC = c - direction.ColOffset;
+                        var previousOK = previousR < 0 || previousC < 0 || Char.IsWhiteSpace(board.Letters[previousR, previousC]);
+
+                        if (previousOK) {
+                            if (!Char.IsWhiteSpace(board.Letters[r, c]))
+                            {
+                                //use the letter on the board
+                                yield return new WordFindDirectionStrategyResult()
+                                {
+                                    Row = r,
+                                    Column = c,
+                                    DirectionData = new DirectionData()
+                                    {
+                                        WordDirection = direction,
+                                        SubstitutionLetters = Substitutions.ToList(), //Each new starting point can use all the letters
+                                    }
+                                };
+                            }
+                            else
+                            {
+                                //Nothing on the board. Substitute in all available letters
+                                foreach (var subLetter in Substitutions)
+                                {
+                                    //Create a new dirData with the current substitution letter removed from the candidates
+                                    var newDirectionData = new DirectionData()
+                                    {
+                                        WordDirection = direction,
+                                        SubstitutionLetters = Substitutions.ToList(),
+                                    };
+                                    newDirectionData.SubstitutionLetters.Remove(subLetter);
+
+                                    yield return new WordFindDirectionStrategyResult()
+                                    {
+                                        Row = r,
+                                        Column = c,
+                                        OverrideLetter = subLetter,
+                                        DirectionData = newDirectionData
+                                    };
+                                }
+                            }
                         }
-                        };
                     }
                 }
             }

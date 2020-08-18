@@ -28,23 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pnlLetters = new System.Windows.Forms.Panel();
             this.lettersGrid = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlLetters.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pnlLetters
-            // 
-            this.pnlLetters.Controls.Add(this.lettersGrid);
-            this.pnlLetters.Location = new System.Drawing.Point(6, 6);
-            this.pnlLetters.Margin = new System.Windows.Forms.Padding(6);
-            this.pnlLetters.Name = "pnlLetters";
-            this.pnlLetters.Size = new System.Drawing.Size(392, 346);
-            this.pnlLetters.TabIndex = 3;
             // 
             // lettersGrid
             // 
-            this.lettersGrid.BackColor = System.Drawing.Color.White;
+            this.lettersGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.lettersGrid.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.lettersGrid.ColumnCount = 4;
             this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -60,27 +50,23 @@
             this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.lettersGrid.Size = new System.Drawing.Size(392, 346);
-            this.lettersGrid.TabIndex = 3;
-            this.lettersGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.lettersGrid_Paint);
+            this.lettersGrid.Size = new System.Drawing.Size(1067, 733);
+            this.lettersGrid.TabIndex = 4;
             // 
             // Letters
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.Controls.Add(this.pnlLetters);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.Controls.Add(this.lettersGrid);
             this.Name = "Letters";
-            this.Size = new System.Drawing.Size(404, 358);
-            this.pnlLetters.ResumeLayout(false);
+            this.Size = new System.Drawing.Size(1067, 733);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel pnlLetters;
         private System.Windows.Forms.TableLayoutPanel lettersGrid;
     }
 }

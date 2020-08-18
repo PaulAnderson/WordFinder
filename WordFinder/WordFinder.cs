@@ -19,13 +19,15 @@ namespace WordFinder
         public int MinWordLength { get; set; } = 2;
         public int MaxWordLength { get; set; } = 15;
         public bool IsQincludeU { get; set; }
+        public bool WordMustEndWithSpace { get; set; }
+        public bool WordMustHaveSubstitutions { get; set; }
 
         public WordFindDirectionStrategy directionStrategy { get; set; }
         public StepValidationStrategy stepValidationStrategy { get; set; }
         private Dictionary<String, Word> foundWordsDict; //use for fast lookups to avoid duplicates
         private List<Word> foundWords;
 
-        public WordFinder(BoardLettersModel boardModel, WordList wordList, WordFindDirectionStrategy directionStrategy, StepValidationStrategy stepValidationStragy=null)
+        public WordFinder(BoardLettersModel boardModel, WordList wordList, WordFindDirectionStrategy directionStrategy, StepValidationStrategy stepValidationStrategy = null)
         {
             this.boardModel = boardModel;
             this.wordList = wordList;
@@ -38,12 +40,38 @@ namespace WordFinder
 
         public List<Word> FindWords()
         {
+            //TODO make it work with words that end touching existing words but not continuing them
             foundWords.Clear();
             foundWordsDict.Clear();
 
             foreach (var startingPoint in directionStrategy.GetStartingDirections(boardModel))
             {
-                FindWords(startingPoint.Row, startingPoint.Column, new History(), "", startingPoint.DirectionData);
+                bool substitionsMade = false;
+
+                char preOverRideLetter = boardModel.Letters[startingPoint.Row, startingPoint.Column];
+
+                var nextLetter = boardModel.Letters[startingPoint.Row, startingPoint.Column];
+                if (startingPoint.OverrideLetter.HasValue)
+                {
+                    nextLetter = startingPoint.OverrideLetter.Value;
+                    boardModel.Letters[startingPoint.Row, startingPoint.Column] = nextLetter;
+                    substitionsMade = true;
+                }
+
+                if (nextLetter != '?')
+                {
+                    FindWords(startingPoint.Row, startingPoint.Column, new History(), "", startingPoint.DirectionData, substitionsMade);
+                }
+                else
+                {
+                    for (char ch = 'A'; ch <= 'Z'; ch++)
+                    {
+                        boardModel.Letters[startingPoint.Row, startingPoint.Column] = ch;
+                        FindWords(startingPoint.Row, startingPoint.Column, new History(), "", startingPoint.DirectionData, substitionsMade);
+                    }
+                    boardModel.Letters[startingPoint.Row, startingPoint.Column] = '?';
+                }
+                boardModel.Letters[startingPoint.Row, startingPoint.Column] = preOverRideLetter;
 
             }
 
@@ -51,7 +79,7 @@ namespace WordFinder
             return foundWords;
         }
 
-        public void FindWords(int r, int c, History hist, string prefix, object directionData)
+        public void FindWords(int r, int c, History hist, string prefix, object directionData, bool substitionsMade)
         {
             //Add to history trail and word
 
@@ -75,9 +103,24 @@ namespace WordFinder
             //only return words passing through one of the mandatory tiles, if enabled.
             if (!boardModel.UsingMandatoryTiles || hist.Overlaps(boardModel.MandatoryLocations))
             {
+                //Check words in whitespace or edge of the board if that setting is used
+                bool wordEndOk=true;
+                if (WordMustEndWithSpace)
+                {
+                    var nextDirs = directionStrategy.GetNextDirections(r, c, boardModel, hist, directionData);
+                    if (nextDirs.Count()>0)
+                    {
+                        var next = nextDirs.First(d => true);
+                        wordEndOk = char.IsWhiteSpace(boardModel.Letters[next.Row, next.Column]);
+                    }
+                }
+                if (WordMustHaveSubstitutions && !substitionsMade)
+                {
+                    wordEndOk = false;
+                }
 
                 //check if the current path is a valid word
-                if (prefix.Length >= MinWordLength && wordList.Find(prefix, wholeWord: true))
+                if (wordEndOk && prefix.Length >= MinWordLength && wordList.Find(prefix, wholeWord: true))
                 {
                     if (!foundWordsDict.ContainsKey(prefix))
                     {
@@ -127,22 +170,23 @@ namespace WordFinder
                 {
                     nextLetter = direction.OverrideLetter.Value;
                     boardModel.Letters[direction.Row, direction.Column] = nextLetter;
+                    substitionsMade = true;
                 }
 
                 if (nextLetter != '?')
                 {
-                    FindWords(direction.Row, direction.Column, hist, prefix, directionData);
+                    FindWords(direction.Row, direction.Column, hist, prefix, direction.DirectionData, substitionsMade);
                 }
                 else
                 {
                     for (char ch = 'A'; ch <= 'Z'; ch++)
                     {
                         boardModel.Letters[direction.Row, direction.Column] = ch;
-                        FindWords(direction.Row, direction.Column, hist, prefix, directionData);
+                        FindWords(direction.Row, direction.Column, hist, prefix, direction.DirectionData, substitionsMade);
                     }
                     boardModel.Letters[direction.Row, direction.Column] = '?';
                 }
-                preOverRideLetter = boardModel.Letters[direction.Row, direction.Column];
+                boardModel.Letters[direction.Row, direction.Column] = preOverRideLetter;
             }
 
             hist.Pop();

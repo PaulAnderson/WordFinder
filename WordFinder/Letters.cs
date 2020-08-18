@@ -54,6 +54,29 @@ namespace WordFinder
             }
         }
 
+        public void SetTableSize(int rows, int columns)
+        {
+            TableLayoutPanel panel = lettersGrid;
+
+            panel.RowCount = rows;
+            panel.ColumnCount = columns;
+
+            var rowHeight = 100 / rows;
+            var colHeight = 100 / columns;
+
+            panel.RowStyles.Clear();
+            panel.ColumnStyles.Clear();
+
+            for (var i = 0; i< panel.RowCount; i++)
+            {
+                panel.RowStyles.Add(new RowStyle(SizeType.Percent, rowHeight));
+            }
+            for(var i = 0; i < panel.ColumnCount; i++)
+            {
+                panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, colHeight));
+            }
+
+        }
 
     }
 }
