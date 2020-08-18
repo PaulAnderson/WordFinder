@@ -78,5 +78,20 @@ namespace WordFinder
             }
         }
 
+        internal void PlaceWord(int startRow, int startColumn, string word, Direction direction)
+        {
+            int r = startRow;
+            int c = startColumn;
+
+            for (var i = 0; i < word.Length; i++)
+            {
+                if (r >= GridSizeX || c >= GridSizeY || r < 0 || c < 0) break;
+
+                Letters[r, c] = char.Parse(word.Substring(i, 1));
+
+                r += direction.RowOffset;
+                c += direction.ColOffset;
+            }
+        }
     }
 }
