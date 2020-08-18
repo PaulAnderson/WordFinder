@@ -14,7 +14,7 @@ namespace WordFinderTests
     public class RightDownSubsitionDirectionStrategyTests
     {
         [Fact]
-        public void PassTest()
+        public void WordFoundUsingSubstituteLetters()
         {
             //arrange
             var testFile = 
@@ -31,7 +31,7 @@ namespace WordFinderTests
 
             var boardModel = new BoardLettersModel(5, 5);
             boardModel.Letters[0, 0] = 'T';
-            boardModel.Letters[0,   3] = 'T';
+            boardModel.Letters[0, 3] = 'T';
 
             var substituionLetters = new BoardLettersModel(1, 7);
             substituionLetters.Letters[0, 0] = 'E';

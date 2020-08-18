@@ -33,7 +33,7 @@ namespace WordFinder
             }
 
             //Substitute letters if the board has a blank space
-            if (!Char.IsWhiteSpace(boardModel.Letters[r,c]))
+            if (!Char.IsWhiteSpace(boardModel.Letters[newRow, newCol]))
             {
                 //Use the letter on the board
                 yield return new WordFindDirectionStrategyResult() { Row = newRow, Column = newCol, DirectionData = directionData };
