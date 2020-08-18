@@ -21,15 +21,16 @@ namespace WordFinder
         public bool IsQincludeU { get; set; }
 
         public WordFindDirectionStrategy directionStrategy { get; set; }
-
+        public StepValidationStrategy stepValidationStrategy { get; set; }
         private Dictionary<String, Word> foundWordsDict; //use for fast lookups to avoid duplicates
         private List<Word> foundWords;
 
-        public WordFinder(BoardLettersModel boardModel, WordList wordList, WordFindDirectionStrategy directionStrategy)
+        public WordFinder(BoardLettersModel boardModel, WordList wordList, WordFindDirectionStrategy directionStrategy, StepValidationStrategy stepValidationStragy=null)
         {
             this.boardModel = boardModel;
             this.wordList = wordList;
             this.directionStrategy = directionStrategy;
+            this.stepValidationStrategy = stepValidationStrategy;
 
             foundWords = new List<Word>();
             foundWordsDict = new Dictionary<String, Word>();
@@ -108,6 +109,12 @@ namespace WordFinder
             if (hist.Count == MaxWordLength)
             {
                 hist.Pop();
+                return;
+            }
+
+            if (stepValidationStrategy != null && !stepValidationStrategy.Validate(boardModel, prefix, r, c, directionData))
+            {
+                //failed validation after adding this letter
                 return;
             }
 

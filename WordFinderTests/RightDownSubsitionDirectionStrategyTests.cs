@@ -53,13 +53,14 @@ namespace WordFinderTests
         public static IEnumerable<Object[]> WordFoundUsingSubstituteLettersData =>
          new List<object[]>
         {
-            new object[] { 0, 0, true, "T  T","ES","TEST" },
-            new object[] { 0, 0, false, "T  T","ES","TEST" },
-            new object[] { 3, 1, true, "T  T","ES","TEST" },
-            new object[] { 0, 0, true, "T","EST","TEST" },
-            new object[] { 0, 0, true, "TE T","EST","TEST" },
-            new object[] { 0, 0, true, "TE T","ABC?","TEST" },
-            new object[] { 0, 0, true, "HELLO A T ST WORD","QZOUEFA","TEST" },
+            new object[] { 0, 0, true, "T  T","ABC","TEST", false },
+            new object[] { 0, 0, true, "T  T","ES","TEST", true },
+            new object[] { 0, 0, false, "T  T","ES","TEST", true },
+            new object[] { 3, 1, true, "T  T","ES","TEST", true },
+            new object[] { 0, 0, true, "T","EST","TEST", true },
+            new object[] { 0, 0, true, "TE T","EST","TEST", true },
+            new object[] { 0, 0, true, "TE T","ABC?","TEST", true },
+            new object[] { 0, 0, true, "HELLO A T ST WORD","QZOUEFA","TEST", true },
 
         };
     }

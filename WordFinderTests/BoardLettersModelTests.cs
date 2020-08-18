@@ -77,5 +77,35 @@ namespace WordFinderTests
             Assert.Equal('N', board.Letters[0, 2]);
             Assert.Equal('G', board.Letters[0, 3]);
         }
+
+        [Fact]
+        void ReadWord_WhenCalled_ReadsWord()
+        {
+            //arrange
+            var testWord = "TEST";
+            var board = new BoardLettersModel(4, 4);
+            board.PlaceWord(0, 0, testWord, new Direction(0, 1));
+
+            //act
+            var word = board.ReadWord(0, 0, new Direction(0, 1));
+
+            //assert
+            Assert.Equal(testWord, word);
+        }
+
+        [Fact]
+        void ReadWord_WhenCoordsInMiddleOfWord_ReadsWordFromBeginning()
+        {
+            //arrange
+            var testWord = "TEST";
+            var board = new BoardLettersModel(4, 4);
+            board.PlaceWord(0, 0, testWord, new Direction(0, 1));
+
+            //act
+            var word = board.ReadWord(0, 2, new Direction(0, 1));
+
+            //assert
+            Assert.Equal(testWord, word);
+        }
     }
 }

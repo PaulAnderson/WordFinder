@@ -93,5 +93,45 @@ namespace WordFinder
                 c += direction.ColOffset;
             }
         }
+
+        public string ReadWord(int startRow, int startColumn, Direction direction)
+        {
+            int r, c;
+            (r, c) = FindStartOfWord(startRow, startColumn, direction);
+
+            string s = "";
+            while(true)
+            {
+                if (r >= GridSizeX || c >= GridSizeY || r < 0 || c < 0) break;
+                if (char.IsWhiteSpace(Letters[r, c])) break;
+
+                s += Letters[r, c];
+
+                r += direction.RowOffset;
+                c += direction.ColOffset;
+            }
+
+            return s;
+        }
+
+        (int, int) FindStartOfWord(int startRow, int startColumn, Direction direction)
+        {
+            int r = startRow;
+            int c = startColumn;
+
+            while (true)
+            {
+                if (r >= GridSizeX || c >= GridSizeY || r < 0 || c < 0) break;
+                if (char.IsWhiteSpace(Letters[r, c])) break;
+
+                r -= direction.RowOffset;
+                c -= direction.ColOffset;
+            }
+
+            r += direction.RowOffset;
+            c += direction.ColOffset;
+
+            return (r, c);
+         }
     }
 }

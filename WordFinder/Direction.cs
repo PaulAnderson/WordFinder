@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-class Direction
+public class Direction
 {
     public int RowOffset { get; set; }
     public int ColOffset { get; set; }
