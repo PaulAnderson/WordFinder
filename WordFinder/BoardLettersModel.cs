@@ -133,20 +133,5 @@ namespace WordFinder
 
             return (r, c);
          }
-
-        internal void SetAllLettersMandatory()
-        {
-            MandatoryLocations.Clear();
-            for (int r = 0; r < GridSizeX; r++)
-            {
-                for (int c = 0; c < GridSizeY; c++)
-                {
-                    if (!Char.IsWhiteSpace(Letters[r, c]))
-                    {
-                        MandatoryLocations.Add(new HistoryItem(r, c));
-                    }
-                }
-            }
-        }
     }
 }

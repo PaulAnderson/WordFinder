@@ -119,6 +119,11 @@ namespace WordFinder
                     wordEndOk = false;
                 }
 
+                if (stepValidationStrategy !=null && !stepValidationStrategy.ValidateWordEnd(boardModel,prefix,r,c,directionData))
+                {
+                    wordEndOk = false;
+                }
+
                 //check if the current path is a valid word
                 if (wordEndOk && prefix.Length >= MinWordLength && wordList.Find(prefix, wholeWord: true))
                 {

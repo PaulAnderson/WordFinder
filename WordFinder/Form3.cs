@@ -42,7 +42,9 @@ namespace WordFinder
             wordFinder = new WordFinder(boardModel, wordList,
                 new RightDownSubstituteDirectionStrategy(subBoardModel),
                 new IntersectingNeighborValidationStrategy(wordList))
-            { WordMustEndWithSpace = true };
+            { WordMustEndWithSpace = true,
+                WordMustHaveSubstitutions = true,
+            };
 
             lettersGrid.TextChanged += LettersGrid_TextChanged;
 
@@ -83,7 +85,6 @@ namespace WordFinder
 
         private void doFind()
         {
-            boardModel.SetAllLettersMandatory();
             boardController.ClearLinePath();
             foundWords = wordFinder.FindWords();
             populateResultsList();
