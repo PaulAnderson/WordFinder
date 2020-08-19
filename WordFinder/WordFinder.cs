@@ -47,6 +47,7 @@ namespace WordFinder
             foreach (var startingPoint in directionStrategy.GetStartingDirections(boardModel))
             {
                 bool substitionsMade = false;
+                bool lettersWithoutSubstitions = false;
 
                 char preOverRideLetter = boardModel.Letters[startingPoint.Row, startingPoint.Column];
 
@@ -56,18 +57,21 @@ namespace WordFinder
                     nextLetter = startingPoint.OverrideLetter.Value;
                     boardModel.Letters[startingPoint.Row, startingPoint.Column] = nextLetter;
                     substitionsMade = true;
+                } else
+                {
+                    lettersWithoutSubstitions = true;
                 }
 
                 if (nextLetter != '?')
                 {
-                    FindWords(startingPoint.Row, startingPoint.Column, new History(), "", startingPoint.DirectionData, substitionsMade);
+                    FindWords(startingPoint.Row, startingPoint.Column, new History(), "", startingPoint.DirectionData, substitionsMade, lettersWithoutSubstitions);
                 }
                 else
                 {
                     for (char ch = 'A'; ch <= 'Z'; ch++)
                     {
                         boardModel.Letters[startingPoint.Row, startingPoint.Column] = ch;
-                        FindWords(startingPoint.Row, startingPoint.Column, new History(), "", startingPoint.DirectionData, substitionsMade);
+                        FindWords(startingPoint.Row, startingPoint.Column, new History(), "", startingPoint.DirectionData, substitionsMade, lettersWithoutSubstitions);
                     }
                     boardModel.Letters[startingPoint.Row, startingPoint.Column] = '?';
                 }
@@ -79,7 +83,7 @@ namespace WordFinder
             return foundWords;
         }
 
-        public void FindWords(int r, int c, History hist, string prefix, object directionData, bool substitionsMade)
+        public void FindWords(int r, int c, History hist, string prefix, object directionData, bool substitionsMade, bool lettersWithoutSubstitions)
         {
             //Add to history trail and word
 
@@ -119,7 +123,7 @@ namespace WordFinder
                     wordEndOk = false;
                 }
 
-                if (stepValidationStrategy !=null && !stepValidationStrategy.ValidateWordEnd(boardModel,prefix,r,c,directionData))
+                if (stepValidationStrategy !=null && !stepValidationStrategy.ValidateWordEnd(boardModel,prefix,r,c,directionData, substitionsMade, lettersWithoutSubstitions))
                 {
                     wordEndOk = false;
                 }
@@ -176,18 +180,21 @@ namespace WordFinder
                     nextLetter = direction.OverrideLetter.Value;
                     boardModel.Letters[direction.Row, direction.Column] = nextLetter;
                     substitionsMade = true;
+                } else
+                {
+                    lettersWithoutSubstitions = true;
                 }
 
                 if (nextLetter != '?')
                 {
-                    FindWords(direction.Row, direction.Column, hist, prefix, direction.DirectionData, substitionsMade);
+                    FindWords(direction.Row, direction.Column, hist, prefix, direction.DirectionData, substitionsMade, lettersWithoutSubstitions);
                 }
                 else
                 {
                     for (char ch = 'A'; ch <= 'Z'; ch++)
                     {
                         boardModel.Letters[direction.Row, direction.Column] = ch;
-                        FindWords(direction.Row, direction.Column, hist, prefix, direction.DirectionData, substitionsMade);
+                        FindWords(direction.Row, direction.Column, hist, prefix, direction.DirectionData, substitionsMade, lettersWithoutSubstitions);
                     }
                     boardModel.Letters[direction.Row, direction.Column] = '?';
                 }

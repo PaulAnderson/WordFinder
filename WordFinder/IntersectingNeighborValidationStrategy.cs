@@ -28,7 +28,7 @@ namespace WordFinder
             return wordList.Find(word, wholeWord: true);
         }
 
-        public override bool ValidateWordEnd(BoardLettersModel boardModel, string prefix, int r, int c, object directionData)
+        public override bool ValidateWordEnd(BoardLettersModel boardModel, string prefix, int r, int c, object directionData, bool substitionsMade, bool lettersWithoutSubstitions)
         {
             //next letter must be whitespace or end of board
             //must intersect or neighbor tiles on board somewhere
@@ -43,6 +43,9 @@ namespace WordFinder
 
             //Walk back through word and get intersecting words
             int intersects = GetIntersects(boardModel,prefix,r,c,wordDirection);
+
+            //Count letters in line with word as intersects
+            if (lettersWithoutSubstitions) intersects += 1;
 
             //Get next letter after wrod end if any
             r += wordDirection.RowOffset;
