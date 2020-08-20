@@ -64,6 +64,9 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.btnLoad = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnPlayWord = new System.Windows.Forms.Button();
             this.btnFind = new System.Windows.Forms.Button();
             this.letters1 = new Letters();
             this.panel8 = new System.Windows.Forms.Panel();
@@ -75,7 +78,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.lblMaxPossibleScore = new System.Windows.Forms.Label();
             this.lettersGrid = new Letters();
-            this.btnPlayWord = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -468,10 +470,10 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1441);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1371);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 28, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1396, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1885, 22);
             this.statusStrip1.TabIndex = 22;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -482,6 +484,8 @@
             // 
             // panel7
             // 
+            this.panel7.Controls.Add(this.btnLoad);
+            this.panel7.Controls.Add(this.btnSave);
             this.panel7.Controls.Add(this.btnPlayWord);
             this.panel7.Controls.Add(this.btnFind);
             this.panel7.Controls.Add(this.letters1);
@@ -495,9 +499,39 @@
             this.panel7.Location = new System.Drawing.Point(0, 0);
             this.panel7.Margin = new System.Windows.Forms.Padding(6);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(818, 1441);
+            this.panel7.Size = new System.Drawing.Size(818, 1371);
             this.panel7.TabIndex = 23;
             this.panel7.Paint += new System.Windows.Forms.PaintEventHandler(this.panel7_Paint);
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Location = new System.Drawing.Point(243, 981);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(153, 74);
+            this.btnLoad.TabIndex = 29;
+            this.btnLoad.Text = "Load";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(49, 981);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(133, 74);
+            this.btnSave.TabIndex = 28;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnPlayWord
+            // 
+            this.btnPlayWord.Location = new System.Drawing.Point(243, 870);
+            this.btnPlayWord.Name = "btnPlayWord";
+            this.btnPlayWord.Size = new System.Drawing.Size(160, 72);
+            this.btnPlayWord.TabIndex = 27;
+            this.btnPlayWord.Text = "Play word";
+            this.btnPlayWord.UseVisualStyleBackColor = true;
+            this.btnPlayWord.Click += new System.EventHandler(this.btnPlayWord_Click);
             // 
             // btnFind
             // 
@@ -613,24 +647,14 @@
             this.lettersGrid.Location = new System.Drawing.Point(818, 0);
             this.lettersGrid.Name = "lettersGrid";
             this.lettersGrid.Rows = 0;
-            this.lettersGrid.Size = new System.Drawing.Size(578, 1441);
+            this.lettersGrid.Size = new System.Drawing.Size(1067, 1371);
             this.lettersGrid.TabIndex = 18;
-            // 
-            // btnPlayWord
-            // 
-            this.btnPlayWord.Location = new System.Drawing.Point(243, 870);
-            this.btnPlayWord.Name = "btnPlayWord";
-            this.btnPlayWord.Size = new System.Drawing.Size(160, 72);
-            this.btnPlayWord.TabIndex = 27;
-            this.btnPlayWord.Text = "Play word";
-            this.btnPlayWord.UseVisualStyleBackColor = true;
-            this.btnPlayWord.Click += new System.EventHandler(this.btnPlayWord_Click);
             // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1396, 1463);
+            this.ClientSize = new System.Drawing.Size(1885, 1393);
             this.Controls.Add(this.lettersGrid);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.statusStrip1);
@@ -709,6 +733,8 @@
         private Letters letters1;
         private System.Windows.Forms.Button btnFind;
         private System.Windows.Forms.Button btnPlayWord;
+        private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.Button btnSave;
     }
 }
 

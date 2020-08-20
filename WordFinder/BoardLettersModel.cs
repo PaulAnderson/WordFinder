@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace WordFinder
 {
+    [Serializable]
     class BoardLettersModel
     {
         public int GridSizeX { get; set; } = 4;

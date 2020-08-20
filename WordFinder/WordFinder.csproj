@@ -50,6 +50,7 @@
     <Compile Include="AllOtherTilesDirectionStrategy.cs" />
     <Compile Include="BoardController.cs" />
     <Compile Include="BoardLettersModel.cs" />
+    <Compile Include="BoardSaver.cs" />
     <Compile Include="FileService.cs" />
     <Compile Include="Form3.cs">
       <SubType>Form</SubType>

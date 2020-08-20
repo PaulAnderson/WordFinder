@@ -10,6 +10,7 @@ namespace WordFinder
     interface FileService
     {
         Stream OpenFileStream(string fileName);
+        Stream CreateFileStream(string fileName);
     }
 
     class FileServiceImplementation : FileService
@@ -17,6 +18,10 @@ namespace WordFinder
         public Stream OpenFileStream(string fileName)
         {
             return File.Open(fileName, FileMode.Open);
+        }
+        public Stream CreateFileStream(string fileName)
+        {
+            return File.Open(fileName, FileMode.Create);
         }
     }
 }

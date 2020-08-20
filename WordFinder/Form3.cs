@@ -20,10 +20,11 @@ namespace WordFinder
         private BoardController boardController;
         private BoardLettersModel subBoardModel;
         private BoardController subBoardController;
+        private BoardSaver boardSaver;
         private WordFinder wordFinder;
         private List<Word> foundWords;
         private Word SelectedWord;
-
+        
         public Form3()
         {
             InitializeComponent();
@@ -35,6 +36,8 @@ namespace WordFinder
 
             subBoardModel = new BoardLettersModel(3,3);
             subBoardController = new BoardController(subBoardModel, letters1);
+
+            boardSaver = new BoardSaver(new BoardLettersModel[] { boardModel, subBoardModel });
 
             wordFinder = new WordFinder(boardModel, wordList,
                 new RightDownSubstituteDirectionStrategy(subBoardModel),
@@ -415,6 +418,26 @@ namespace WordFinder
             {
                 boardModel.PlaceWord(SelectedWord);
                 boardController.UpdateView();
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            var dlg = new SaveFileDialog();
+            if (dlg.ShowDialog() == DialogResult.OK) {
+                boardSaver.Save(dlg.FileName);
+            }
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            var dlg = new OpenFileDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                boardSaver.Load(dlg.FileName);
+                boardController.UpdateView();
+                subBoardController.UpdateView();
+
             }
         }
     }
