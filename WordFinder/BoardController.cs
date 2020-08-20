@@ -22,8 +22,8 @@ namespace WordFinder
 
             letterControls = new CustomTextBox[boardModel.GridSizeX, boardModel.GridSizeY];
 
-            //todo - if increase grid size beyond 4, add rows and columns to gridLayoutPanel
-            
+            LetterGridControl.SetTableSize(boardModel.GridSizeX, boardModel.GridSizeY);
+
             //Set up textboxes and letter array
             for (int r = 0; r < boardModel.GridSizeX; r++)
             {
@@ -111,6 +111,34 @@ namespace WordFinder
             UpdateModel();
         }
 
+        public void UpdateView()
+        {
+            try
+            {
+                inChangeEvent = true;
+
+                for (int r = 0; r < BoardModel.GridSizeX; r++)
+                {
+                    for (int c = 0; c < BoardModel.GridSizeX; c++)
+                    {
+                        var letter = BoardModel.Letters[r, c];
+                        letterControls[r, c].Text = letter.ToString().ToUpper() ;
+                        if (Char.IsLetter(letter) || c == '?')
+                        {
+                            letterControls[r, c].BackColor = Color.LightGreen;
+                        } else
+                        {
+                            letterControls[r, c].BackColor = Color.White;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                inChangeEvent = false;
+            }
+        }
+
         private void UpdateModel()
         {
             ReadLetters();
@@ -164,6 +192,7 @@ namespace WordFinder
                 }
             }
         }
+
         public void SetLetterModifiers(CustomTextBox.ScoreModifier modifier)
         {
             for (int r = 0; r < BoardModel.GridSizeX; r++)
@@ -173,6 +202,12 @@ namespace WordFinder
                     letterControls[r, c].Modifier = modifier;
                 }
             }
+            ReadLetters();
+        }
+
+        public void SetLetterModifiers(int r, int c, CustomTextBox.ScoreModifier modifier)
+        {
+            letterControls[r, c].Modifier = modifier;
             ReadLetters();
         }
 
@@ -188,8 +223,12 @@ namespace WordFinder
         }
         public void ShowPath(History path)
         {
-            var linePath = new List<Point>();
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
 
+            var linePath = new List<Point>();
+            LetterGridControl.SuspendLayout();
+            LetterGridControl.Visible = false;
             foreach (HistoryItem pathStop in path.GetList())
             {
                 Control letterControl = letterControls[pathStop.row, pathStop.col];
@@ -207,6 +246,13 @@ namespace WordFinder
 
             LetterGridControl.LinePath = linePath;
             LetterGridControl.Refresh(); //cause repaint
+            LetterGridControl.Visible = true;
+
+            LetterGridControl.PerformLayout();
+
+
+            sw.Stop();
+            Console.WriteLine($"ShowPath: {sw.ElapsedMilliseconds}");
         }
 
         internal void Clear()

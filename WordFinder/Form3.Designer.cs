@@ -64,6 +64,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel7 = new System.Windows.Forms.Panel();
+            this.btnFind = new System.Windows.Forms.Button();
             this.letters1 = new Letters();
             this.panel8 = new System.Windows.Forms.Panel();
             this.panel9 = new System.Windows.Forms.Panel();
@@ -74,7 +75,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.lblMaxPossibleScore = new System.Windows.Forms.Label();
             this.lettersGrid = new Letters();
-            this.btnFind = new System.Windows.Forms.Button();
+            this.btnPlayWord = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -118,7 +119,7 @@
             this.lstResults.Margin = new System.Windows.Forms.Padding(6);
             this.lstResults.Name = "lstResults";
             this.lstResults.ScrollAlwaysVisible = true;
-            this.lstResults.Size = new System.Drawing.Size(391, 1242);
+            this.lstResults.Size = new System.Drawing.Size(391, 1136);
             this.lstResults.TabIndex = 5;
             this.lstResults.SelectedIndexChanged += new System.EventHandler(this.lstResults_SelectedIndexChanged);
             this.lstResults.Enter += new System.EventHandler(this.lstResults_Enter_1);
@@ -481,6 +482,7 @@
             // 
             // panel7
             // 
+            this.panel7.Controls.Add(this.btnPlayWord);
             this.panel7.Controls.Add(this.btnFind);
             this.panel7.Controls.Add(this.letters1);
             this.panel7.Controls.Add(this.panel8);
@@ -497,6 +499,16 @@
             this.panel7.TabIndex = 23;
             this.panel7.Paint += new System.Windows.Forms.PaintEventHandler(this.panel7_Paint);
             // 
+            // btnFind
+            // 
+            this.btnFind.Location = new System.Drawing.Point(48, 870);
+            this.btnFind.Name = "btnFind";
+            this.btnFind.Size = new System.Drawing.Size(134, 72);
+            this.btnFind.TabIndex = 26;
+            this.btnFind.Text = "Find Words";
+            this.btnFind.UseVisualStyleBackColor = true;
+            this.btnFind.Click += new System.EventHandler(this.btnFind_Click_1);
+            // 
             // letters1
             // 
             this.letters1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
@@ -504,17 +516,17 @@
             this.letters1.Location = new System.Drawing.Point(421, 12);
             this.letters1.Name = "letters1";
             this.letters1.Rows = 0;
-            this.letters1.Size = new System.Drawing.Size(391, 158);
+            this.letters1.Size = new System.Drawing.Size(391, 261);
             this.letters1.TabIndex = 25;
             // 
             // panel8
             // 
             this.panel8.Controls.Add(this.lstResults);
             this.panel8.Controls.Add(this.panel9);
-            this.panel8.Location = new System.Drawing.Point(418, 179);
+            this.panel8.Location = new System.Drawing.Point(418, 285);
             this.panel8.Margin = new System.Windows.Forms.Padding(6);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(391, 1269);
+            this.panel8.Size = new System.Drawing.Size(391, 1163);
             this.panel8.TabIndex = 24;
             // 
             // panel9
@@ -604,15 +616,15 @@
             this.lettersGrid.Size = new System.Drawing.Size(578, 1441);
             this.lettersGrid.TabIndex = 18;
             // 
-            // btnFind
+            // btnPlayWord
             // 
-            this.btnFind.Location = new System.Drawing.Point(48, 870);
-            this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(134, 72);
-            this.btnFind.TabIndex = 26;
-            this.btnFind.Text = "Find Words";
-            this.btnFind.UseVisualStyleBackColor = true;
-            this.btnFind.Click += new System.EventHandler(this.btnFind_Click_1);
+            this.btnPlayWord.Location = new System.Drawing.Point(243, 870);
+            this.btnPlayWord.Name = "btnPlayWord";
+            this.btnPlayWord.Size = new System.Drawing.Size(160, 72);
+            this.btnPlayWord.TabIndex = 27;
+            this.btnPlayWord.Text = "Play word";
+            this.btnPlayWord.UseVisualStyleBackColor = true;
+            this.btnPlayWord.Click += new System.EventHandler(this.btnPlayWord_Click);
             // 
             // Form3
             // 
@@ -625,7 +637,7 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form3";
             this.Text = "Word Finder";
-            this.Load += new System.EventHandler(this.Form2_Load);
+            this.Load += new System.EventHandler(this.Form3_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -696,6 +708,7 @@
         private Letters lettersGrid;
         private Letters letters1;
         private System.Windows.Forms.Button btnFind;
+        private System.Windows.Forms.Button btnPlayWord;
     }
 }
 

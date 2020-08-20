@@ -94,6 +94,16 @@ namespace WordFinder
             }
         }
 
+        internal void PlaceWord(Word word)
+        {
+            var locations = word.Path.GetList();
+            for (var i = 0; i < word.Text.Length; i++)
+            {
+                Letters[locations[i].row,locations[i].col] = char.Parse(word.Text.Substring(i, 1));
+            }
+             
+        }
+
         public string ReadWord(int startRow, int startColumn, Direction direction)
         {
             int r, c;
@@ -133,5 +143,6 @@ namespace WordFinder
 
             return (r, c);
          }
+
     }
 }

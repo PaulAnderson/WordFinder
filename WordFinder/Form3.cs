@@ -12,8 +12,8 @@ namespace WordFinder
         const int minWordLength = 2;
         const int maxWordLength = 16;
 
-        const int gridSizeX = 16;
-        const int gridSizeY = 16;
+        const int gridSizeX = 15;
+        const int gridSizeY = 15;
 
         private WordList wordList;
         private BoardLettersModel boardModel;
@@ -27,9 +27,6 @@ namespace WordFinder
         public Form3()
         {
             InitializeComponent();
-
-            //Add 12 rows and columns (4 -> 16)
-            lettersGrid.SetTableSize(16,16);
 
             wordList = new WordList() { MinWordLength = minWordLength, MaxWordLength = maxWordLength };
 
@@ -48,9 +45,49 @@ namespace WordFinder
 
             lettersGrid.TextChanged += LettersGrid_TextChanged;
 
+            SetBonusTiles();
         }
 
-        private void Form2_Load(object sender, EventArgs e)
+        private void SetBonusTiles()
+        {
+            var items = new List<(CustomTextBox.ScoreModifier, List<(int, int)>)>
+            {
+                (CustomTextBox.ScoreModifier.TW,
+                new List<(int,int)>
+                {
+                    (0,3), (0,11), (3,0), (3,14), (11,0), (11,14), (14,3), (14,11),
+                }),
+                (CustomTextBox.ScoreModifier.DW,
+                new List<(int,int)>
+                {
+                    (1,5), (1,9), (3,7), (5,1), (5,13), (7,3), (7,11), (9,1), (9,13), (11,7), (13,5), (13,9)
+                }),
+                (CustomTextBox.ScoreModifier.TL,
+                new List<(int,int)>
+                {
+                    (0,6), (0,8), (3,3), (3,11), (5,5), (5,9), (6,0), (6,14), (8,0), (8,14), (9,5), (9,9), (11,3),
+                    (11,11), (14,6), (14,8)
+                }),
+                (CustomTextBox.ScoreModifier.DL,
+                new List<(int,int)>
+                {
+                    (1,2), (1,12), (2,1), (2,4), (2,10), (2,13), (4,2), (4,6), (4,8), (4,12), (6,4), (6,10),
+                    (8,4), (8,10), (10,2), (10,6), (10,8), (10,12), (12,1), (12,4), (12,10), (12,13), (13,2), (13,12)
+                })
+            };
+
+            foreach (var (group,coords) in items)
+            {
+                foreach (var (r,c) in coords)
+                {
+                    boardController.SetLetterModifiers(r,c, group);
+
+                }
+            }
+
+        }
+
+        private void Form3_Load(object sender, EventArgs e)
         {
             LoadSelectedDictionary();
         }
@@ -171,27 +208,44 @@ namespace WordFinder
 
         private void lstResults_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
             boardController.ClearLetterColours();
             string word = (string)lstResults.SelectedItem;
             if (!string.IsNullOrEmpty(word))
             {
                 word = word.Split(' ')[0];
             }
-            foreach (Word foundWord in foundWords)
-            {
-                if (word.Equals(foundWord.Text))
-                {
-                    SelectedWord = foundWord;
-                    boardController.ShowPath(foundWord.Path);
+            var foundWord = FindWord(word, foundWords);
 
-                    //word stats
-                    lblCurrentWordLetters.Text = foundWord.Text.Length.ToString();
-                    lblCurrentWordDirChanges.Text = foundWord.Path.DirectionChanges().ToString();
-                    lblCurrentWordCrossovers.Text = foundWord.Path.CrossOvers().ToString();
-                    
+            if (foundWord!=null)
+            {
+                SelectedWord = foundWord;
+                boardController.ShowPath(foundWord.Path);
+
+                //word stats
+                lblCurrentWordLetters.Text = foundWord.Text.Length.ToString();
+                lblCurrentWordDirChanges.Text = foundWord.Path.DirectionChanges().ToString();
+                lblCurrentWordCrossovers.Text = foundWord.Path.CrossOvers().ToString();
+            }
+
+            sw.Stop();
+          
+            Console.WriteLine($"lstResults_SelectedIndexChanged: {sw.ElapsedMilliseconds}");
+
+        }
+
+        private Word FindWord(string text, List<Word> words)
+        {
+            foreach (Word word in foundWords)
+            {
+                if (text.Equals(word.Text))
+                {
+                    return word;
                 }
             }
+            return null;
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -208,6 +262,7 @@ namespace WordFinder
             txtContains.Text = "";
             lstResults.Items.Clear();
             boardController.Clear();
+            SetBonusTiles();
         }
         
         private void cbkSortbyScore_CheckedChanged(object sender, EventArgs e)
@@ -352,6 +407,15 @@ namespace WordFinder
         private void btnFind_Click_1(object sender, EventArgs e)
         {
             doFindIfReady();
+        }
+
+        private void btnPlayWord_Click(object sender, EventArgs e)
+        {
+            if (SelectedWord != null)
+            {
+                boardModel.PlaceWord(SelectedWord);
+                boardController.UpdateView();
+            }
         }
     }
 }

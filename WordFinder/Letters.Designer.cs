@@ -34,7 +34,7 @@
             // lettersGrid
             // 
             this.lettersGrid.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.lettersGrid.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.lettersGrid.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.lettersGrid.ColumnCount = 4;
             this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.lettersGrid.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -52,6 +52,7 @@
             this.lettersGrid.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.lettersGrid.Size = new System.Drawing.Size(1067, 733);
             this.lettersGrid.TabIndex = 4;
+            this.lettersGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.lettersGrid_Paint);
             // 
             // Letters
             // 

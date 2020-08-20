@@ -58,6 +58,10 @@ namespace WordFinder
         {
             TableLayoutPanel panel = lettersGrid;
 
+            //one extra row/column so that all the textboxes are the same size
+            rows += 1;
+            columns += 1;
+
             panel.RowCount = rows;
             panel.ColumnCount = columns;
 
@@ -67,14 +71,18 @@ namespace WordFinder
             panel.RowStyles.Clear();
             panel.ColumnStyles.Clear();
 
-            for (var i = 0; i< panel.RowCount; i++)
+            for (var i = 0; i< panel.RowCount-1; i++)
             {
                 panel.RowStyles.Add(new RowStyle(SizeType.Percent, rowHeight));
             }
-            for(var i = 0; i < panel.ColumnCount; i++)
+            for(var i = 0; i < panel.ColumnCount-1; i++)
             {
                 panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, colHeight));
             }
+
+            //last row/column autosize
+            panel.RowStyles.Add(new RowStyle(SizeType.AutoSize, 0));
+            panel.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize, 0));
 
         }
 

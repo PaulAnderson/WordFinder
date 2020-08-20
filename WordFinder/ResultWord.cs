@@ -57,6 +57,7 @@ class WordScorer
     {
         int letterTotal = 0;
         int wordMultiplier = 1;
+        int wordPosition = 0;
 
         foreach (HistoryItem item in word.Path.GetList())
         {
@@ -66,6 +67,13 @@ class WordScorer
 
             //get letter for location
             letter = letters[item.row, item.col];
+
+            if (char.IsWhiteSpace(letter))
+            {
+                if (wordPosition < word.Text.Length - 1) { 
+                    letter = word.Text.Substring(wordPosition, 1).ToCharArray()[0];
+                }
+            }
 
             //get letter value
             letterValue = getLetterValue(letter);
@@ -86,6 +94,8 @@ class WordScorer
                 wordMultiplier *= wordMultipliers[item.row, item.col];
             }
             letterTotal += (letterValue * letterMultiplier);
+
+            wordPosition++;
         }
 
         return letterTotal * wordMultiplier + getLengthBonus(word.Text.Length); //Word Length bonus applied after multipliers
