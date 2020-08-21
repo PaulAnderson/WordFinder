@@ -78,6 +78,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.lblMaxPossibleScore = new System.Windows.Forms.Label();
             this.lettersGrid = new Letters();
+            this.btnSCore = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -484,6 +485,7 @@
             // 
             // panel7
             // 
+            this.panel7.Controls.Add(this.btnSCore);
             this.panel7.Controls.Add(this.btnLoad);
             this.panel7.Controls.Add(this.btnSave);
             this.panel7.Controls.Add(this.btnPlayWord);
@@ -650,6 +652,16 @@
             this.lettersGrid.Size = new System.Drawing.Size(1067, 1371);
             this.lettersGrid.TabIndex = 18;
             // 
+            // btnSCore
+            // 
+            this.btnSCore.Location = new System.Drawing.Point(243, 1061);
+            this.btnSCore.Name = "btnSCore";
+            this.btnSCore.Size = new System.Drawing.Size(153, 74);
+            this.btnSCore.TabIndex = 30;
+            this.btnSCore.Text = "Score Word";
+            this.btnSCore.UseVisualStyleBackColor = true;
+            this.btnSCore.Click += new System.EventHandler(this.btnSCore_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -735,6 +747,7 @@
         private System.Windows.Forms.Button btnPlayWord;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnSCore;
     }
 }
 

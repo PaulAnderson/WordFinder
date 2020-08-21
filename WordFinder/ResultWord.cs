@@ -20,6 +20,7 @@ class Word
         //return base.ToString();
     }
 }
+
 class WordScorer
 {
     //Scoring:
@@ -37,40 +38,44 @@ class WordScorer
     // 8 points letters: J X
     // 10 points letters: Q Z
 
-    private char[,] letters;
-    private int[,] letterMultipliers;
-    private int[,] wordMultipliers;
+    public bool includeIntersectionWordScores;
+    public bool UseLengthBonus = true;
+
+    BoardLettersModel board;
 
     public WordScorer(BoardLettersModel boardModel)
     {
-        this.letters = boardModel.Letters;
-        this.letterMultipliers = boardModel.LetterMultipliers;
-        this.wordMultipliers = boardModel.WordMultipliers;
+        this.board = boardModel;
     }
     public WordScorer(char[,] letters, int[,] letterMultipliers, int[,] wordMultipliers)
     {
-        this.letters = letters;
-        this.letterMultipliers = letterMultipliers;
-        this.wordMultipliers = wordMultipliers;
     }
-    public int getWordScore(Word word)
+    public int getWordScore(Word word, bool useLengthBonus, bool includeIntersectionWordScores)
     {
         int letterTotal = 0;
         int wordMultiplier = 1;
+        int intersectingWordTotal =  0;
         int wordPosition = 0;
 
-        foreach (HistoryItem item in word.Path.GetList())
+        var historyItems = word.Path.GetList();
+        for (var i = 0; i< word.Text.Length; i++)
         {
+            var item = historyItems[i];
+            bool isSubstitutionLetter = false;
             char letter;
             int letterValue = 1;
             int letterMultiplier = 1;
 
             //get letter for location
-            letter = letters[item.row, item.col];
+            letter = board.Letters[item.row, item.col];
 
             if (char.IsWhiteSpace(letter))
             {
-                if (wordPosition < word.Text.Length - 1) { 
+                //Check original board if present (to avoid temporarily substitution letters during word finding)
+                if (board.BoardLetters==null || char.IsWhiteSpace(board.BoardLetters[item.row,item.col])) {
+                    isSubstitutionLetter = true ;
+                }
+                if (wordPosition < word.Text.Length  ) { 
                     letter = word.Text.Substring(wordPosition, 1).ToCharArray()[0];
                 }
             }
@@ -78,10 +83,10 @@ class WordScorer
             //get letter value
             letterValue = getLetterValue(letter);
 
-            //Get letter multiplier if any
-            if (letterMultipliers[item.row, item.col] > 1)
+            //Get letter multiplier if any, and letter not already placed
+            if (isSubstitutionLetter && board.LetterMultipliers[item.row, item.col] > 1)
             {
-                letterMultiplier = letterMultipliers[item.row, item.col];
+                letterMultiplier = board.LetterMultipliers[item.row, item.col];
             }
             else
             {
@@ -89,17 +94,47 @@ class WordScorer
             }
 
             //Get word multiplier if any - combine with any other word multipliers
-            if (wordMultipliers[item.row, item.col] > 1)
+            if (isSubstitutionLetter && board.WordMultipliers[item.row, item.col] > 1)
             {
-                wordMultiplier *= wordMultipliers[item.row, item.col];
+                wordMultiplier *= board.WordMultipliers[item.row, item.col];
             }
             letterTotal += (letterValue * letterMultiplier);
+
+            //Get intersecting words if enabled
+            if (isSubstitutionLetter && includeIntersectionWordScores)
+            {
+                intersectingWordTotal += GetIntersectingWord(historyItems, item, letter);
+            }
 
             wordPosition++;
         }
 
-        return letterTotal * wordMultiplier + getLengthBonus(word.Text.Length); //Word Length bonus applied after multipliers
+        var lengthBonus = useLengthBonus ? getLengthBonus(word.Text.Length) : 0;
+        return letterTotal * wordMultiplier + lengthBonus + intersectingWordTotal; //Word Length bonus applied after multipliers
     }
+
+    private int GetIntersectingWord(List<HistoryItem> historyItems, HistoryItem item, char firstLetter)
+    {
+        //Get direction
+        var colOffset = historyItems[1].col- historyItems[0].col;
+        var RowOffset = historyItems[1].row- historyItems[0].row;
+
+        //get intersect direction
+        var dir = new Direction(colOffset: RowOffset, rowOffset: colOffset);
+
+        //get whole intersect word
+        var intersectingWord = board.ReadWordAsWord(item.row, item.col, dir, firstLetterOverride: firstLetter);
+
+        //Get score
+        if (intersectingWord.Text.Length > 1)
+        {
+            return getWordScore(intersectingWord, false, false);
+        } else
+        {
+            return 0;
+        }
+    }
+
     private int getLetterValue(char letter)
     {
         int letterValue = 1;
@@ -142,6 +177,7 @@ class WordScorer
         }
         return letterValue;
     }
+    
     private int getLengthBonus(int WordLength)
     {
         switch (WordLength)
@@ -171,7 +207,7 @@ class WordScorer
     {
         foreach (Word word in words)
         {
-            word.Score = getWordScore(word);
+            word.Score = getWordScore(word,UseLengthBonus,includeIntersectionWordScores);
         }
     }
 }

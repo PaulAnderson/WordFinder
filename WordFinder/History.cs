@@ -33,7 +33,7 @@ class HistoryItem : IComparable
 }
 class History : IComparable
 {
-    private List<HistoryItem> histList;
+    public List<HistoryItem> histList;
     public History()
     {
         histList = new List<HistoryItem>();

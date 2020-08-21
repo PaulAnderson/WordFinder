@@ -17,6 +17,9 @@ namespace WordFinder
         public bool UsingMandatoryTiles => (MandatoryLocations?.Count ?? 0) > 0;
         public List<HistoryItem> MandatoryLocations { get; set; } = new List<HistoryItem>();
         public int LetterCount => CountLetters();
+
+        public char[,] BoardLetters { get; internal set; }
+
         public char[,] Letters;
 
         public int[,] LetterMultipliers;
@@ -125,7 +128,34 @@ namespace WordFinder
             return s;
         }
 
-        (int, int) FindStartOfWord(int startRow, int startColumn, Direction direction)
+        public Word ReadWordAsWord(int startRow, int startColumn, Direction direction, char? firstLetterOverride = null)
+        {
+            int r, c;
+            (r, c) = FindStartOfWord(startRow, startColumn, direction, firstLetterOverride);
+
+            string s = "";
+            var path = new List<HistoryItem>();
+            while (true)
+            {
+                if (r >= GridSizeX || c >= GridSizeY || r < 0 || c < 0) break;
+
+                var letter = Letters[r, c];
+                if (startRow ==r && startColumn ==c && firstLetterOverride.HasValue )
+                {
+                    letter = firstLetterOverride.Value ;
+                }
+                if (char.IsWhiteSpace(letter)) break;
+                s += letter;
+                path.Add(new HistoryItem(r, c));
+
+                r += direction.RowOffset;
+                c += direction.ColOffset;
+            }
+
+            return new Word(s, new History() { histList = path });
+        }
+
+        (int, int) FindStartOfWord(int startRow, int startColumn, Direction direction, char? firstLetterOverride = null)
         {
             int r = startRow;
             int c = startColumn;
@@ -133,7 +163,12 @@ namespace WordFinder
             while (true)
             {
                 if (r >= GridSizeX || c >= GridSizeY || r < 0 || c < 0) break;
-                if (char.IsWhiteSpace(Letters[r, c])) break;
+                var letter = Letters[r, c];
+                if (startRow == r && startColumn == c && firstLetterOverride.HasValue)
+                {
+                    letter = firstLetterOverride.Value;
+                }
+                if (char.IsWhiteSpace(letter)) break;
 
                 r -= direction.RowOffset;
                 c -= direction.ColOffset;

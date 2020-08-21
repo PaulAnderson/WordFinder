@@ -43,6 +43,7 @@ namespace WordFinder
             //TODO make it work with words that end touching existing words but not continuing them
             foundWords.Clear();
             foundWordsDict.Clear();
+            boardModel.BoardLetters = (char[,])boardModel.Letters.Clone();
 
             foreach (var startingPoint in directionStrategy.GetStartingDirections(boardModel))
             {
@@ -80,6 +81,8 @@ namespace WordFinder
             }
 
             filterWords();
+
+            boardModel.BoardLetters = null;
             return foundWords;
         }
 
@@ -140,10 +143,10 @@ namespace WordFinder
                     else
                     {
                         //found the same word a second time, check to see which one has a higher score, replace if new word has higher score
-                        WordScorer scorer = new WordScorer(boardModel);
+                        WordScorer scorer = new WordScorer(boardModel) { includeIntersectionWordScores = true, UseLengthBonus = false };
                         Word newWord = new Word(prefix, hist.Copy());
-                        int newWordPathScore = scorer.getWordScore(newWord);
-                        int oldWordPathScore = scorer.getWordScore(foundWordsDict[prefix]);
+                        int newWordPathScore = scorer.getWordScore(newWord,false,true); //TODO need to track which letters have been added for wordfinding so the intersects and bonuses are scored properly
+                        int oldWordPathScore = scorer.getWordScore(foundWordsDict[prefix],false,true);
                         if (newWordPathScore > oldWordPathScore)
                         {
                             foundWordsDict[prefix].AlternatePaths.Add(foundWordsDict[prefix].Path);
@@ -167,6 +170,7 @@ namespace WordFinder
             if (stepValidationStrategy != null && !stepValidationStrategy.Validate(boardModel, prefix, r, c, directionData))
             {
                 //failed validation after adding this letter
+                hist.Pop();
                 return;
             }
 

@@ -134,7 +134,7 @@ namespace WordFinder
         {
             lstResults.Items.Clear();
 
-            WordScorer scorer = new WordScorer(boardModel);
+            WordScorer scorer = new WordScorer(boardModel) { includeIntersectionWordScores = true, UseLengthBonus = false } ;
             scorer.SetWordScores(foundWords);
 
             //Get no of words and total possible score if all found words played
@@ -439,6 +439,14 @@ namespace WordFinder
                 subBoardController.UpdateView();
 
             }
+        }
+
+        private void btnSCore_Click(object sender, EventArgs e)
+        {
+            var ws = new WordScorer(boardModel) { UseLengthBonus = false, includeIntersectionWordScores = true };
+
+            ws.getWordScore(SelectedWord, false, true);
+             
         }
     }
 }
