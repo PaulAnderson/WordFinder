@@ -435,6 +435,9 @@ namespace WordFinder
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 boardSaver.Load(dlg.FileName);
+                lstResults.Items.Clear();
+                boardController.ClearLinePath();
+                boardController.ClearLetterColours();
                 boardController.UpdateView();
                 subBoardController.UpdateView();
 

@@ -1,5 +1,6 @@
 using System.Windows.Forms;
 using System.Drawing;
+using System;
 
 class CustomTextBox : TextBox {
     private ScoreModifier _Modifier;
@@ -44,6 +45,13 @@ class CustomTextBox : TextBox {
         subCtrl.Margin = new Padding(0);
         subCtrl.MouseDown += SubCtrl_MouseDown;
         Controls.Add(subCtrl);
+    }
+
+    protected override void OnEnter(EventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(this.Text))
+            this.Text = "";
+        base.OnEnter(e);
     }
 
     private void SubCtrl_MouseDown(object sender, MouseEventArgs e)

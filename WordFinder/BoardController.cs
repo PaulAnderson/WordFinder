@@ -123,6 +123,7 @@ namespace WordFinder
                     {
                         var letter = BoardModel.Letters[r, c];
                         letterControls[r, c].Text = letter.ToString().ToUpper() ;
+                        if (string.IsNullOrEmpty(letterControls[r, c].Text)) letterControls[r, c].Text = "";
                         if (Char.IsLetter(letter) || c == '?')
                         {
                             letterControls[r, c].BackColor = Color.LightGreen;
